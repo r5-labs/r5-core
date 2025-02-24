@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -75,7 +75,7 @@ var (
 		"signer/rules/deps",
 
 		// skip special licenses
-		"crypto/secp256k1", // Relicensed to BSD-3 via https://github.com/ethereum/go-ethereum/pull/17225
+		"crypto/secp256k1", // Relicensed to BSD-3 via https://github.com/r5-codebase/r5-core/pull/17225
 	}
 
 	// paths with this prefix are licensed as GPL. all other files are LGPL.

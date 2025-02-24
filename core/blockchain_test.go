@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -22,20 +22,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/beacon"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth/tracers/logger"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/common/math"
+	"github.com/r5-codebase/r5-core/consensus"
+	"github.com/r5-codebase/r5-core/consensus/beacon"
+	"github.com/r5-codebase/r5-core/consensus/ethash"
+	"github.com/r5-codebase/r5-core/core/rawdb"
+	"github.com/r5-codebase/r5-core/core/state"
+	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-codebase/r5-core/core/vm"
+	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-codebase/r5-core/eth/tracers/logger"
+	"github.com/r5-codebase/r5-core/ethdb"
+	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-codebase/r5-core/trie"
 )
 
 // So we can deterministically seed different blockchains
@@ -1612,7 +1612,7 @@ func TestEIP161AccountRemoval(t *testing.T) {
 // tests that under weird reorg conditions the blockchain and its internal header-
 // chain return the same latest block/header.
 //
-// https://github.com/ethereum/go-ethereum/pull/15941
+// https://github.com/r5-codebase/r5-core/pull/15941
 func TestBlockchainHeaderchainReorgConsistency(t *testing.T) {
 	// Generate a canonical chain to act as the main dataset
 	engine := ethash.NewFaker()
@@ -1880,8 +1880,8 @@ func TestInsertReceiptChainRollback(t *testing.T) {
 // overtake the 'canon' chain until after it's passed canon by about 200 blocks.
 //
 // Details at:
-//   - https://github.com/ethereum/go-ethereum/issues/18977
-//   - https://github.com/ethereum/go-ethereum/pull/18988
+//   - https://github.com/r5-codebase/r5-core/issues/18977
+//   - https://github.com/r5-codebase/r5-core/pull/18988
 func TestLowDiffLongChain(t *testing.T) {
 	// Generate a canonical chain to act as the main dataset
 	engine := ethash.NewFaker()

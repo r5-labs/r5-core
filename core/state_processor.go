@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -16,14 +16,14 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/misc"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/consensus"
+	"github.com/r5-codebase/r5-core/consensus/misc"
+	"github.com/r5-codebase/r5-core/core/state"
+	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-codebase/r5-core/core/vm"
+	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-codebase/r5-core/params"
 )
 
 // StateProcessor is a basic Processor, which takes care of transitioning

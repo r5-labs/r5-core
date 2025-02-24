@@ -23,12 +23,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/beacon/engine"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/r5-codebase/r5-core/beacon/engine"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-codebase/r5-core/rlp"
 )
 
 // BuildPayloadArgs contains the provided parameters for building payload.

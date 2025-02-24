@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -49,10 +49,10 @@ import (
 	"time"
 
 	"github.com/cespare/cp"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto/signify"
-	"github.com/ethereum/go-ethereum/internal/build"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/crypto/signify"
+	"github.com/r5-codebase/r5-core/internal/build"
+	"github.com/r5-codebase/r5-core/params"
 )
 
 var (
@@ -245,8 +245,8 @@ func doInstall(cmdline []string) {
 func buildFlags(env build.Environment, staticLinking bool, buildTags []string) (flags []string) {
 	var ld []string
 	if env.Commit != "" {
-		ld = append(ld, "-X", "github.com/ethereum/go-ethereum/internal/version.gitCommit="+env.Commit)
-		ld = append(ld, "-X", "github.com/ethereum/go-ethereum/internal/version.gitDate="+env.Date)
+		ld = append(ld, "-X", "github.com/r5-codebase/r5-core/internal/version.gitCommit="+env.Commit)
+		ld = append(ld, "-X", "github.com/r5-codebase/r5-core/internal/version.gitDate="+env.Date)
 	}
 	// Strip DWARF on darwin. This used to be required for certain things,
 	// and there is no downside to this, so we just keep doing it.

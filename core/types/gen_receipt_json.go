@@ -7,8 +7,8 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/common/hexutil"
 )
 
 var _ = (*receiptMarshaling)(nil)

@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -24,12 +24,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/r5-codebase/r5-core/accounts"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/common/hexutil"
+	"github.com/r5-codebase/r5-core/common/math"
+	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-codebase/r5-core/crypto"
 )
 
 var typedDataReferenceTypeRegexp = regexp.MustCompile(`^[A-Za-z](\w*)(\[\])?$`)
@@ -87,7 +87,7 @@ type SendTxArgs struct {
 
 	// We accept "data" and "input" for backwards-compatibility reasons.
 	// "input" is the newer name and should be preferred by clients.
-	// Issue detail: https://github.com/ethereum/go-ethereum/issues/15628
+	// Issue detail: https://github.com/r5-codebase/r5-core/issues/15628
 	Data  *hexutil.Bytes `json:"data"`
 	Input *hexutil.Bytes `json:"input,omitempty"`
 

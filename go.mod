@@ -1,4 +1,4 @@
-module github.com/ethereum/go-ethereum
+module github.com/r5-codebase/r5-core
 
 go 1.19
 

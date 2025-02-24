@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -16,8 +16,8 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-codebase/r5-core/rlp"
 )
 
 func newTestFullNode(v []byte) []interface{} {
@@ -92,7 +92,7 @@ func TestDecodeFullNode(t *testing.T) {
 
 // goos: darwin
 // goarch: arm64
-// pkg: github.com/ethereum/go-ethereum/trie
+// pkg: github.com/r5-codebase/r5-core/trie
 // BenchmarkEncodeShortNode
 // BenchmarkEncodeShortNode-8   	16878850	        70.81 ns/op	      48 B/op	       1 allocs/op
 func BenchmarkEncodeShortNode(b *testing.B) {
@@ -110,7 +110,7 @@ func BenchmarkEncodeShortNode(b *testing.B) {
 
 // goos: darwin
 // goarch: arm64
-// pkg: github.com/ethereum/go-ethereum/trie
+// pkg: github.com/r5-codebase/r5-core/trie
 // BenchmarkEncodeFullNode
 // BenchmarkEncodeFullNode-8   	 4323273	       284.4 ns/op	     576 B/op	       1 allocs/op
 func BenchmarkEncodeFullNode(b *testing.B) {
@@ -128,7 +128,7 @@ func BenchmarkEncodeFullNode(b *testing.B) {
 
 // goos: darwin
 // goarch: arm64
-// pkg: github.com/ethereum/go-ethereum/trie
+// pkg: github.com/r5-codebase/r5-core/trie
 // BenchmarkDecodeShortNode
 // BenchmarkDecodeShortNode-8   	 7925638	       151.0 ns/op	     157 B/op	       4 allocs/op
 func BenchmarkDecodeShortNode(b *testing.B) {
@@ -149,7 +149,7 @@ func BenchmarkDecodeShortNode(b *testing.B) {
 
 // goos: darwin
 // goarch: arm64
-// pkg: github.com/ethereum/go-ethereum/trie
+// pkg: github.com/r5-codebase/r5-core/trie
 // BenchmarkDecodeShortNodeUnsafe
 // BenchmarkDecodeShortNodeUnsafe-8   	 9027476	       128.6 ns/op	     109 B/op	       3 allocs/op
 func BenchmarkDecodeShortNodeUnsafe(b *testing.B) {
@@ -170,7 +170,7 @@ func BenchmarkDecodeShortNodeUnsafe(b *testing.B) {
 
 // goos: darwin
 // goarch: arm64
-// pkg: github.com/ethereum/go-ethereum/trie
+// pkg: github.com/r5-codebase/r5-core/trie
 // BenchmarkDecodeFullNode
 // BenchmarkDecodeFullNode-8   	 1597462	       761.9 ns/op	    1280 B/op	      18 allocs/op
 func BenchmarkDecodeFullNode(b *testing.B) {
@@ -191,7 +191,7 @@ func BenchmarkDecodeFullNode(b *testing.B) {
 
 // goos: darwin
 // goarch: arm64
-// pkg: github.com/ethereum/go-ethereum/trie
+// pkg: github.com/r5-codebase/r5-core/trie
 // BenchmarkDecodeFullNodeUnsafe
 // BenchmarkDecodeFullNodeUnsafe-8   	 1789070	       687.1 ns/op	     704 B/op	      17 allocs/op
 func BenchmarkDecodeFullNodeUnsafe(b *testing.B) {

@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -18,13 +18,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/internal/jsre/deps"
+	"github.com/r5-codebase/r5-core/internal/jsre/deps"
 
 	"github.com/dop251/goja"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/signer/core"
-	"github.com/ethereum/go-ethereum/signer/storage"
+	"github.com/r5-codebase/r5-core/internal/ethapi"
+	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-codebase/r5-core/signer/core"
+	"github.com/r5-codebase/r5-core/signer/storage"
 )
 
 // consoleOutput is an override for the console.log and console.error methods to

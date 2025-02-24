@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -20,11 +20,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console/prompt"
-	"github.com/ethereum/go-ethereum/p2p/dnsdisc"
-	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/r5-codebase/r5-core/accounts/keystore"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/console/prompt"
+	"github.com/r5-codebase/r5-core/p2p/dnsdisc"
+	"github.com/r5-codebase/r5-core/p2p/enode"
 	"github.com/urfave/cli/v2"
 )
 

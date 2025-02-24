@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -24,20 +24,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/eth"
-	ethdownloader "github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/les/downloader"
-	"github.com/ethereum/go-ethereum/les/flowcontrol"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/simulations"
-	"github.com/ethereum/go-ethereum/p2p/simulations/adapters"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/common/hexutil"
+	"github.com/r5-codebase/r5-core/consensus/ethash"
+	"github.com/r5-codebase/r5-core/eth"
+	ethdownloader "github.com/r5-codebase/r5-core/eth/downloader"
+	"github.com/r5-codebase/r5-core/eth/ethconfig"
+	"github.com/r5-codebase/r5-core/les/downloader"
+	"github.com/r5-codebase/r5-core/les/flowcontrol"
+	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-codebase/r5-core/node"
+	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-codebase/r5-core/p2p/simulations"
+	"github.com/r5-codebase/r5-core/p2p/simulations/adapters"
+	"github.com/r5-codebase/r5-core/rpc"
 	"github.com/mattn/go-colorable"
 )
 

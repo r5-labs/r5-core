@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -20,12 +20,12 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common/compiler"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/r5-codebase/r5-core/accounts/abi/bind"
+	"github.com/r5-codebase/r5-core/cmd/utils"
+	"github.com/r5-codebase/r5-core/common/compiler"
+	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-codebase/r5-core/internal/flags"
+	"github.com/r5-codebase/r5-core/log"
 	"github.com/urfave/cli/v2"
 )
 

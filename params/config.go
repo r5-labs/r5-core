@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/r5-codebase/r5-core/common"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -470,7 +470,7 @@ func (c *ChainConfig) Description() string {
 	// makes sense for mainnet should be optional at printing to avoid bloating
 	// the output for testnets and private networks.
 	banner += "Welcome to the R5 Network Protocol!\n"
-	banner += "Github Public Repository: https://github.com/r5-codebase/r5-core \n"
+	banner += "Github Public Repository: github.com/r5-codebase/r5-core \n"
 	return banner
 }
 

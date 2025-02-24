@@ -4,7 +4,7 @@
 // This software is provided "as is", without warranty of any kind,
 // express or implied, including but not limited to the warranties
 // of merchantability, fitness for a particular purpose and
-// noninfringement. In no even shall the authors or copyright
+// noninfringement. In no event shall the authors or copyright
 // holders be liable for any claim, damages, or other liability,
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
@@ -21,24 +21,24 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console/prompt"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/internal/debug"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/node"
+	"github.com/r5-codebase/r5-core/accounts"
+	"github.com/r5-codebase/r5-core/accounts/keystore"
+	"github.com/r5-codebase/r5-core/cmd/utils"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/console/prompt"
+	"github.com/r5-codebase/r5-core/eth"
+	"github.com/r5-codebase/r5-core/eth/downloader"
+	"github.com/r5-codebase/r5-core/ethclient"
+	"github.com/r5-codebase/r5-core/internal/debug"
+	"github.com/r5-codebase/r5-core/internal/ethapi"
+	"github.com/r5-codebase/r5-core/internal/flags"
+	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-codebase/r5-core/node"
 
 	// Force-load the tracer engines to trigger registration
-	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	_ "github.com/r5-codebase/r5-core/eth/tracers/js"
+	_ "github.com/r5-codebase/r5-core/eth/tracers/native"
 
 	"github.com/urfave/cli/v2"
 )
