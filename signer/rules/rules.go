@@ -18,7 +18,7 @@ import (
 	"os"
 	"strings"
 
-	"jsre/deps"
+	"github.com/ethereum/go-ethereum/internal/jsre/deps"
 
 	"github.com/dop251/goja"
 	"github.com/ethereum/go-ethereum/internal/ethapi"
