@@ -298,10 +298,10 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, triedb *trie.Database, gen
 	stored := rawdb.ReadCanonicalHash(db, 0)
 	if (stored == common.Hash{}) {
 		if genesis == nil {
-			log.Info("Writing default main-net genesis block")
+			log.Info("Initializing Default Genesis Block...")
 			genesis = DefaultGenesisBlock()
 		} else {
-			log.Info("Writing custom genesis block")
+			log.Info("Initializing Custom Genesis Block...")
 		}
 		block, err := genesis.Commit(db, triedb)
 		if err != nil {
@@ -521,7 +521,7 @@ func DefaultGenesisBlock() *Genesis {
 		Config:     params.MainnetChainConfig,
 		Nonce:      0,
 		ExtraData:  hexutil.MustDecode("0x"),
-		GasLimit:   150000000,
+		GasLimit:   250000000,
 		Difficulty: big.NewInt(1),
 		Alloc:      nil,
 	}

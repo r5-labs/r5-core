@@ -24,7 +24,7 @@ def install_chocolatey():
     print("Installing Chocolatey...")
     # Run the Chocolatey install command in PowerShell
     return run_command(
-        ['powershell', 'Set-ExecutionPolicy', 'Bypass', '-Scope', 'Process', '-Force', 
+        ['powershell', 'Set-ExecutionPolicy', 'Bypass', '-Scope', 'Process', '-Force',
          ';', 'iwr', 'https://chocolatey.org/install.ps1', '-UseBasicParsing', '|', 'iex'],
         shell=True
     )
@@ -59,6 +59,9 @@ def install_package(package, installer):
         if package == 'golang':
             # Adjust the version string as needed.
             cmd = [installer, 'install', 'golang', '--version=1.19.4', '-y']
+        elif package == 'mingw-w64':
+            # Use the mingw-w64 package for GCC on Windows.
+            cmd = [installer, 'install', 'mingw-w64', '-y']
         else:
             cmd = [installer, 'install', package, '-y']
     elif sys.platform.startswith('linux'):
@@ -86,9 +89,9 @@ def main():
         install_package('gcc', installer)
     elif sys.platform.startswith('win'):
         installer = check_or_install_package_manager()
-        # For Windows, install golang (specified with version) and mingw (which provides gcc).
+        # For Windows, install golang (specified with version) and mingw-w64 (which provides gcc).
         install_package('golang', installer)
-        install_package('mingw', installer)
+        install_package('mingw-w64', installer)
     else:
         print("Unsupported operating system.")
         sys.exit(1)

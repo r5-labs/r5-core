@@ -15,6 +15,13 @@
 /build/_workspace/
 /build/cache/
 /build/bin/
+/buid/blockchain
+/build/run-local.cmd
+/build/console.cmd
+/build/network.config
+/build/networkid.config
+/build/networkflags.config
+/build/NULL
 /geth*.zip
 
 # IdeaIDE

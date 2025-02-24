@@ -148,7 +148,7 @@ func NewFreezer(datadir string, namespace string, readonly bool, maxTableSize ui
 	// Create the write batch.
 	freezer.writeBatch = newFreezerBatch(freezer)
 
-	log.Info("Opened ancient database", "database", datadir, "readonly", readonly)
+	log.Info("Opened Existing Database", "database", datadir, "readonly", readonly)
 	return freezer, nil
 }
 

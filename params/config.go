@@ -23,7 +23,7 @@ import (
 
 // Genesis hashes to enforce below configs on.
 var (
-	MainnetGenesisHash = common.HexToHash("0xa3cc7f928cebbc82a199e3c506104df317244e5de86018b8753ef3096f674f1a")
+	MainnetGenesisHash = common.HexToHash("0x40a25ab82247ff5cd52798f19e563d7026f70cb4fc3b53a7e6186e1da86b3eca")
 	SepoliaGenesisHash = common.HexToHash("0x25a5cc106eea7138acab33231d7160d69cb777ee0c2c553fcddf5138993e6dd9")
 	RinkebyGenesisHash = common.HexToHash("0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
 	GoerliGenesisHash  = common.HexToHash("0xbf7e331f7f7c1dd2e05159666b3bf8bc7a8a3a9eb1d518969eab529dd9b88c1a")
@@ -443,7 +443,7 @@ func (c *ChainConfig) Description() string {
 		network = "R5 Network"
 	}
 	banner += "\n"
-	banner += fmt.Sprintf("Chain ID:  %v (%s)\n", c.ChainID, network)
+	banner += fmt.Sprintf("Network ID:  %v (%s)\n", c.ChainID, network)
 	switch {
 	case c.Ethash != nil:
 		if c.TerminalTotalDifficulty == nil {
@@ -469,7 +469,7 @@ func (c *ChainConfig) Description() string {
 	// Create a list of forks with a short description of them. Forks that only
 	// makes sense for mainnet should be optional at printing to avoid bloating
 	// the output for testnets and private networks.
-	banner += "Welcome to R5!\n"
+	banner += "Welcome to the R5 Network Protocol!\n"
 	banner += "Github Public Repository: https://github.com/r5-codebase/r5-core \n"
 	return banner
 }
