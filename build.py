@@ -16,7 +16,7 @@ def clean_cache():
 def build_r5():
     print("Building R5. Please wait...")
     clean_cache()
-    result = subprocess.run(["go", "run", "build/ci.go", "install", "./cmd/r5", "-v", "-x"], check=False)
+    result = subprocess.run(["go", "run", "build/ci.go", "install", "./cmd/r5"], check=False)
     if result.returncode != 0:
         handle_error()
     print("Build finished successfully.")
