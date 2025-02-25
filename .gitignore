@@ -17,6 +17,7 @@
 /build/bin/
 /buid/blockchain
 /build/run-local.cmd
+/build/run-miner.cmd
 /build/console.cmd
 /build/network.config
 /build/networkid.config
