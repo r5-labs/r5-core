@@ -12,6 +12,7 @@ import (
 	"context"
 	"encoding/binary"
 	"encoding/hex"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"hash"
@@ -29,6 +30,7 @@ import (
 	"github.com/r5-codebase/r5-core/common"
 	"github.com/r5-codebase/r5-core/common/bitutil"
 	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-codebase/r5-core/rlp"
 	"github.com/r5-codebase/r5-core/rpc"
 	"golang.org/x/crypto/sha3"
 )
@@ -768,6 +770,184 @@ var (
 // --- Helper Functions ---
 //
 
+// BlockHeader defines the header fields we need.
+type BlockHeader struct {
+    ParentHash    string `json:"parentHash"`
+    UncleHash     string `json:"sha3Uncles"`
+    Coinbase      string `json:"miner"`
+    StateRoot     string `json:"stateRoot"`
+    TxRoot        string `json:"transactionsRoot"`
+    ReceiptsRoot  string `json:"receiptsRoot"`
+    LogsBloom     string `json:"logsBloom"`
+    Difficulty    string `json:"difficulty"`
+    Number        string `json:"number"`
+    GasLimit      string `json:"gasLimit"`
+    GasUsed       string `json:"gasUsed"`
+    Timestamp     string `json:"timestamp"`
+    ExtraData     string `json:"extraData"`
+    MixHash       string `json:"mixHash"`
+    Nonce         string `json:"nonce"`
+}
+
+// getBlockHeader calls eth_getBlockByNumber to retrieve the full header.
+func getBlockHeader(client *rpc.Client, blockNumber uint64) (*BlockHeader, error) {
+    blockHex := fmt.Sprintf("0x%x", blockNumber)
+    // We request the block without transactions.
+    var result map[string]interface{}
+    if err := client.CallContext(context.Background(), &result, "eth_getBlockByNumber", blockHex, false); err != nil {
+        return nil, err
+    }
+    data, err := json.Marshal(result)
+    if err != nil {
+        return nil, err
+    }
+    var header BlockHeader
+    if err := json.Unmarshal(data, &header); err != nil {
+        return nil, err
+    }
+    return &header, nil
+}
+
+// parseHexBigInt parses a hex string (which should have a "0x" prefix)
+// and returns a big.Int. If the string is empty or too short, it returns 0.
+func parseHexBigInt(s string) (*big.Int, error) {
+    if len(s) < 2 {
+        return big.NewInt(0), nil
+    }
+    n := new(big.Int)
+    n, ok := n.SetString(s[2:], 16)
+    if !ok {
+        return nil, fmt.Errorf("failed to parse big.Int from %s", s)
+    }
+    return n, nil
+}
+
+// assembleSealHash zeroes the MixHash and Nonce fields, RLP‑encodes the header, and returns its keccak256 hash.
+func assembleSealHash(header *BlockHeader) ([]byte, error) {
+    // Zero out the seal fields.
+    header.MixHash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+    header.Nonce = "0x0000000000000000"
+
+    // Define a structure for RLP encoding in the order expected by the node.
+    type rlpHeader struct {
+        ParentHash    []byte
+        UncleHash     []byte
+        Coinbase      []byte
+        StateRoot     []byte
+        TxRoot        []byte
+        ReceiptsRoot  []byte
+        LogsBloom     []byte
+        Difficulty    *big.Int
+        Number        *big.Int
+        GasLimit      *big.Int
+        GasUsed       *big.Int
+        Timestamp     *big.Int
+        ExtraData     []byte
+        MixHash       []byte
+        Nonce         []byte
+    }
+
+    // helper to decode hex strings; if s is empty or too short, return an empty slice.
+    decodeHex := func(s string) ([]byte, error) {
+        if len(s) < 2 {
+            return []byte{}, nil
+        }
+        return hex.DecodeString(s[2:])
+    }
+
+    ph, err := decodeHex(header.ParentHash)
+    if err != nil {
+        return nil, err
+    }
+    uh, err := decodeHex(header.UncleHash)
+    if err != nil {
+        return nil, err
+    }
+    cb, err := decodeHex(header.Coinbase)
+    if err != nil {
+        return nil, err
+    }
+    sr, err := decodeHex(header.StateRoot)
+    if err != nil {
+        return nil, err
+    }
+    tr, err := decodeHex(header.TxRoot)
+    if err != nil {
+        return nil, err
+    }
+    rr, err := decodeHex(header.ReceiptsRoot)
+    if err != nil {
+        return nil, err
+    }
+    lb, err := decodeHex(header.LogsBloom)
+    if err != nil {
+        return nil, err
+    }
+    ed, err := decodeHex(header.ExtraData)
+    if err != nil {
+        return nil, err
+    }
+    mh, err := decodeHex(header.MixHash)
+    if err != nil {
+        return nil, err
+    }
+    nonce, err := decodeHex(header.Nonce)
+    if err != nil {
+        return nil, err
+    }
+
+    diff, err := parseHexBigInt(header.Difficulty)
+    if err != nil {
+        return nil, err
+    }
+    num, err := parseHexBigInt(header.Number)
+    if err != nil {
+        return nil, err
+    }
+    gl, err := parseHexBigInt(header.GasLimit)
+    if err != nil {
+        return nil, err
+    }
+    gu, err := parseHexBigInt(header.GasUsed)
+    if err != nil {
+        return nil, err
+    }
+    ts, err := parseHexBigInt(header.Timestamp)
+    if err != nil {
+        return nil, err
+    }
+
+    rlpH := rlpHeader{
+        ParentHash:    ph,
+        UncleHash:     uh,
+        Coinbase:      cb,
+        StateRoot:     sr,
+        TxRoot:        tr,
+        ReceiptsRoot:  rr,
+        LogsBloom:     lb,
+        Difficulty:    diff,
+        Number:        num,
+        GasLimit:      gl,
+        GasUsed:       gu,
+        Timestamp:     ts,
+        ExtraData:     ed,
+        MixHash:       mh,
+        Nonce:         nonce,
+    }
+    encoded, err := rlp.EncodeToBytes(rlpH)
+    if err != nil {
+        return nil, err
+    }
+    return crypto.Keccak256(encoded), nil
+}
+
+// encodeNonceLE encodes a uint64 nonce as an 8‐byte little‐endian hex string.
+func encodeNonceLE(nonce uint64) string {
+    b := make([]byte, 8)
+    binary.LittleEndian.PutUint64(b, nonce)
+    return "0x" + hex.EncodeToString(b)
+}
+
 // simpleLogger is a small adapter that provides Info/Debug methods.
 type simpleLogger struct{}
 
@@ -1111,7 +1291,7 @@ func getWork(client *rpc.Client) (Work, error) {
 }
 
 func submitWork(client *rpc.Client, nonce uint64, mixDigest []byte, powHash string) (bool, error) {
-	nonceHex := fmt.Sprintf("0x%016x", nonce)
+	nonceHex := encodeNonceLE(nonce)
 	mixHex := "0x" + hex.EncodeToString(mixDigest)
 	var result interface{}
 	err := client.CallContext(context.Background(), &result, "eth_submitWork", nonceHex, mixHex, powHash)
@@ -1131,95 +1311,119 @@ func submitWork(client *rpc.Client, nonce uint64, mixDigest []byte, powHash stri
 
 
 func mineWork(work Work, cpuCores int, client *rpc.Client) (uint64, []byte, []byte, error) {
-	headerBytes, err := hex.DecodeString(work.PowHash[2:])
-	if err != nil {
-    	return 0, nil, nil, fmt.Errorf("failed to decode header hash from powHash: %v", err)
-	}
-	seedHashBytes, err := hex.DecodeString(work.SeedHash[2:])
-	if err != nil {
-    	return 0, nil, nil, fmt.Errorf("failed to decode seed hash from seedHash: %v", err)
-	}
-	target := new(big.Int)
-	_, ok := target.SetString(work.Target[2:], 16)
-	if !ok {
-		return 0, nil, nil, fmt.Errorf("failed to parse target")
-	}
-	blockNumber, err := strconv.ParseUint(work.BlockNumber[2:], 16, 64)
-	if err != nil {
-		return 0, nil, nil, fmt.Errorf("failed to parse block number from work: %v", err)
-	}
+    headerBytes, err := hex.DecodeString(work.PowHash[2:])
+    if err != nil {
+        return 0, nil, nil, fmt.Errorf("failed to decode header hash from powHash: %v", err)
+    }
+    seedHashBytes, err := hex.DecodeString(work.SeedHash[2:])
+    if err != nil {
+        return 0, nil, nil, fmt.Errorf("failed to decode seed hash from seedHash: %v", err)
+    }
+    target := new(big.Int)
+    _, ok := target.SetString(work.Target[2:], 16)
+    if !ok {
+        return 0, nil, nil, fmt.Errorf("failed to parse target")
+    }
+    blockNumber, err := strconv.ParseUint(work.BlockNumber[2:], 16, 64)
+    if err != nil {
+        return 0, nil, nil, fmt.Errorf("failed to parse block number from work: %v", err)
+    }
 
-	epochNum := blockNumber / epochLength
-	cache := GenerateCache(seedHashBytes, epochNum)
+    epochNum := blockNumber / epochLength
+    cache := GenerateCache(seedHashBytes, epochNum)
 
-	dsSize := datasetSize(blockNumber)
-	var dataset []uint32
+    dsSize := datasetSize(blockNumber)
+    var dataset []uint32
 
-	// Check DAG cache: if we already built the dataset for this epoch, reuse it.
-	dagCacheMu.RLock()
-	dataset, exists := dagCache[epochNum]
-	dagCacheMu.RUnlock()
+    dagCacheMu.RLock()
+    dataset, exists := dagCache[epochNum]
+    dagCacheMu.RUnlock()
+    if !exists {
+        log.Printf("INFO: Mining Block Number = %d, Epoch = %d, Dataset Size = %d, Dataset Len = %d", blockNumber, epochNum, dsSize, dsSize/4)
+        dataset = make([]uint32, dsSize/4)
+        generateDataset(dataset, epochNum, cache)
+        dagCacheMu.Lock()
+        dagCache[epochNum] = dataset
+        dagCacheMu.Unlock()
+    } else {
+        log.Printf("INFO: Reusing cached DAG for epoch %d", epochNum)
+    }
 
-	if !exists {
-		log.Printf("INFO: Mining Block Number = %d, Epoch = %d, Dataset Size = %d, Dataset Len = %d", blockNumber, epochNum, dsSize, dsSize/4)
-		dataset = make([]uint32, dsSize/4)
-		generateDataset(dataset, epochNum, cache)
-		// Store in cache.
-		dagCacheMu.Lock()
-		dagCache[epochNum] = dataset
-		dagCacheMu.Unlock()
-	} else {
-		log.Printf("INFO: Reusing cached DAG for epoch %d", epochNum)
-	}
+    var found int32 = 0
+    type result struct {
+        nonce     uint64
+        mixDigest []byte
+        finalHash []byte
+    }
+    resCh := make(chan result, 1)
+    var wg sync.WaitGroup
 
-	var found int32 = 0
-	type result struct {
-		nonce     uint64
-		mixDigest []byte
-		finalHash []byte
-	}
-	resCh := make(chan result, 1)
-	var wg sync.WaitGroup
+    // Create a context that will cancel all goroutines if work becomes stale or a solution is found.
+    ctx, cancel := context.WithCancel(context.Background())
+    defer cancel()
 
-	for i := 0; i < cpuCores; i++ {
-		wg.Add(1)
-		go func(start uint64) {
-			defer wg.Done()
-			nonce := start
-			lastCheck := time.Now()
-			for atomic.LoadInt32(&found) == 0 {
-				if time.Since(lastCheck) > 5*time.Second {
-					newBlockNumber, err := getBlockNumber(client)
-					if err == nil && newBlockNumber > blockNumber {
-						return
-					}
-					lastCheck = time.Now()
-				}
-				mixDigest, finalHash := hashimotoFull(dataset, headerBytes, nonce)
-				finalInt := new(big.Int).SetBytes(finalHash)
-				if finalInt.Cmp(target) < 0 {
-					if atomic.CompareAndSwapInt32(&found, 0, 1) {
-						resCh <- result{nonce: nonce, mixDigest: mixDigest, finalHash: finalHash}
-					}
-					return
-				}
-				nonce += uint64(cpuCores)
-			}
-		}(uint64(i))
-	}
-	wg.Wait()
-	select {
-	case r := <-resCh:
-		return r.nonce, r.mixDigest, r.finalHash, nil
-	default:
-		return 0, nil, nil, fmt.Errorf("work stale: block advanced from %d", blockNumber)
-	}
+    for i := 0; i < cpuCores; i++ {
+        wg.Add(1)
+        go func(start uint64) {
+            defer wg.Done()
+            nonce := start
+            lastCheck := time.Now()
+            for {
+                select {
+                case <-ctx.Done():
+                    return
+                default:
+                }
+                // Periodically check if the work has become stale.
+                if time.Since(lastCheck) > 5*time.Second {
+                    newBlockNumber, err := getBlockNumber(client)
+                    if err == nil && newBlockNumber > blockNumber {
+                        cancel()
+                        return
+                    }
+                    lastCheck = time.Now()
+                }
+                mixDigest, finalHash := hashimotoFull(dataset, headerBytes, nonce)
+                finalInt := new(big.Int).SetBytes(finalHash)
+                if finalInt.Cmp(target) < 0 {
+                    if atomic.CompareAndSwapInt32(&found, 0, 1) {
+                        resCh <- result{nonce: nonce, mixDigest: mixDigest, finalHash: finalHash}
+                        cancel()
+                    }
+                    return
+                }
+                nonce += uint64(cpuCores)
+            }
+        }(uint64(i))
+    }
+    wg.Wait()
+    select {
+    case r := <-resCh:
+        // Before returning, double-check that the work hasn't become stale.
+        currentBlock, err := getBlockNumber(client)
+        if err == nil && currentBlock > blockNumber {
+            return 0, nil, nil, fmt.Errorf("WARN: Work stale: block advanced from %d", blockNumber)
+        }
+        // Instead of using the work's PowHash (which is not reconstructed)
+   		// fetch the full block header and reassemble the seal hash.
+    	header, err := getBlockHeader(client, blockNumber)
+    	if err != nil {
+        	return 0, nil, nil, fmt.Errorf("failed to get block header: %v", err)
+    	}
+    	computedSealHash, err := assembleSealHash(header)
+    	if err != nil {
+       		return 0, nil, nil, fmt.Errorf("failed to assemble seal hash: %v", err)
+   		}
+        return r.nonce, r.mixDigest, computedSealHash, nil
+    default:
+        return 0, nil, nil, fmt.Errorf("WARN: Work stale: block advanced from %d", blockNumber)
+    }
 }
 
 func StartMiner(rpcURL string, reward common.Address, cpuCores int, workerName string) error {
 	client, err := rpc.Dial(rpcURL)
 	if err != nil {
-		return fmt.Errorf("failed to connect to RPC: %v", err)
+		return fmt.Errorf("WARN: Failed to connect to RPC: %v", err)
 	}
 	defer client.Close()
 
@@ -1233,24 +1437,39 @@ func StartMiner(rpcURL string, reward common.Address, cpuCores int, workerName s
 			time.Sleep(5 * time.Second)
 			continue
 		}
-		log.Printf("INFO: ✓ Received Work")
-		log.Printf(":        PoW Hash: %s", work.PowHash)
-		log.Printf(":        Target: %s", work.Target)
+		log.Printf("INFO: ✓ Received Work:")
+		log.Printf(":       PoW Hash: %s", work.PowHash)
+		log.Printf(":       Target: %s", work.Target)
 
 		nonce, mixDigest, finalHash, err := mineWork(work, cpuCores, client)
 		if err != nil {
 			log.Printf("WARN: Stale work, dropping it: %v", err)
 			continue
 		}
-		log.Printf("INFO: Solution found: nonce=%d, finalHash=%x", nonce, finalHash)
 
-		ok, err := submitWork(client, nonce, mixDigest, work.PowHash)
+		// Extra check: verify that the work is still valid before submission.
+		parsedBlock, err := strconv.ParseUint(work.BlockNumber[2:], 16, 64)
 		if err != nil {
-			log.Printf("WARN: Error submitting work: %v", err)
+			log.Printf("WARN: Failed to parse work.BlockNumber: %v", err)
+			continue
+		}
+		currentBlock, err := getBlockNumber(client)
+		if err == nil && currentBlock > parsedBlock {
+			log.Printf("WARN: Work became stale at submission time: block advanced from %d to %d", parsedBlock, currentBlock)
+			continue
+		}
+
+		log.Printf("INFO: Potential Solution Found:")
+		log.Printf(":     Nonce: %d", nonce)
+		log.Printf(":     Final Hash=%x", finalHash)
+
+		ok, err := submitWork(client, nonce, mixDigest, "0x"+hex.EncodeToString(finalHash))
+		if err != nil {
+			log.Printf("WARN: ✕ Error submitting work: %v", err)
 		} else if ok {
-			log.Printf("INFO: Work submitted successfully")
+			log.Printf("INFO: ✓ Work submitted successfully")
 		} else {
-			log.Printf("WARN: Work submission rejected")
+			log.Printf("WARN: ✕ Work submission rejected")
 		}
 		time.Sleep(2 * time.Second)
 	}
