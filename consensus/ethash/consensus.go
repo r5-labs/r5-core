@@ -451,7 +451,8 @@ func (r5 *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 //	Blocks 2,000,001 - 4,000,000: 0.25 R5
 //	Blocks 4,000,001 - 8,000,000: 0.125 R5
 //	Blocks 8,000,001 - 16,000,000: 0.0625 R5
-//	Blocks > 16,000,000: 0.025 R5 (fixed thereafter)
+// 	Blocks 16,000,001 - 32,000,000: 0.03125 R5
+//	Blocks > 32,000,000: 0.015625 R5 (fixed thereafter)
 //
 // Note: No additional rewards are granted for uncle blocks.
 func accumulateRewards(_ *params.ChainConfig, state *state.StateDB, header *types.Header, _ []*types.Header) {
@@ -469,8 +470,10 @@ func accumulateRewards(_ *params.ChainConfig, state *state.StateDB, header *type
 		blockReward = big.NewInt(125000000000000000) // 0.125 R5 in wei
 	case blockNum > 8000000 && blockNum <= 16000000:
 		blockReward = big.NewInt(62500000000000000) // 0.0625 R5 in wei
+	case blockNum > 16000000 && blockNum <= 32000000:
+		blockReward = big.NewInt(31250000000000000) // 0.03125 R5 in wei
 	default:
-		blockReward = big.NewInt(25000000000000000) // 0.025 R5 in wei for blocks > 16M
+		blockReward = big.NewInt(15625000000000000) // 0.015625 R5 in wei for blocks > 32M
 	}
 
 	state.AddBalance(header.Coinbase, blockReward)
