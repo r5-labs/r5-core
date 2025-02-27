@@ -24,6 +24,7 @@
 /build/networkflags.config
 /build/NULL
 /geth*.zip
+/cliwallet/build/
 
 # IdeaIDE
 .idea
