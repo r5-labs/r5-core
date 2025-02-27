@@ -1,0 +1,2 @@
+[console_scripts]
+r5wallet = main:main

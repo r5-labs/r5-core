@@ -1,0 +1,5 @@
+# r5wstart
+rpc_address = http://localhost:8545
+query_interval = 60
+tx_timeout = 1200
+#r5w-end

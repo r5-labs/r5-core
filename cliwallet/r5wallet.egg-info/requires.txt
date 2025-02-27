@@ -1,0 +1,4 @@
+web3
+ecdsa
+cryptography
+pyinstaller
