@@ -249,8 +249,6 @@ var (
 	expDiffPeriod = big.NewInt(100000)
 	big1          = big.NewInt(1)
 	big2          = big.NewInt(2)
-	big9          = big.NewInt(9)
-	big10         = big.NewInt(10)
 	bigMinus99    = big.NewInt(-99)
 )
 
@@ -290,7 +288,7 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	// Use a smaller divisor (2 instead of 10)
+	// Use a divisor of 2 instead of 10.
 	bigTargetDivisor := big.NewInt(2)
 
 	x := new(big.Int)
@@ -413,12 +411,31 @@ func (r5 *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.Head
 	accumulateRewards(chain.Config(), state, header, uncles)
 }
 
-// FinalizeAndAssemble finalizes the block and assembles it.
+// FinalizeAndAssemble finalizes the block, redirects transaction fees to a feePoolWallet wallet,
+// and assembles the block.
+// Transaction fees are calculated as the sum of (tx.GasPrice * receipt.GasUsed) for all transactions.
+// The fees are subtracted from the miner’s (coinbase) balance and credited to the feePoolWallet wallet.
 func (r5 *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error) {
 	if len(withdrawals) > 0 {
 		return nil, errors.New("R5 does not support withdrawals")
 	}
 	r5.Finalize(chain, header, state, txs, uncles, nil)
+	
+	// Calculate the total transaction fees.
+	fees := new(big.Int)
+	for i, tx := range txs {
+		// Calculate fee = tx.GasPrice * receipt.GasUsed.
+		gasUsed := new(big.Int).SetUint64(receipts[i].GasUsed)
+		fee := new(big.Int).Mul(gasUsed, tx.GasPrice())
+		fees.Add(fees, fee)
+	}
+	// Define the feePoolWallet wallet placeholder; replace with the actual feePoolWallet wallet address.
+	feePoolWalletWallet := common.HexToAddress("0x...")
+	
+	// Redirect fees: subtract fees from the coinbase balance and add them to the feePoolWallet wallet.
+	state.SubBalance(header.Coinbase, fees)
+	state.AddBalance(feePoolWalletWallet, fees)
+
 	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
 	return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
 }

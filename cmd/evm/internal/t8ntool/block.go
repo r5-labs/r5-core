@@ -177,8 +177,8 @@ func (i *bbInput) sealEthash(block *types.Block) (*types.Block, error) {
 		DatasetDir:     i.EthashDir,
 		CacheDir:       i.EthashDir,
 		DatasetsInMem:  1,
-		DatasetsOnDisk: 2,
-		CachesInMem:    2,
+		DatasetsOnDisk: 3,
+		CachesInMem:    3,
 		CachesOnDisk:   3,
 	}
 	engine := ethash.New(ethashConfig, nil, true)
