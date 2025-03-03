@@ -469,7 +469,7 @@ func (c *ChainConfig) Description() string {
 	// Create a list of forks with a short description of them. Forks that only
 	// makes sense for mainnet should be optional at printing to avoid bloating
 	// the output for testnets and private networks.
-	banner += "Welcome to the R5 Network Protocol!\n"
+	banner += "Welcome to the R5 Protocol!\n"
 	banner += "Github Public Repository: github.com/r5-codebase/r5-core \n"
 	return banner
 }

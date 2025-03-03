@@ -16,10 +16,10 @@ import (
 	"math/big"
 	"sync/atomic"
 
+	"github.com/holiman/uint256"
 	"github.com/r5-codebase/r5-core/common"
 	"github.com/r5-codebase/r5-core/crypto"
 	"github.com/r5-codebase/r5-core/params"
-	"github.com/holiman/uint256"
 )
 
 // emptyCodeHash is used by create to ensure deployment is disallowed to already

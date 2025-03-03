@@ -30,6 +30,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mattn/go-colorable"
+	"github.com/mattn/go-isatty"
 	"github.com/r5-codebase/r5-core/accounts"
 	"github.com/r5-codebase/r5-core/accounts/keystore"
 	"github.com/r5-codebase/r5-core/cmd/utils"
@@ -49,8 +51,6 @@ import (
 	"github.com/r5-codebase/r5-core/signer/fourbyte"
 	"github.com/r5-codebase/r5-core/signer/rules"
 	"github.com/r5-codebase/r5-core/signer/storage"
-	"github.com/mattn/go-colorable"
-	"github.com/mattn/go-isatty"
 	"github.com/urfave/cli/v2"
 )
 

@@ -10,7 +10,7 @@
 // from, out of or in connection with the software or the use or
 // other dealings in the software.
 
-// Package ethereum defines interfaces for interacting with Ethereum.
+// Package ethereum defines interfaces for interacting with R5.
 package ethereum
 
 import (
@@ -92,7 +92,7 @@ type ChainStateReader interface {
 }
 
 // SyncProgress gives progress indications when the node is synchronising with
-// the Ethereum network.
+// the R5 network.
 type SyncProgress struct {
 	StartingBlock uint64 // Block number where sync began
 	CurrentBlock  uint64 // Current block number where sync is at

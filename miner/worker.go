@@ -35,7 +35,7 @@ import (
 
 const (
 	resultQueueSize          = 10
-	txChanSize               = 4096
+	txChanSize               = 8192
 	chainHeadChanSize        = 10
 	chainSideChanSize        = 10
 	resubmitAdjustChanSize   = 10

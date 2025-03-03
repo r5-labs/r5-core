@@ -35,6 +35,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gorilla/websocket"
 	"github.com/r5-codebase/r5-core/accounts"
 	"github.com/r5-codebase/r5-core/accounts/keystore"
 	"github.com/r5-codebase/r5-core/cmd/utils"
@@ -53,7 +54,6 @@ import (
 	"github.com/r5-codebase/r5-core/p2p/enode"
 	"github.com/r5-codebase/r5-core/p2p/nat"
 	"github.com/r5-codebase/r5-core/params"
-	"github.com/gorilla/websocket"
 )
 
 var (

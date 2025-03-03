@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core"
+	ethereum "github.com/r5-codebase/r5-core"
 	"github.com/r5-codebase/r5-core/common"
 	"github.com/r5-codebase/r5-core/common/hexutil"
 	"github.com/r5-codebase/r5-core/core/types"

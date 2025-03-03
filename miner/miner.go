@@ -53,7 +53,7 @@ type Config struct {
 }
 
 var DefaultConfig = Config{
-	GasCeil:  250000000,
+	GasCeil:  147000000,
 	GasPrice: big.NewInt(params.GWei),
 	Recommit:          2 * time.Second,
 	NewPayloadTimeout: 2 * time.Second,

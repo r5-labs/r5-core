@@ -37,10 +37,10 @@ var (
 	// Maximum number of uncle blocks allowed per block.
 	maxUncles = 2
 
-	// Block time target remains 10 seconds.
-	allowedFutureBlockTimeSeconds = int64(10)
+	// Allowed future block time updated to 7 seconds.
+	allowedFutureBlockTimeSeconds = int64(7)
 
-	// Difficulty adjustment calculators (remain unchanged).
+	// Difficulty adjustment calculators (tuned for a 7-second target, using division by 2).
 	calcDifficultyEip5133        = makeDifficultyCalculator()
 	calcDifficultyEip4345        = makeDifficultyCalculator()
 	calcDifficultyEip3554        = makeDifficultyCalculator()
@@ -254,8 +254,11 @@ var (
 	bigMinus99    = big.NewInt(-99)
 )
 
-// makeDifficultyCalculator creates a difficulty calculator using Byzantium rules.
+// makeDifficultyCalculator creates a difficulty calculator tuned for a ~7‑second target.
+// It uses a divisor of 2 instead of 3.
 func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int {
+	// Set target divisor to 2 for a ~7-second block target.
+	bigTargetDivisor := big.NewInt(2)
 	return func(time uint64, parent *types.Header) *big.Int {
 		bigTime := new(big.Int).SetUint64(time)
 		bigParentTime := new(big.Int).SetUint64(parent.Time)
@@ -263,7 +266,7 @@ func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int
 		x := new(big.Int)
 		y := new(big.Int)
 		x.Sub(bigTime, bigParentTime)
-		x.Div(x, big9)
+		x.Div(x, bigTargetDivisor)
 		if parent.UncleHash == types.EmptyUncleHash {
 			x.Sub(big1, x)
 		} else {
@@ -282,15 +285,18 @@ func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int
 	}
 }
 
-// calcDifficultyHomestead computes the difficulty using Homestead rules.
+// calcDifficultyHomestead computes the difficulty using Homestead rules tuned for a ~7‑second target.
 func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
+	// Use a smaller divisor (2 instead of 10)
+	bigTargetDivisor := big.NewInt(2)
+
 	x := new(big.Int)
 	y := new(big.Int)
 	x.Sub(bigTime, bigParentTime)
-	x.Div(x, big10)
+	x.Div(x, bigTargetDivisor)
 	x.Sub(big1, x)
 	if x.Cmp(bigMinus99) < 0 {
 		x.Set(bigMinus99)
@@ -311,13 +317,16 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	return x
 }
 
-// calcDifficultyFrontier computes the difficulty using Frontier rules.
+// calcDifficultyFrontier computes the difficulty using Frontier rules tuned for a ~7‑second target.
 func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
 	diff := new(big.Int)
 	adjust := new(big.Int).Div(parent.Difficulty, params.DifficultyBoundDivisor)
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
-	if bigTime.Sub(bigTime, bigParentTime).Cmp(params.DurationLimit) < 0 {
+
+	// Use a hardcoded 7-second target for comparison.
+	targetBlockTime := big.NewInt(7)
+	if bigTime.Sub(bigTime, bigParentTime).Cmp(targetBlockTime) < 0 {
 		diff.Add(parent.Difficulty, adjust)
 	} else {
 		diff.Sub(parent.Difficulty, adjust)

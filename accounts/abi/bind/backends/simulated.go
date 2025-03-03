@@ -20,7 +20,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-codebase/r5-core"
+	ethereum "github.com/r5-codebase/r5-core"
 	"github.com/r5-codebase/r5-core/accounts/abi"
 	"github.com/r5-codebase/r5-core/accounts/abi/bind"
 	"github.com/r5-codebase/r5-core/common"
