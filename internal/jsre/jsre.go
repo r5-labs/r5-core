@@ -25,6 +25,7 @@ import (
 
 	"github.com/dop251/goja"
 	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/internal/ethapi"
 )
 
 // JSRE is a JS runtime environment embedding the goja interpreter.
@@ -63,8 +64,10 @@ type evalReq struct {
 	done chan bool
 }
 
+// New creates a new JSRE instance. The extra parameter backend is used to
+// inject the "eth" and "r5" global objects into the runtime.
 // runtime must be stopped with Stop() after use and cannot be used after stopping
-func New(assetPath string, output io.Writer) *JSRE {
+func New(assetPath string, output io.Writer, backend ethapi.Backend) *JSRE {
 	re := &JSRE{
 		assetPath:     assetPath,
 		output:        output,
@@ -76,6 +79,12 @@ func New(assetPath string, output io.Writer) *JSRE {
 	go re.runEventLoop()
 	re.Set("loadScript", MakeCallback(re.vm, re.loadScript))
 	re.Set("inspect", re.prettyPrintJS)
+
+	// Inject the global "eth" namespace and an alias "r5"
+	ethAPI := ethapi.NewEthereumAPI(backend)
+	re.Set("eth", ethAPI)
+	re.Set("r5", ethAPI)
+
 	return re
 }
 
@@ -181,8 +190,8 @@ loop:
 				arguments = make([]interface{}, 1)
 			}
 			arguments[0] = timer.call.Arguments[0]
-			call, isFunc := goja.AssertFunction(timer.call.Arguments[0])
-			if !isFunc {
+			call, isfunc := goja.AssertFunction(timer.call.Arguments[0])
+			if !isfunc {
 				panic(re.vm.ToValue("js error: timer/timeout callback is not a function"))
 			}
 			call(goja.Null(), timer.call.Arguments...)
@@ -217,7 +226,6 @@ loop:
 }
 
 // Do executes the given function on the JS event loop.
-// When the runtime is stopped, fn will not execute.
 func (re *JSRE) Do(fn func(*goja.Runtime)) {
 	done := make(chan bool)
 	req := &evalReq{fn, done}
@@ -247,8 +255,8 @@ func (re *JSRE) Stop(waitForCallbacks bool) {
 	}
 }
 
-// Exec(file) loads and runs the contents of a file
-// if a relative path is given, the jsre's assetPath is used
+// Exec loads and runs the contents of a file.
+// If a relative path is given, the jsre's assetPath is used.
 func (re *JSRE) Exec(file string) error {
 	code, err := os.ReadFile(common.AbsolutePath(re.assetPath, file))
 	if err != nil {
@@ -334,3 +342,5 @@ func compileAndRun(vm *goja.Runtime, filename string, src string) (goja.Value, e
 	}
 	return vm.RunProgram(script)
 }
+
+// (Additional helper functions such as prettyPrint, prettyError, and SafeGet would be defined here.)
