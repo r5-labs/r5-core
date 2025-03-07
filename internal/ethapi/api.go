@@ -76,6 +76,20 @@ func (s *EthereumAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, e
 	return (*hexutil.Big)(tipcap), err
 }
 
+// GetSupply returns the current circulating supply as a hex string.
+// It retrieves the current block header from the backend and uses the
+// ethash.CalculateCirculatingSupply function to compute the supply.
+func (s *EthereumAPI) GetSupply(ctx context.Context) (string, error) {
+	header := s.b.CurrentHeader()
+	if header == nil {
+		return "", fmt.Errorf("no current block header available")
+	}
+	// Call the supply calculation function from the ethash package.
+	supply := ethash.CalculateCirculatingSupply(header.Number.Uint64())
+	// Return the supply as a hex string.
+	return fmt.Sprintf("0x%x", supply), nil
+}
+
 type feeHistoryResult struct {
 	OldestBlock  *hexutil.Big     `json:"oldestBlock"`
 	Reward       [][]*hexutil.Big `json:"reward,omitempty"`

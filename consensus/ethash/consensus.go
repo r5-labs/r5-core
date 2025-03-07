@@ -502,7 +502,7 @@ func (r5 *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 //   Super Epoch 7 (Blocks > 128,000,000):        0.03125 R5 per block
 //
 // If the block number is at or beyond supplyCapBlock, the function returns the cap value.
-func calculateCirculatingSupply(blockNum uint64) *big.Int {
+func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 	// 1 R5 is represented as 1e18 wei.
 	weiPerR5 := big.NewInt(1000000000000000000)
 	supply := big.NewInt(0)
