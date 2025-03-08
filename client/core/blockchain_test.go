@@ -44,6 +44,8 @@ var (
 	forkSeed      = 2
 )
 
+var BlockReward = big.NewInt(2000000000000000000) // 2 ETH in wei
+
 // newCanonical creates a chain database, and injects a deterministic canonical
 // chain. Depending on the full flag, if creates either a full block chain or a
 // header only chain. The database and genesis specification for block generation
@@ -3595,7 +3597,7 @@ func TestEIP1559Transition(t *testing.T) {
 	actual := state.GetBalance(block.Coinbase())
 	expected := new(big.Int).Add(
 		new(big.Int).SetUint64(block.GasUsed()*block.Transactions()[0].GasTipCap().Uint64()),
-		ethash.BlockReward,
+		BlockReward,
 	)
 	if actual.Cmp(expected) != 0 {
 		t.Fatalf("miner balance incorrect: expected %d, got %d", expected, actual)
@@ -3635,7 +3637,7 @@ func TestEIP1559Transition(t *testing.T) {
 	actual = state.GetBalance(block.Coinbase())
 	expected = new(big.Int).Add(
 		new(big.Int).SetUint64(block.GasUsed()*effectiveTip),
-		ethash.BlockReward,
+		BlockReward,
 	)
 	if actual.Cmp(expected) != 0 {
 		t.Fatalf("miner balance incorrect: expected %d, got %d", expected, actual)
