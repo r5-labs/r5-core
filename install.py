@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Copyright 2025 R5
 # This file is part of the R5 Core library.
 #
@@ -15,6 +14,8 @@
 # and then installs the Python dependencies (via our consolidated setup.py).
 # Administrative access may be required.
 # Compatible with Windows, Linux, and macOS.
+#
+# Author: ZNX
 
 import sys
 import subprocess

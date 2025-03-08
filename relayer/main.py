@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Copyright 2025 R5
 # This file is part of the R5 Core library.
 #
@@ -10,6 +9,8 @@
 # whether in an action of contract, tort or otherwise, arising
 # from, out of or in connection with the software or the use or
 # other dealings in the software.
+#
+# Author: ZNX
 
 import argparse
 import configparser

@@ -1,6 +1,7 @@
 # General
 /build/*
 /dist/*
+/r5_tools.egg-info/*
 
 # DevTools
 /devtools/*.txt
@@ -8,13 +9,20 @@
 # R5 CLI Wallet
 /cliwallet/settings.r5w
 /cliwallet/r5.key
-/cliwallet/r5wallet.spec
+/cliwallet/cliwallet.spec
 /cliwallet/build/*
 /cliwallet/dist/*
 /cliwallet/r5wallet.egg-info/*
 
+# Proxy
+/proxy/proxy.ini
+/proxy/proxy.spec
+/proxy/build/*
+/proxy/dist/*
+/proxy/cert*
+
 # Relayer
-/relayer/r5-relayer.spec
+/relayer/relayer.spec
 /relayer/node.ini
 /relayer/build/*
 /relayer/dist/*
