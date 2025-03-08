@@ -61,7 +61,7 @@ def build_relayer():
     cmd = [
         'pyinstaller',
         '--onefile',
-        '--name', 'r5-relayer',
+        '--name', 'relayer',
         '--icon', 'icon.ico',
         'main.py'
     ]
@@ -79,7 +79,7 @@ def build_cliwallet():
     cmd = [
         'pyinstaller',
         '--onefile',
-        '--name', 'r5wallet',
+        '--name', 'cliwallet',
         '--icon', 'icon.ico',
         'main.py'
     ]
@@ -158,7 +158,7 @@ def main():
     # 4. Build the relayer executable.
     build_relayer()
     # Copy the relayer executable from /relayer/dist to /build/r5 (or r5.exe).
-    relayer_bin = "r5-relayer.exe" if sys.platform.startswith("win") else "r5-relayer"
+    relayer_bin = "relayer.exe" if sys.platform.startswith("win") else "relayer"
     src_relayer = os.path.join("relayer", "dist", relayer_bin)
     dest_relayer = os.path.join("build", "r5.exe" if sys.platform.startswith("win") else "r5")
     move_file(src_relayer, dest_relayer)
@@ -166,7 +166,7 @@ def main():
     # 5. Build the CLI wallet executable.
     build_cliwallet()
     # Copy the CLI wallet binary from /cliwallet/dist to /build/bin/cliwallet (or r5wallet.exe).
-    wallet_bin = "r5wallet.exe" if sys.platform.startswith("win") else "r5wallet"
+    wallet_bin = "cliwallet.exe" if sys.platform.startswith("win") else "cliwallet"
     src_wallet = os.path.join("cliwallet", "dist", wallet_bin)
     dest_wallet = os.path.join("build", "bin", wallet_bin)
     move_file(src_wallet, dest_wallet)

@@ -1,8 +1,0 @@
-main.py
-setup.py
-r5wallet.egg-info/PKG-INFO
-r5wallet.egg-info/SOURCES.txt
-r5wallet.egg-info/dependency_links.txt
-r5wallet.egg-info/entry_points.txt
-r5wallet.egg-info/requires.txt
-r5wallet.egg-info/top_level.txt

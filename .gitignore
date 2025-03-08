@@ -6,7 +6,8 @@
 /devtools/*.txt
 
 # R5 CLI Wallet
-/cliewallet/r5.key
+/cliwallet/settings.r5w
+/cliwallet/r5.key
 /cliwallet/r5wallet.spec
 /cliwallet/build/*
 /cliwallet/dist/*

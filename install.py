@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2025 R5
 # This file is part of the R5 Core library.
 #
@@ -10,9 +11,10 @@
 # from, out of or in connection with the software or the use or
 # other dealings in the software.
 #
-# This script installs the necessary dependencies to build R5, such as GCC and Golang 1.19.
-# Administrative access is required to run this script.
-# This script is compatible with Windows, Linux, and macOS.
+# This script installs the necessary system dependencies (e.g. GCC, Golang 1.19)
+# and then installs the Python dependencies (via our consolidated setup.py).
+# Administrative access may be required.
+# Compatible with Windows, Linux, and macOS.
 
 import sys
 import subprocess
@@ -34,7 +36,7 @@ def install_homebrew():
 
 def install_chocolatey():
     print("Installing Chocolatey...")
-    # Run the Chocolatey install command in PowerShell
+    # Run the Chocolatey install command in PowerShell.
     return run_command(
         ['powershell', 'Set-ExecutionPolicy', 'Bypass', '-Scope', 'Process', '-Force',
          ';', 'iwr', 'https://chocolatey.org/install.ps1', '-UseBasicParsing', '|', 'iex'],
@@ -43,14 +45,14 @@ def install_chocolatey():
 
 def check_or_install_package_manager():
     if sys.platform.startswith('darwin'):
-        # Check if Homebrew is installed
+        # Check if Homebrew is installed.
         if not run_command(['which', 'brew']):
             if not install_homebrew():
                 print("Failed to install Homebrew.")
                 sys.exit(1)
         return 'brew'
     elif sys.platform.startswith('win'):
-        # Check if Chocolatey is installed
+        # Check if Chocolatey is installed.
         if not run_command(['choco', '--version']):
             if not install_chocolatey():
                 print("Failed to install Chocolatey.")
@@ -89,7 +91,7 @@ def install_package(package, installer):
         print(f"Failed to install {package}. Please check your installation settings and permissions.")
         sys.exit(1)
 
-def main():
+def install_system_dependencies():
     if sys.platform.startswith('linux'):
         # For Linux, install Go via snap and gcc via apt-get.
         install_package('golang', 'snap')
@@ -107,6 +109,25 @@ def main():
     else:
         print("Unsupported operating system.")
         sys.exit(1)
+
+def install_python_dependencies():
+    """
+    Run pip install . to install the Python dependencies (and create console scripts)
+    from the root setup.py.
+    """
+    print("Installing Python dependencies from setup.py...")
+    try:
+        # Using sys.executable to get the current Python interpreter.
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "."])
+        print("Python dependencies installed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install Python dependencies: {e}")
+        sys.exit(e.returncode)
+
+def main():
+    install_system_dependencies()
+    install_python_dependencies()
+    print("All dependencies installed successfully.")
 
 if __name__ == "__main__":
     main()
