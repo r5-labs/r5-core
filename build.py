@@ -190,8 +190,8 @@ def main():
 
     # 2. Copy /config into /build/config.
     copy_folder("config", os.path.join("build", "config"))
-    # 3. Copy /genesis into /build/json.
-    copy_folder("genesis", os.path.join("build", "json"))
+    # 3. Copy /genesis into /build/genesis.
+    copy_folder("genesis", os.path.join("build", "genesis"))
 
     # 4. Build the relayer executable.
     build_relayer()

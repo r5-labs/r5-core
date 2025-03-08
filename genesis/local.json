@@ -2,5 +2,6 @@
     "config": {
         "chainId": 13512
     },
+    "gasLimit": "147000000",
     "difficulty": "1"
 }

@@ -114,8 +114,7 @@ def load_ini_config(args):
         args.config_override = config_val
     else:
         args.config_override = None
-    # genesis: new processing – if not "default", use provided genesis path;
-    # otherwise, for non-mainnet networks, later we auto-select genesis file.
+    # genesis:
     genesis_val = config.get(section, "genesis", fallback="default")
     if genesis_val.lower() != "default":
         args.genesis = genesis_val
@@ -136,15 +135,7 @@ def build_command(args):
         config_file = os.path.join("config", f"{args.network}.config")
     cmd.extend(["-config", config_file])
     
-    # Add genesis flag if applicable.
-    if args.genesis:
-        genesis_file = args.genesis
-    elif args.network != "mainnet":
-        genesis_file = os.path.join("genesis", f"{args.network}.json")
-    else:
-        genesis_file = None
-    if genesis_file:
-        cmd.extend(["-genesis", genesis_file])
+    # Do not pass a -genesis flag here since genesis is already initialized via init.
     
     if args.rpc:
         rpc_flags = [
@@ -226,6 +217,67 @@ def build_console_command():
     """Build the command to run the R5 console."""
     return [get_console_binary()]
 
+def get_datadir_from_config(config_file):
+    """
+    Attempt to extract the datadir from the provided config file.
+    If the file contains a TOML [Node] section, look for a line starting with "DataDir".
+    Otherwise, fall back to scanning for "--datadir" (not expected in a TOML file).
+    """
+    try:
+        with open(config_file, "r") as f:
+            content = f.read()
+        if "[Node]" in content:
+            for line in content.splitlines():
+                if line.strip().startswith("DataDir"):
+                    # For example, line: DataDir = "blockchain_testnet"
+                    parts = line.split("=")
+                    if len(parts) >= 2:
+                        return parts[1].strip().strip('"')
+            return None
+        else:
+            tokens = content.split()
+            if "--datadir" in tokens:
+                idx = tokens.index("--datadir")
+                if idx < len(tokens) - 1:
+                    return tokens[idx+1]
+    except Exception as e:
+        print("Warning: Failed to extract datadir from config file:", e)
+    return None
+
+def init_genesis(args):
+    """
+    If the selected network is not mainnet, run genesis initialization using the appropriate genesis file.
+    We now import the datadir setting from the config file so that the genesis is initialized
+    in the correct data directory.
+    """
+    # Determine the genesis file path.
+    if args.genesis:
+        genesis_file = args.genesis
+    else:
+        genesis_file = os.path.abspath(os.path.join("genesis", f"{args.network}.json"))
+    print(f"Initializing genesis for network '{args.network}' using {genesis_file}...")
+    
+    # Determine the config file to use.
+    if args.config_override:
+        config_file = args.config_override
+    else:
+        config_file = os.path.join("config", f"{args.network}.config")
+    
+    datadir = get_datadir_from_config(config_file)
+    if datadir:
+        # Place the --datadir flag before "init"
+        init_cmd = [get_node_binary(), "--datadir", datadir, "init", genesis_file]
+    else:
+        print("Warning: datadir not found in config file; using default datadir.")
+        init_cmd = [get_node_binary(), "init", genesis_file]
+    
+    try:
+        subprocess.run(init_cmd, check=True)
+        print("Genesis initialization completed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error initializing genesis: {e}")
+        sys.exit(1)
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="R5 Node Relayer - Simplified entry point for starting an R5 node"
@@ -260,7 +312,6 @@ def parse_args():
     parser.set_defaults(config_override=None)
     args = parser.parse_args()
 
-    # Check for advanced flags (including --jsconsole) used alone.
     advanced_flags = []
     if args.jsconsole:
         advanced_flags.append("--jsconsole")
@@ -347,6 +398,10 @@ def main():
             print(f"Error: R5 console failed to start: {e}")
             sys.exit(1)
         sys.exit(0)
+    
+    # For non-mainnet networks, initialize genesis if needed.
+    if args.network != "mainnet":
+        init_genesis(args)
     
     cmd = build_command(args)
     try:

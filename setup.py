@@ -13,7 +13,7 @@
 #
 # Author: ZNX
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages # type: ignore
 
 setup(
     name='r5-tools',

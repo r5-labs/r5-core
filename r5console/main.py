@@ -23,9 +23,24 @@ Type "exit" to quit.
 
 import argparse
 import json
-import requests
+import requests  # type: ignore
 import shlex
 import os
+
+# Setup command history via readline (if available)
+HISTORY_FILE = "history.log"
+HISTORY_LIMIT = 100
+
+try:
+    import readline
+    if os.path.exists(HISTORY_FILE):
+        try:
+            readline.read_history_file(HISTORY_FILE)
+        except Exception as e:
+            print("Warning: Could not load history file:", e)
+    readline.set_history_length(HISTORY_LIMIT)
+except ImportError:
+    readline = None
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -72,10 +87,14 @@ def main():
     print("Connected to RPC URL:", args.rpcurl)
     print("-" * 95)
     print("Enter your JSON‑RPC command in one of two formats:")
+    print("")
     print("  1. Full JSON queries:")
     print("     (e.g.: {\"jsonrpc\": \"2.0\", \"method\": \"r5_getBalance\", \"params\": [\"0x123...\"], \"id\": 1})")
     print("  2. Simplified queries:")
     print("     Method followed by parameters (e.g.: r5_getBalance 0x123... latest [--trydec])")
+    print("")
+    print("You can add the token --trydec to the end of your simplified query to try to convert HEX to DEC")
+    print("in the response. This is a \"best effort\" approach, and won't work with complex responses.")
     print("-" * 95)
     print("Type 'exit' to quit or 'clear' to clear the screen.\n")
     
@@ -99,8 +118,12 @@ def main():
             else:
                 os.system("clear")
             continue
-        
-        # Flag to indicate whether to try to convert hex to decimal.
+
+        # Add non-empty command to history if readline is available.
+        if readline:
+            readline.add_history(line)
+            
+         # Flag to indicate whether to try to convert hex to decimal.
         try_dec = False
         
         # Try to interpret the line as JSON.
@@ -140,7 +163,7 @@ def main():
             except Exception as e:
                 print("Error parsing command:", e)
                 continue
-        
+            
         # Send the JSON-RPC request.
         try:
             response = requests.post(args.rpcurl, json=request_obj)
@@ -159,6 +182,13 @@ def main():
                 print(response.text)
         except Exception as e:
             print("Error sending request:", e)
+    
+    # On exit, if readline is available, write history to file.
+    if readline:
+        try:
+            readline.write_history_file(HISTORY_FILE)
+        except Exception as e:
+            print("Warning: Could not save command history:", e)
 
 if __name__ == "__main__":
     main()
