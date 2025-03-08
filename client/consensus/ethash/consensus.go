@@ -36,11 +36,6 @@ import (
 // Constants used for supply and reward calculations
 //
 const (
-	// preminedSupply is the amount of R5 pre-allocated (in wei).
-	// 2,000,000 R5 * 1e18 wei per R5.
-	// This constant is too large to be represented as an int64.
-	preminedSupply = 2000000 * 1000000000000000000
-
 	// supplyCapBlock is the block height at which the total block reward emission is capped.
 	// Original total supply target: 66,337,700 R5.
 	// With 2,000,000 premined, block rewards total 64,337,700 R5.

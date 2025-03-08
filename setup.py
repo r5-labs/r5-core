@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2025 R5
 # This file is part of the R5 Core library.
 #

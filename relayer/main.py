@@ -19,14 +19,14 @@ import sys
 import subprocess
 
 DEFAULT_INI = """[R5 Node Relayer]
-network=mainnet
-rpc=false
-mode=default
-miner=default
-miner.coinbase=default
-miner.threads=default
-genesis=default
-config=default
+network = mainnet
+rpc = false
+mode = default
+miner = default
+miner_coinbase = default
+miner_threads = default
+genesis = default
+config = default
 """
 
 def get_node_binary():
@@ -43,6 +43,30 @@ def get_jsconsole_ipc():
         return r"\\.\pipe\r5"
     else:
         return "r5.ipc"
+
+def get_cliwallet_binary():
+    """Return the full path to the CLI Wallet binary, adjusted for OS."""
+    bin_dir = "bin"
+    if os.name == "nt":
+        return os.path.join(bin_dir, "cliwallet.exe")
+    else:
+        return os.path.join(bin_dir, "cliwallet")
+
+def get_proxy_binary():
+    """Return the full path to the Proxy binary, adjusted for OS."""
+    bin_dir = "bin"
+    if os.name == "nt":
+        return os.path.join(bin_dir, "proxy.exe")
+    else:
+        return os.path.join(bin_dir, "proxy")
+
+def get_console_binary():
+    """Return the full path to the R5 console binary, adjusted for OS."""
+    bin_dir = "bin"
+    if os.name == "nt":
+        return os.path.join(bin_dir, "console.exe")
+    else:
+        return os.path.join(bin_dir, "console")
 
 def load_ini_config(args):
     """
@@ -75,47 +99,36 @@ def load_ini_config(args):
         args.mode = mode_val.lower()
     # miner:
     miner_val = config.get(section, "miner", fallback="default")
-    # If miner is "true" (or "yes"), then we want to enable mining. Otherwise leave as None.
     if miner_val.lower() == "true":
-        # In our argparse, miner is a list if provided.
         miner_list = []
-        coinbase_val = config.get(section, "miner.coinbase", fallback="default")
+        coinbase_val = config.get(section, "miner_coinbase", fallback="default")
         if coinbase_val.lower() != "default":
             miner_list.append(f"coinbase={coinbase_val}")
-        # If coinbase is default, we leave it unset (so our code will default to burning)
-        threads_val = config.get(section, "miner.threads", fallback="default")
+        threads_val = config.get(section, "miner_threads", fallback="default")
         if threads_val.lower() != "default":
             miner_list.append(f"threads={threads_val}")
-        # If miner_list is empty, we still want to signal mining enabled
         args.miner = miner_list if miner_list else []
-    # Else if miner is "false" or "default", we leave args.miner as None.
-    
     # For the config file override:
     config_val = config.get(section, "config", fallback="default")
     if config_val.lower() != "default":
-        args.config_override = config_val  # add a new attribute for later use
+        args.config_override = config_val
     else:
         args.config_override = None
 
-    # The genesis field we do not use here since for mainnet we ignore it.
-    # (You could add additional logic here if your node binary supported a genesis flag.)
     return args
 
 def build_command(args):
     """
     Build the command to start the node binary based on provided flags.
-    All networks (even mainnet) now supply a config file.
     """
     cmd = [get_node_binary()]
     
-    # Use config_override if provided; otherwise use default config file based on network.
     if args.config_override:
         config_file = args.config_override
     else:
         config_file = os.path.join("config", f"{args.network}.config")
     cmd.extend(["-config", config_file])
     
-    # Append RPC flags if requested.
     if args.rpc:
         rpc_flags = [
             "--rpc.allow-unprotected-txs",
@@ -135,7 +148,6 @@ def build_command(args):
         ]
         cmd.extend(rpc_flags)
     
-    # Append sync mode flags.
     if args.mode == "archive":
         mode_flags = [
             "--syncmode", "full",
@@ -145,17 +157,14 @@ def build_command(args):
         ]
     elif args.mode == "light":
         mode_flags = ["--syncmode", "light"]
-    else:  # full (or default)
+    else:
         mode_flags = ["--syncmode", "full"]
     cmd.extend(mode_flags)
     
-    # Append miner flags if provided.
     if args.miner is not None:
-        # Enable mining with --mine (note: node binary expects --mine, not --miner)
         cmd.append("--mine")
         coinbase = None
         threads = None
-        # Look through the list for parameters like coinbase=... and threads=...
         for param in args.miner:
             if param.startswith("coinbase="):
                 coinbase = param.split("=", 1)[1]
@@ -173,6 +182,32 @@ def build_command(args):
 def build_jsconsole_command():
     """Build the command for attaching to the JS console via IPC."""
     return [get_node_binary(), "attach", get_jsconsole_ipc()]
+
+def build_bypass_command(args):
+    """
+    Build a command for bypass mode.
+    All arguments following --bypass are passed directly to the node binary.
+    """
+    cmd = [get_node_binary()] + args.bypass
+    return cmd
+
+def build_cliwallet_command():
+    """Build the command to run the CLI Wallet."""
+    return [get_cliwallet_binary()]
+
+def build_proxy_command(args):
+    """
+    Build the command to run the proxy.
+    If the optional argument for --proxy is 'gencert', add the --gencert flag.
+    """
+    cmd = [get_proxy_binary()]
+    if args.proxy and args.proxy.lower() == "gencert":
+        cmd.append("--gencert")
+    return cmd
+
+def build_console_command():
+    """Build the command to run the R5 console."""
+    return [get_console_binary()]
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -195,32 +230,42 @@ def parse_args():
     parser.add_argument("--jsconsole", action="store_true",
                         help=("Start the JS console by attaching via IPC. "
                               "This flag must be used alone."))
+    # Advanced flags – these must be used alone.
+    parser.add_argument("--bypass", nargs=argparse.REMAINDER,
+                        help="Bypass configuration: pass all remaining arguments directly to the node binary. Must be used alone.")
+    parser.add_argument("--cliwallet", action="store_true",
+                        help="Run the CLI Wallet binary instead of the node binary. Must be used alone.")
+    parser.add_argument("--proxy", nargs="?", const="", default=None,
+                        help="Run the proxy binary instead of the node binary. Optionally specify 'gencert' to generate self-signed certificates. Must be used alone.")
+    parser.add_argument("--r5console", action="store_true",
+                        help="Run the R5 console binary instead of the node binary. Must be used alone.")
+
     # We will later add a hidden attribute for a config override (from the INI file)
     parser.set_defaults(config_override=None)
     args = parser.parse_args()
 
-    # Enforce that if --jsconsole is provided, no other non-default flags are used.
+    # Check for advanced flags (including --jsconsole) used alone.
+    advanced_flags = []
     if args.jsconsole:
-        other_used = []
-        if args.network != "mainnet":
-            other_used.append("--network")
-        if args.rpc:
-            other_used.append("--rpc")
-        if args.mode != "full":
-            other_used.append("--mode")
-        if args.miner is not None:
-            other_used.append("--miner")
-        if other_used:
-            parser.error("--jsconsole must be used alone.")
-    return args
+        advanced_flags.append("--jsconsole")
+    if args.bypass is not None:
+        # Note: nargs=REMAINDER returns an empty list if not used; we consider that as set.
+        if len(args.bypass) > 0:
+            advanced_flags.append("--bypass")
+    if args.cliwallet:
+        advanced_flags.append("--cliwallet")
+    if args.proxy is not None:
+        # args.proxy will be None if not used.
+        advanced_flags.append("--proxy")
+    if args.r5console:
+        advanced_flags.append("--r5console")
+    if len(advanced_flags) > 1:
+        parser.error("Advanced flags (--jsconsole, --bypass, --cliwallet, --proxy, --r5console) must be used alone.")
+    if advanced_flags and (args.network != "mainnet" or args.rpc or args.mode != "full" or args.miner is not None):
+        parser.error("Advanced flags must be used alone; do not combine with --network, --rpc, --mode, or --miner.")
 
-def main():
-    # First, parse command-line arguments.
-    args = parse_args()
-    
-    # If --help or --jsconsole is used, ignore the INI file.
-    if not args.jsconsole and len(sys.argv) == 1:
-        # No flags provided; try to load settings from node.ini.
+    # Only load node.ini settings if no advanced flag is used and no flags are provided.
+    if not (args.jsconsole or args.bypass or args.cliwallet or args.proxy or args.r5console) and len(sys.argv) == 1:
         args = load_ini_config(args)
         print("Loaded settings from node.ini:")
         print(f"  network: {args.network}")
@@ -230,8 +275,12 @@ def main():
             print(f"  miner: {args.miner}")
         if args.config_override:
             print(f"  config file override: {args.config_override}")
+    return args
+
+def main():
+    args = parse_args()
     
-    # If jsconsole is requested, run that command and exit.
+    # Advanced flag handling:
     if args.jsconsole:
         cmd = build_jsconsole_command()
         print("Attaching to JS console with command:")
@@ -243,9 +292,53 @@ def main():
             sys.exit(1)
         sys.exit(0)
     
+    if args.bypass is not None and len(args.bypass) > 0:
+        cmd = build_bypass_command(args)
+        print("Running in bypass mode with command:")
+        print(" ".join(cmd))
+        try:
+            subprocess.run(cmd, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error: Bypass mode failed: {e}")
+            sys.exit(1)
+        sys.exit(0)
+    
+    if args.cliwallet:
+        cmd = build_cliwallet_command()
+        print("Starting CLI Wallet with command:")
+        print(" ".join(cmd))
+        try:
+            subprocess.run(cmd, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error: CLI Wallet failed to start: {e}")
+            sys.exit(1)
+        sys.exit(0)
+    
+    if args.proxy is not None:
+        cmd = build_proxy_command(args)
+        print("Starting Proxy with command:")
+        print(" ".join(cmd))
+        try:
+            subprocess.run(cmd, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error: Proxy failed to start: {e}")
+            sys.exit(1)
+        sys.exit(0)
+    
+    if args.r5console:
+        cmd = build_console_command()
+        print("Starting R5 console with command:")
+        print(" ".join(cmd))
+        try:
+            subprocess.run(cmd, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error: R5 console failed to start: {e}")
+            sys.exit(1)
+        sys.exit(0)
+    
     # Build the command to run the node.
     cmd = build_command(args)
-    # Uncomment for verbose and debugging
+    # Uncomment for verbose debugging:
     # print("Starting R5 node with command:")
     # print(" ".join(cmd))
     try:
