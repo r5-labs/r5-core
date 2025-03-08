@@ -38,6 +38,7 @@ import (
 const (
 	// preminedSupply is the amount of R5 pre-allocated (in wei).
 	// 2,000,000 R5 * 1e18 wei per R5.
+	// This constant is too large to be represented as an int64.
 	preminedSupply = 2000000 * 1000000000000000000
 
 	// supplyCapBlock is the block height at which the total block reward emission is capped.
@@ -583,7 +584,12 @@ func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 
 // preminedSupplyBig returns the premined supply as a *big.Int.
 func preminedSupplyBig() *big.Int {
-	return new(big.Int).SetInt64(preminedSupply)
+	// Use SetString to correctly represent the large premined supply.
+	supply, ok := new(big.Int).SetString("2000000000000000000000000", 10)
+	if !ok {
+		panic("failed to set premined supply")
+	}
+	return supply
 }
 
 //
