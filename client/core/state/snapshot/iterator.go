@@ -17,9 +17,9 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/ethdb"
 )
 
 // Iterator is an iterator to step over all the accounts or the specific

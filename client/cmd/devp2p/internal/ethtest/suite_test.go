@@ -17,11 +17,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/eth"
-	"github.com/r5-codebase/r5-core/eth/ethconfig"
-	"github.com/r5-codebase/r5-core/internal/utesting"
-	"github.com/r5-codebase/r5-core/node"
-	"github.com/r5-codebase/r5-core/p2p"
+	"github.com/r5-labs/r5-core/eth"
+	"github.com/r5-labs/r5-core/eth/ethconfig"
+	"github.com/r5-labs/r5-core/internal/utesting"
+	"github.com/r5-labs/r5-core/node"
+	"github.com/r5-labs/r5-core/p2p"
 )
 
 var (

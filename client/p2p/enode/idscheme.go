@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/p2p/enr"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/p2p/enr"
+	"github.com/r5-labs/r5-core/rlp"
 	"golang.org/x/crypto/sha3"
 )
 

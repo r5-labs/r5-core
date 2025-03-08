@@ -18,7 +18,7 @@ package metrics
 import (
 	syscall "golang.org/x/sys/unix"
 
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // getProcessCPUTime retrieves the process' CPU time since program startup.

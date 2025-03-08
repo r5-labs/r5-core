@@ -17,9 +17,9 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/forkid"
-	"github.com/r5-codebase/r5-core/p2p"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/forkid"
+	"github.com/r5-labs/r5-core/p2p"
 )
 
 const (

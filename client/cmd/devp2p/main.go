@@ -16,9 +16,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-codebase/r5-core/internal/debug"
-	"github.com/r5-codebase/r5-core/internal/flags"
-	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/internal/debug"
+	"github.com/r5-labs/r5-core/internal/flags"
+	"github.com/r5-labs/r5-core/p2p/enode"
 	"github.com/urfave/cli/v2"
 )
 

@@ -20,7 +20,7 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 // RLPTest is the JSON structure of a single RLP test.

@@ -19,8 +19,8 @@
 package rawdb
 
 import (
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/ethdb/pebble"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/ethdb/pebble"
 )
 
 // Pebble is unsuported on 32bit architecture

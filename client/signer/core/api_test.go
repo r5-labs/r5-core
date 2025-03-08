@@ -22,17 +22,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/accounts"
-	"github.com/r5-codebase/r5-core/accounts/keystore"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/internal/ethapi"
-	"github.com/r5-codebase/r5-core/rlp"
-	"github.com/r5-codebase/r5-core/signer/core"
-	"github.com/r5-codebase/r5-core/signer/core/apitypes"
-	"github.com/r5-codebase/r5-core/signer/fourbyte"
-	"github.com/r5-codebase/r5-core/signer/storage"
+	"github.com/r5-labs/r5-core/accounts"
+	"github.com/r5-labs/r5-core/accounts/keystore"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/internal/ethapi"
+	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/signer/core"
+	"github.com/r5-labs/r5-core/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/signer/fourbyte"
+	"github.com/r5-labs/r5-core/signer/storage"
 )
 
 // Used for testing

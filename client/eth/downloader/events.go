@@ -12,7 +12,7 @@
 
 package downloader
 
-import "github.com/r5-codebase/r5-core/core/types"
+import "github.com/r5-labs/r5-core/core/types"
 
 type DoneEvent struct {
 	Latest *types.Header

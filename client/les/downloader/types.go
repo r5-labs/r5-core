@@ -15,7 +15,7 @@ package downloader
 import (
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 // peerDropFn is a callback type for dropping a peer detected as malicious.

@@ -22,8 +22,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/rpc"
 	"github.com/golang-jwt/jwt/v4"
 )
 

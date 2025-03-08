@@ -36,7 +36,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 const SizeLimit = 300 // maximum encoded size of a node record in bytes

@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 // FunctionType represents different types of functions a contract might have.

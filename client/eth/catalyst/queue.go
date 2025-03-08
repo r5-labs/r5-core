@@ -15,10 +15,10 @@ package catalyst
 import (
 	"sync"
 
-	"github.com/r5-codebase/r5-core/beacon/engine"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/miner"
+	"github.com/r5-labs/r5-core/beacon/engine"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/miner"
 )
 
 // maxTrackedPayloads is the maximum number of prepared payloads the execution

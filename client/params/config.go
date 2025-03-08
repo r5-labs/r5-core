@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/common"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -470,7 +470,7 @@ func (c *ChainConfig) Description() string {
 	// makes sense for mainnet should be optional at printing to avoid bloating
 	// the output for testnets and private networks.
 	banner += "Welcome to the R5 Protocol!\n"
-	banner += "Github Public Repository: github.com/r5-codebase/r5-core \n"
+	banner += "Github Public Repository: github.com/r5-labs/r5-core \n"
 	return banner
 }
 

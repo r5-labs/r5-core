@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/common"
 )
 
 func hexToNibbles(s string) []byte {

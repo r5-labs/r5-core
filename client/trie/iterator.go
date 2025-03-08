@@ -17,8 +17,8 @@ import (
 	"container/heap"
 	"errors"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 // NodeResolver is used for looking up trie nodes before reaching into the real

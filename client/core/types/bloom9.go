@@ -17,8 +17,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 type bytesBacked interface {

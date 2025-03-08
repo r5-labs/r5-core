@@ -13,8 +13,8 @@
 package eth
 
 import (
-	"github.com/r5-codebase/r5-core/eth/protocols/eth"
-	"github.com/r5-codebase/r5-core/eth/protocols/snap"
+	"github.com/r5-labs/r5-core/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/eth/protocols/snap"
 )
 
 // ethPeerInfo represents a short summary of the `eth` sub-protocol metadata known

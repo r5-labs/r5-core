@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/r5-codebase/r5-core/internal/cmdtest"
+	"github.com/r5-labs/r5-core/internal/cmdtest"
 )
 
 type testEthkey struct {

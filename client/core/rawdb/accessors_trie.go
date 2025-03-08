@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/log"
 	"golang.org/x/crypto/sha3"
 )
 

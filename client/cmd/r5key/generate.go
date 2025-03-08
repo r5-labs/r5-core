@@ -18,9 +18,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/r5-codebase/r5-core/accounts/keystore"
-	"github.com/r5-codebase/r5-core/cmd/utils"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/accounts/keystore"
+	"github.com/r5-labs/r5-core/cmd/utils"
+	"github.com/r5-labs/r5-core/crypto"
 	"github.com/google/uuid"
 	"github.com/urfave/cli/v2"
 )

@@ -18,8 +18,8 @@ import (
 	"math/big"
 	"reflect"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/math"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/math"
 )
 
 // packBytesSlice packs the given bytes as [L, V] as the canonical representation

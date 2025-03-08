@@ -21,11 +21,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/eth/protocols/eth"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // hookedBackfiller is a tester backfiller with all interface methods mocked and

@@ -18,16 +18,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/consensus"
-	"github.com/r5-codebase/r5-core/consensus/beacon"
-	"github.com/r5-codebase/r5-core/consensus/clique"
-	"github.com/r5-codebase/r5-core/consensus/ethash"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/consensus"
+	"github.com/r5-labs/r5-core/consensus/beacon"
+	"github.com/r5-labs/r5-core/consensus/clique"
+	"github.com/r5-labs/r5-core/consensus/ethash"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/params"
 )
 
 // Tests that simple header verification works, for both good and bad blocks.

@@ -18,8 +18,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
 )
 
 func TestRoundtrip(t *testing.T) {

@@ -1,6 +1,6 @@
 package test
 
-import "github.com/r5-codebase/r5-core/rlp"
+import "github.com/r5-labs/r5-core/rlp"
 import "github.com/holiman/uint256"
 import "io"
 

@@ -17,10 +17,10 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/bloombits"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/bloombits"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // Filter can be used to retrieve and filter logs.

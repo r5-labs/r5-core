@@ -15,7 +15,7 @@ package bitutil
 import (
 	"bytes"
 
-	"github.com/r5-codebase/r5-core/common/bitutil"
+	"github.com/r5-labs/r5-core/common/bitutil"
 )
 
 // Fuzz implements a go-fuzz fuzzer method to test various encoding method

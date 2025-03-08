@@ -5,10 +5,10 @@ package logger
 import (
 	"encoding/json"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/core/vm"
 	"github.com/holiman/uint256"
 )
 

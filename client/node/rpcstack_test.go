@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/internal/testlog"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/internal/testlog"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/rpc"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/assert"

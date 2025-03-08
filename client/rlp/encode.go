@@ -19,7 +19,7 @@ import (
 	"math/big"
 	"reflect"
 
-	"github.com/r5-codebase/r5-core/rlp/internal/rlpstruct"
+	"github.com/r5-labs/r5-core/rlp/internal/rlpstruct"
 	"github.com/holiman/uint256"
 )
 

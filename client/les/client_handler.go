@@ -20,16 +20,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/mclock"
-	"github.com/r5-codebase/r5-core/core/forkid"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/eth/protocols/eth"
-	"github.com/r5-codebase/r5-core/les/downloader"
-	"github.com/r5-codebase/r5-core/light"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/core/forkid"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/les/downloader"
+	"github.com/r5-labs/r5-core/light"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/params"
 )
 
 // clientHandler is responsible for receiving and processing all incoming server

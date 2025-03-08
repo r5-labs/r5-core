@@ -13,7 +13,7 @@
 package vm
 
 import (
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/params"
 )
 
 func minSwapStack(n int) int {

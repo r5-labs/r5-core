@@ -26,11 +26,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/r5-codebase/r5-core/event"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/p2p/simulations/adapters"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/event"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/p2p/simulations/adapters"
+	"github.com/r5-labs/r5-core/rpc"
 	"github.com/gorilla/websocket"
 	"github.com/julienschmidt/httprouter"
 )

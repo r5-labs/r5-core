@@ -19,8 +19,8 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
 )
 
 var unmarshalLogTests = map[string]struct {

@@ -28,10 +28,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/p2p/netutil"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/p2p/netutil"
 )
 
 const (

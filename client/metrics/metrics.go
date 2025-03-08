@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // Enabled is checked by the constructor functions for all of the

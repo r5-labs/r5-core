@@ -10,17 +10,17 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/rlp"
-	"github.com/r5-codebase/r5-core/tests"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/tests"
 
 	// Force-load the native, to trigger registration
-	"github.com/r5-codebase/r5-core/eth/tracers"
+	"github.com/r5-labs/r5-core/eth/tracers"
 )
 
 // flatCallTrace is the result of a callTracerParity run.

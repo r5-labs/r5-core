@@ -21,8 +21,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/crypto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

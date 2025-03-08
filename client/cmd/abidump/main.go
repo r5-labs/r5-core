@@ -19,8 +19,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/signer/core/apitypes"
-	"github.com/r5-codebase/r5-core/signer/fourbyte"
+	"github.com/r5-labs/r5-core/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/signer/fourbyte"
 )
 
 func init() {

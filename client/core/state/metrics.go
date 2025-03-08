@@ -12,7 +12,7 @@
 
 package state
 
-import "github.com/r5-codebase/r5-core/metrics"
+import "github.com/r5-labs/r5-core/metrics"
 
 var (
 	accountUpdatedMeter      = metrics.NewRegisteredMeter("state/update/account", nil)

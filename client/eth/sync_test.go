@@ -17,11 +17,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/eth/downloader"
-	"github.com/r5-codebase/r5-core/eth/protocols/eth"
-	"github.com/r5-codebase/r5-core/eth/protocols/snap"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/eth/downloader"
+	"github.com/r5-labs/r5-core/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/eth/protocols/snap"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/p2p/enode"
 )
 
 // Tests that snap sync is disabled after a successful sync cycle.

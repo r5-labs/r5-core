@@ -22,11 +22,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/ethdb/leveldb"
-	"github.com/r5-codebase/r5-core/ethdb/memorydb"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/ethdb/leveldb"
+	"github.com/r5-labs/r5-core/ethdb/memorydb"
+	"github.com/r5-labs/r5-core/log"
 	"github.com/olekukonko/tablewriter"
 )
 

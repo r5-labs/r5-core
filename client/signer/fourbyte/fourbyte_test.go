@@ -17,8 +17,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/accounts/abi"
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/accounts/abi"
+	"github.com/r5-labs/r5-core/common"
 )
 
 // Tests that all the selectors contained in the 4byte database are valid.

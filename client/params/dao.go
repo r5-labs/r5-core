@@ -15,7 +15,7 @@ package params
 import (
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/common"
 )
 
 // DAOForkBlockExtra is the block header extra-data field to set for the DAO fork

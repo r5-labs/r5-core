@@ -16,10 +16,10 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/signer/core/apitypes"
 )
 
 // GnosisSafeTx is a type to parse the safe-tx returned by the relayer,

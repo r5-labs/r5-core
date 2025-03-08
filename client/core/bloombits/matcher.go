@@ -22,8 +22,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common/bitutil"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/common/bitutil"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 // bloomIndexes represents the bit indexes inside the bloom filter that belong

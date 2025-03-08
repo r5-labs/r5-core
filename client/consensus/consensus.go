@@ -16,11 +16,11 @@ package consensus
 import (
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/state"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/params"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // ChainHeaderReader defines a small collection of methods needed to access the local

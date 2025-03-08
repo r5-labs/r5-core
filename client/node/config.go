@@ -20,11 +20,11 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 const (

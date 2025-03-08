@@ -17,7 +17,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // Handler returns a log handler which logs to the unit test log of t.

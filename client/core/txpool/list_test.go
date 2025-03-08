@@ -17,8 +17,8 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 // Tests that transactions can be added to strict lists and list contents and

@@ -20,10 +20,10 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/accounts/abi/bind"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/contracts/checkpointoracle/contract"
-	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-labs/r5-core/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/contracts/checkpointoracle/contract"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 // CheckpointOracle is a Go wrapper around an on-chain checkpoint oracle contract.

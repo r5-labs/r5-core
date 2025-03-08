@@ -19,12 +19,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common/mclock"
-	"github.com/r5-codebase/r5-core/eth/ethconfig"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/les/flowcontrol"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/eth/ethconfig"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/les/flowcontrol"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/metrics"
 )
 
 const makeCostStats = false // make request cost statistics during operation

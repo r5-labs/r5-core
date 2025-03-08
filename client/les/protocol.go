@@ -19,12 +19,12 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	vfc "github.com/r5-codebase/r5-core/les/vflux/client"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	vfc "github.com/r5-labs/r5-core/les/vflux/client"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 // Constants to match up protocol versions and messages

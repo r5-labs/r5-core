@@ -13,8 +13,8 @@
 package engine
 
 import (
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // EngineAPIError is a standardized error message between consensus and execution

@@ -23,13 +23,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/accounts/keystore"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/signer/core"
-	"github.com/r5-codebase/r5-core/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/accounts/keystore"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/signer/core"
+	"github.com/r5-labs/r5-core/signer/core/apitypes"
 )
 
 var typesStandard = apitypes.Types{

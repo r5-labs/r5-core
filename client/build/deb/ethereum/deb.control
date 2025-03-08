@@ -5,8 +5,8 @@ Maintainer: {{.Author}}
 Build-Depends: debhelper (>= 8.0.0), {{.GoBootPackage}}
 Standards-Version: 3.9.5
 Homepage: https://ethereum.org
-Vcs-Git: https://github.com/r5-codebase/r5-core.git
-Vcs-Browser: https://github.com/r5-codebase/r5-core
+Vcs-Git: https://github.com/r5-labs/r5-core.git
+Vcs-Browser: https://github.com/r5-labs/r5-core
 
 Package: {{.Name}}
 Architecture: any

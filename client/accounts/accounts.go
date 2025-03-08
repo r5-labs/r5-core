@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"math/big"
 
-	ethereum "github.com/r5-codebase/r5-core"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/event"
+	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/event"
 	"golang.org/x/crypto/sha3"
 )
 

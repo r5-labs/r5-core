@@ -19,11 +19,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-codebase/r5-core/cmd/utils"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/internal/flags"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/cmd/utils"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/internal/flags"
+	"github.com/r5-labs/r5-core/log"
 	"github.com/gballet/go-verkle"
 	cli "github.com/urfave/cli/v2"
 )

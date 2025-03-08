@@ -16,7 +16,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/ethdb"
 )
 
 func TestTableDatabase(t *testing.T)            { testTableDatabase(t, "prefix") }

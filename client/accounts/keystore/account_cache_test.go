@@ -24,8 +24,8 @@ import (
 
 	"github.com/cespare/cp"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-codebase/r5-core/accounts"
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/accounts"
+	"github.com/r5-labs/r5-core/common"
 )
 
 var (

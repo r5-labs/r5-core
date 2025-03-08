@@ -17,12 +17,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/state"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/eth/tracers"
-	"github.com/r5-codebase/r5-core/light"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/eth/tracers"
+	"github.com/r5-labs/r5-core/light"
 )
 
 // noopReleaser is returned in case there is no operation expected

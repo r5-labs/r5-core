@@ -21,12 +21,12 @@ import (
 	"time"
 
 	"github.com/dop251/goja"
-	"github.com/r5-codebase/r5-core/accounts/scwallet"
-	"github.com/r5-codebase/r5-core/accounts/usbwallet"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/console/prompt"
-	"github.com/r5-codebase/r5-core/internal/jsre"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/accounts/scwallet"
+	"github.com/r5-labs/r5-core/accounts/usbwallet"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/console/prompt"
+	"github.com/r5-labs/r5-core/internal/jsre"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // bridge is a collection of JavaScript utility methods to bride the .js runtime

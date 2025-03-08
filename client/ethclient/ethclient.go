@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"math/big"
 
-	ethereum "github.com/r5-codebase/r5-core"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/rpc"
+	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // Client defines typed wrappers for the Ethereum RPC API.

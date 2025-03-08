@@ -18,11 +18,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/internal/utesting"
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/internal/utesting"
+	"github.com/r5-labs/r5-core/params"
 )
 
 // var faucetAddr = common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7")

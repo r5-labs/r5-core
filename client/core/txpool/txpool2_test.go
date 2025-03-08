@@ -16,12 +16,12 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/state"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/event"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/event"
 )
 
 func pricedValuedTransaction(nonce uint64, value int64, gaslimit uint64, gasprice *big.Int, key *ecdsa.PrivateKey) *types.Transaction {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/metrics"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
 )

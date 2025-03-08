@@ -3,6 +3,11 @@
 /build/*
 
 # Relayer
+/relayer/node.ini
 /relayer/bin/*
 /relayer/json/*
 /relayer/config/*
+/relayer/blockchain/*
+/relayer/blockchain_testnet/*
+/relayer/blockchain_devnet/*
+/relayer/blockchain_local/*

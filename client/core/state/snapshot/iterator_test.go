@@ -21,8 +21,8 @@ import (
 	"testing"
 
 	"github.com/VictoriaMetrics/fastcache"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
 )
 
 // TestAccountIteratorBasics tests some simple single-layer(diff and disk) iteration

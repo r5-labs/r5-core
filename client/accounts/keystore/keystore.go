@@ -28,11 +28,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-codebase/r5-core/accounts"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/event"
+	"github.com/r5-labs/r5-core/accounts"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/event"
 )
 
 var (

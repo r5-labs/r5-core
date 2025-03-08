@@ -15,17 +15,17 @@ package core
 import (
 	"math/big"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/consensus"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/state"
-	"github.com/r5-codebase/r5-core/core/state/snapshot"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/event"
-	"github.com/r5-codebase/r5-core/params"
-	"github.com/r5-codebase/r5-core/rlp"
-	"github.com/r5-codebase/r5-core/trie"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/consensus"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/core/state/snapshot"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/event"
+	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/trie"
 )
 
 // CurrentHeader retrieves the current head header of the canonical chain. The

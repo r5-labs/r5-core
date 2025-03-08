@@ -21,10 +21,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-codebase/r5-core/core/forkid"
-	"github.com/r5-codebase/r5-core/p2p/enr"
-	"github.com/r5-codebase/r5-core/params"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/core/forkid"
+	"github.com/r5-labs/r5-core/p2p/enr"
+	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/rlp"
 	"github.com/urfave/cli/v2"
 )
 

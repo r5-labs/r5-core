@@ -23,8 +23,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 type gethrpc struct {

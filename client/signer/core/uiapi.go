@@ -20,11 +20,11 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/r5-codebase/r5-core/accounts"
-	"github.com/r5-codebase/r5-core/accounts/keystore"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/accounts"
+	"github.com/r5-labs/r5-core/accounts/keystore"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 // SignerUIAPI implements methods Clef provides for a UI to query, in the bidirectional communication

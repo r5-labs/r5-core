@@ -22,10 +22,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/internal/testlog"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/internal/testlog"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // Tests whether remote HTTP servers are correctly notified of new work.

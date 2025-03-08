@@ -22,20 +22,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/consensus"
-	"github.com/r5-codebase/r5-core/consensus/beacon"
-	"github.com/r5-codebase/r5-core/consensus/ethash"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/state"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/eth/tracers/logger"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/params"
-	"github.com/r5-codebase/r5-core/trie"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/consensus"
+	"github.com/r5-labs/r5-core/consensus/beacon"
+	"github.com/r5-labs/r5-core/consensus/ethash"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/eth/tracers/logger"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/trie"
 )
 
 // So we can deterministically seed different blockchains
@@ -1614,7 +1614,7 @@ func TestEIP161AccountRemoval(t *testing.T) {
 // tests that under weird reorg conditions the blockchain and its internal header-
 // chain return the same latest block/header.
 //
-// https://github.com/r5-codebase/r5-core/pull/15941
+// https://github.com/r5-labs/r5-core/pull/15941
 func TestBlockchainHeaderchainReorgConsistency(t *testing.T) {
 	// Generate a canonical chain to act as the main dataset
 	engine := ethash.NewFaker()
@@ -1882,8 +1882,8 @@ func TestInsertReceiptChainRollback(t *testing.T) {
 // overtake the 'canon' chain until after it's passed canon by about 200 blocks.
 //
 // Details at:
-//   - https://github.com/r5-codebase/r5-core/issues/18977
-//   - https://github.com/r5-codebase/r5-core/pull/18988
+//   - https://github.com/r5-labs/r5-core/issues/18977
+//   - https://github.com/r5-labs/r5-core/pull/18988
 func TestLowDiffLongChain(t *testing.T) {
 	// Generate a canonical chain to act as the main dataset
 	engine := ethash.NewFaker()

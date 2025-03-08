@@ -19,11 +19,11 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/ethdb/memorydb"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/ethdb/memorydb"
 )
 
 func TestEmptyIterator(t *testing.T) {

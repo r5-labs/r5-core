@@ -15,7 +15,7 @@ package trie
 import (
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/common"
 )
 
 // leaf represents a trie leaf node

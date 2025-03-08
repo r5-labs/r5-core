@@ -18,7 +18,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/cmd/utils"
+	"github.com/r5-labs/r5-core/cmd/utils"
 	"github.com/urfave/cli/v2"
 )
 

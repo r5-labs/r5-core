@@ -15,9 +15,9 @@ package core
 import (
 	"sync/atomic"
 
-	"github.com/r5-codebase/r5-core/core/state"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/vm"
 )
 
 // Validator is an interface which defines the standard for block validation. It

@@ -18,11 +18,11 @@ import (
 	"math/big"
 	"sync/atomic"
 
-	"github.com/r5-codebase/r5-core/accounts/abi"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/eth/tracers"
+	"github.com/r5-labs/r5-core/accounts/abi"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/eth/tracers"
 )
 
 //go:generate go run github.com/fjl/gencodec -type callFrame -field-override callFrameMarshaling -out gen_callframe_json.go

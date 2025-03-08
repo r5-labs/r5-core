@@ -15,10 +15,10 @@ package keystore
 import (
 	"math/big"
 
-	"github.com/r5-codebase/r5-core"
-	"github.com/r5-codebase/r5-core/accounts"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core/accounts"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 // keystoreWallet implements the accounts.Wallet interface for the original

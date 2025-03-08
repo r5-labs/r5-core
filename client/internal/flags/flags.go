@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/common/math"
+	"github.com/r5-labs/r5-core/common/math"
 	"github.com/urfave/cli/v2"
 )
 

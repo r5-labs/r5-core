@@ -18,13 +18,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/bitutil"
-	"github.com/r5-codebase/r5-core/core/bloombits"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/node"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/bitutil"
+	"github.com/r5-labs/r5-core/core/bloombits"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/node"
 )
 
 func BenchmarkBloomBits512(b *testing.B) {

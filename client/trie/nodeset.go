@@ -18,7 +18,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/common"
 )
 
 // memoryNode is all the information we know about a single cached trie node

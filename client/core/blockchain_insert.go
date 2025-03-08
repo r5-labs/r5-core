@@ -15,10 +15,10 @@ package core
 import (
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/mclock"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // insertStats tracks and reports on block insertion.

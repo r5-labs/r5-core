@@ -17,10 +17,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/prque"
-	"github.com/r5-codebase/r5-core/eth/protocols/eth"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/prque"
+	"github.com/r5-labs/r5-core/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // timeoutGracePeriod is the amount of time to allow for a peer to deliver a

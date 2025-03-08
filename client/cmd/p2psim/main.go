@@ -40,13 +40,13 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/internal/flags"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/p2p/simulations"
-	"github.com/r5-codebase/r5-core/p2p/simulations/adapters"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/internal/flags"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/p2p/simulations"
+	"github.com/r5-labs/r5-core/p2p/simulations/adapters"
+	"github.com/r5-labs/r5-core/rpc"
 	"github.com/urfave/cli/v2"
 )
 

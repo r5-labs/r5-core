@@ -20,7 +20,7 @@ import (
 	"time"
 
 	mapset "github.com/deckarep/golang-set/v2"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // fileCache is a cache of files seen during scan of keystore.

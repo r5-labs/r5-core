@@ -24,7 +24,7 @@ import (
 	"testing/quick"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-labs/r5-core/metrics"
 	"github.com/stretchr/testify/require"
 )
 

@@ -16,9 +16,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/state/snapshot"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/state/snapshot"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 // Constants to match up protocol versions and messages

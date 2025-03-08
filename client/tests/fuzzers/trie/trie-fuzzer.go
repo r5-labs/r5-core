@@ -17,8 +17,8 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/trie"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/trie"
 )
 
 // randTest performs random trie operations.

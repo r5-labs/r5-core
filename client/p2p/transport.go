@@ -21,11 +21,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/bitutil"
-	"github.com/r5-codebase/r5-core/metrics"
-	"github.com/r5-codebase/r5-core/p2p/rlpx"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/bitutil"
+	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/p2p/rlpx"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 const (

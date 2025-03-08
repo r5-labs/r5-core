@@ -17,7 +17,7 @@ import (
 	"math/big"
 	"sort"
 
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/params"
 )
 
 func u64(val uint64) *uint64 { return &val }

@@ -16,8 +16,8 @@ import (
 	"context"
 	"net"
 
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p/netutil"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p/netutil"
 )
 
 // ServeListener accepts connections on l, serving JSON-RPC on them.

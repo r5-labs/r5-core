@@ -25,9 +25,9 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/rlp"
 	"golang.org/x/crypto/sha3"
 )
 

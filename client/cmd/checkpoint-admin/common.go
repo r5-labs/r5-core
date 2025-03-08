@@ -15,15 +15,15 @@ package main
 import (
 	"strconv"
 
-	"github.com/r5-codebase/r5-core/accounts"
-	"github.com/r5-codebase/r5-core/accounts/abi/bind"
-	"github.com/r5-codebase/r5-core/accounts/external"
-	"github.com/r5-codebase/r5-core/cmd/utils"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/contracts/checkpointoracle"
-	"github.com/r5-codebase/r5-core/ethclient"
-	"github.com/r5-codebase/r5-core/params"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/accounts"
+	"github.com/r5-labs/r5-core/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/accounts/external"
+	"github.com/r5-labs/r5-core/cmd/utils"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/contracts/checkpointoracle"
+	"github.com/r5-labs/r5-core/ethclient"
+	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/rpc"
 	"github.com/urfave/cli/v2"
 )
 

@@ -18,8 +18,8 @@ import (
 	"strings"
 
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p/dnsdisc"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p/dnsdisc"
 	"github.com/urfave/cli/v2"
 )
 

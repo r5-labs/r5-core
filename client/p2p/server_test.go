@@ -23,12 +23,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/internal/testlog"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/p2p/enr"
-	"github.com/r5-codebase/r5-core/p2p/rlpx"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/internal/testlog"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/p2p/enr"
+	"github.com/r5-labs/r5-core/p2p/rlpx"
 )
 
 type testTransport struct {

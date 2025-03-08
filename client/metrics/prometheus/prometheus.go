@@ -18,8 +18,8 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/metrics"
 )
 
 // Handler returns an HTTP handler which dump metrics in Prometheus format.

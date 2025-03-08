@@ -20,12 +20,12 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/accounts/abi/bind"
-	"github.com/r5-codebase/r5-core/cmd/utils"
-	"github.com/r5-codebase/r5-core/common/compiler"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/internal/flags"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/cmd/utils"
+	"github.com/r5-labs/r5-core/common/compiler"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/internal/flags"
+	"github.com/r5-labs/r5-core/log"
 	"github.com/urfave/cli/v2"
 )
 

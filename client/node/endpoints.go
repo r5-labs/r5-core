@@ -17,8 +17,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // StartHTTPEndpoint starts the HTTP RPC endpoint.

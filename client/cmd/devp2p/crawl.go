@@ -17,8 +17,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p/enode"
 )
 
 type crawler struct {

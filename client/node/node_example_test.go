@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/r5-codebase/r5-core/node"
+	"github.com/r5-labs/r5-core/node"
 )
 
 // SampleLifecycle is a trivial network service that can be attached to a node for

@@ -17,8 +17,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/r5-codebase/r5-core/les/utils"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/les/utils"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 const (

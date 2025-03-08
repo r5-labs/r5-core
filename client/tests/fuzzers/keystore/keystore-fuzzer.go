@@ -15,7 +15,7 @@ package keystore
 import (
 	"os"
 
-	"github.com/r5-codebase/r5-core/accounts/keystore"
+	"github.com/r5-labs/r5-core/accounts/keystore"
 )
 
 func Fuzz(input []byte) int {

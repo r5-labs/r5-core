@@ -17,13 +17,13 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/beacon/engine"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/les"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/node"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/beacon/engine"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/les"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/node"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // Register adds catalyst APIs to the light client.

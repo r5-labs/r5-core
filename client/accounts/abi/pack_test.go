@@ -23,7 +23,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-labs/r5-core/common"
 )
 
 // TestPack tests the general pack/unpack tests in packing_test.go

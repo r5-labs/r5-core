@@ -15,7 +15,7 @@ package miner
 import (
 	"testing"
 
-	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 // noopChainRetriever is an implementation of headerRetriever that always

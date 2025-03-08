@@ -18,13 +18,13 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/consensus/ethash"
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/consensus/ethash"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/params"
 )
 
 // So we can deterministically seed different blockchains

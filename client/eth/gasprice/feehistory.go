@@ -22,11 +22,11 @@ import (
 	"sort"
 	"sync/atomic"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/consensus/misc"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/consensus/misc"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 var (

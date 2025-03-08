@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/common/mclock"
-	vfs "github.com/r5-codebase/r5-core/les/vflux/server"
-	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common/mclock"
+	vfs "github.com/r5-labs/r5-core/les/vflux/server"
+	"github.com/r5-labs/r5-core/p2p/enode"
 )
 
 var (

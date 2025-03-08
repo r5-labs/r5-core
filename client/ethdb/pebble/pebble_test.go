@@ -19,8 +19,8 @@ import (
 
 	"github.com/cockroachdb/pebble"
 	"github.com/cockroachdb/pebble/vfs"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/ethdb/dbtest"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/ethdb/dbtest"
 )
 
 func TestPebbleDB(t *testing.T) {

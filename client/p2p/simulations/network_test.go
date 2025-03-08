@@ -23,10 +23,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/node"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/p2p/simulations/adapters"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/node"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/p2p/simulations/adapters"
 )
 
 // Tests that a created snapshot with a minimal service only contains the expected connections

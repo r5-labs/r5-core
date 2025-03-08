@@ -20,7 +20,7 @@ import (
 	"os"
 	"runtime/trace"
 
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // StartGoTrace turns on tracing, writing to the given file.

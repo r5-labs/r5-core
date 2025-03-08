@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 // The values in those tests are from the Transaction Tests

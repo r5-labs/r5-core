@@ -17,7 +17,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 // resultStore implements a structure for maintaining fetchResults, tracking their

@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 // TestExport does basic sanity checks on the export/import functionality

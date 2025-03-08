@@ -22,12 +22,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/prque"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/metrics"
-	"github.com/r5-codebase/r5-core/trie"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/prque"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/trie"
 )
 
 const (

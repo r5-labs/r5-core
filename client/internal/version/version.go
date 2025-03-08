@@ -19,10 +19,10 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/params"
 )
 
-const ourPath = "github.com/r5-codebase/r5-core" // Path to our module
+const ourPath = "github.com/r5-labs/r5-core" // Path to our module
 
 // These variables are set at build-time by the linker when the build is
 // done by build/ci.go.

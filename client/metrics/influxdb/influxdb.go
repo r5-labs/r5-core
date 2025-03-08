@@ -3,7 +3,7 @@ package influxdb
 import (
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-labs/r5-core/metrics"
 )
 
 func readMeter(namespace, name string, i interface{}) (string, map[string]interface{}) {

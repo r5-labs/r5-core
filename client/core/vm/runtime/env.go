@@ -13,8 +13,8 @@
 package runtime
 
 import (
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/vm"
 )
 
 func NewEnv(cfg *Config) *vm.EVM {

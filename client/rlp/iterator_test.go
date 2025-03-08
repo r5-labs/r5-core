@@ -15,7 +15,7 @@ package rlp
 import (
 	"testing"
 
-	"github.com/r5-codebase/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common/hexutil"
 )
 
 // TestIterator tests some basic things about the ListIterator. A more

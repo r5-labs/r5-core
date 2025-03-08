@@ -16,7 +16,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/r5-codebase/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/common/hexutil"
 )
 
 type MyType [5]byte

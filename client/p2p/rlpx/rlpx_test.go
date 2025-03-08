@@ -25,10 +25,10 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/crypto/ecies"
-	"github.com/r5-codebase/r5-core/p2p/simulations/pipes"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/crypto/ecies"
+	"github.com/r5-labs/r5-core/p2p/simulations/pipes"
+	"github.com/r5-labs/r5-core/rlp"
 	"github.com/stretchr/testify/assert"
 )
 

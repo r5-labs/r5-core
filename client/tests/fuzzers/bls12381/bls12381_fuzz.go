@@ -26,8 +26,8 @@ import (
 	gnark "github.com/consensys/gnark-crypto/ecc/bls12-381"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fp"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/crypto/bls12381"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/crypto/bls12381"
 	blst "github.com/supranational/blst/bindings/go"
 )
 

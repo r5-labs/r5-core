@@ -18,12 +18,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/accounts/abi/bind"
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/light"
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/light"
+	"github.com/r5-labs/r5-core/params"
 )
 
 // Test light syncing which will download all headers from genesis.
@@ -192,7 +192,7 @@ func testMissOracleBackend(t *testing.T, hasCheckpoint bool, protocol int) {
 	// that user wants to unlock something which blocks the oracle backend
 	// initialisation. But at the same time syncing starts.
 	//
-	// See https://github.com/r5-codebase/r5-core/issues/20097 for more detail.
+	// See https://github.com/r5-labscore/issues/20097 for more detail.
 	//
 	// In this case, client should run light sync or legacy checkpoint sync
 	// if hardcoded checkpoint is configured.

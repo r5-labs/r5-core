@@ -21,13 +21,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/forkid"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/forkid"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/params"
 )
 
 type testServerPeerSub struct {

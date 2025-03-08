@@ -18,11 +18,11 @@ import (
 	"sort"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common/mclock"
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/txpool"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/light"
+	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/txpool"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/light"
 )
 
 // LesOdr implements light.OdrBackend

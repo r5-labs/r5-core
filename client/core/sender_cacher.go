@@ -15,7 +15,7 @@ package core
 import (
 	"runtime"
 
-	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 // SenderCacher is a concurrent transaction sender recoverer and cacher.

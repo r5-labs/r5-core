@@ -20,9 +20,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/p2p/enode"
 )
 
 func TestULCAnnounceThresholdLes2(t *testing.T) { testULCAnnounceThreshold(t, 2) }

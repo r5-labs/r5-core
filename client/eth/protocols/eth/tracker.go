@@ -15,7 +15,7 @@ package eth
 import (
 	"time"
 
-	"github.com/r5-codebase/r5-core/p2p/tracker"
+	"github.com/r5-labs/r5-core/p2p/tracker"
 )
 
 // requestTracker is a singleton tracker for eth/66 and newer request times.

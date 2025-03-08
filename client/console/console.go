@@ -25,16 +25,16 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/r5-codebase/r5-core/internal/jsre/deps"
+	"github.com/r5-labs/r5-core/internal/jsre/deps"
 
 	"github.com/dop251/goja"
 	"github.com/mattn/go-colorable"
 	"github.com/peterh/liner"
-	"github.com/r5-codebase/r5-core/console/prompt"
-	"github.com/r5-codebase/r5-core/internal/jsre"
-	"github.com/r5-codebase/r5-core/internal/web3ext"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/console/prompt"
+	"github.com/r5-labs/r5-core/internal/jsre"
+	"github.com/r5-labs/r5-core/internal/web3ext"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 var (

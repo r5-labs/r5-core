@@ -31,11 +31,11 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/node"
-	"github.com/r5-codebase/r5-core/p2p"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/rpc"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/node"
+	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/rpc"
 	"github.com/gorilla/websocket"
 )
 

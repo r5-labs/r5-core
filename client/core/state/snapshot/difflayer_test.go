@@ -19,9 +19,9 @@ import (
 	"testing"
 
 	"github.com/VictoriaMetrics/fastcache"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/ethdb/memorydb"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/ethdb/memorydb"
 )
 
 func copyDestructs(destructs map[common.Hash]struct{}) map[common.Hash]struct{} {

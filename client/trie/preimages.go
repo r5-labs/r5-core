@@ -15,9 +15,9 @@ package trie
 import (
 	"sync"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/core/rawdb"
-	"github.com/r5-codebase/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/ethdb"
 )
 
 // preimageStore is the store for caching preimages of node key.

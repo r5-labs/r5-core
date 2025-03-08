@@ -20,14 +20,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-codebase/r5-core"
-	"github.com/r5-codebase/r5-core/accounts/abi"
-	"github.com/r5-codebase/r5-core/accounts/abi/bind"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core/accounts/abi"
+	"github.com/r5-labs/r5-core/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/rlp"
 	"github.com/stretchr/testify/assert"
 )
 

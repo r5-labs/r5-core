@@ -23,10 +23,10 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/p2p/enode"
-	"github.com/r5-codebase/r5-core/p2p/enr"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/p2p/enr"
 )
 
 var nullNode *enode.Node

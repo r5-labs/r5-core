@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-codebase/r5-core/cmd/evm/internal/compiler"
+	"github.com/r5-labs/r5-core/cmd/evm/internal/compiler"
 
 	"github.com/urfave/cli/v2"
 )

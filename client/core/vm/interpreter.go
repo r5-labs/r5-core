@@ -13,10 +13,10 @@
 package vm
 
 import (
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/math"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/log"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/log"
 )
 
 // Config are the configuration options for the Interpreter

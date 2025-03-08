@@ -16,7 +16,7 @@ import (
 	"math/bits"
 	"testing"
 
-	"github.com/r5-codebase/r5-core/crypto"
+	"github.com/r5-labs/r5-core/crypto"
 )
 
 func TestJumpDestAnalysis(t *testing.T) {

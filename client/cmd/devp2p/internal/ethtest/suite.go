@@ -15,10 +15,10 @@ package ethtest
 import (
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/eth/protocols/eth"
-	"github.com/r5-codebase/r5-core/internal/utesting"
-	"github.com/r5-codebase/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/internal/utesting"
+	"github.com/r5-labs/r5-core/p2p/enode"
 )
 
 // Suite represents a structure used to test a node's conformance

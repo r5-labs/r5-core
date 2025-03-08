@@ -13,7 +13,7 @@
 package trie
 
 import (
-	"github.com/r5-codebase/r5-core/rlp"
+	"github.com/r5-labs/r5-core/rlp"
 )
 
 func nodeToBytes(n node) []byte {

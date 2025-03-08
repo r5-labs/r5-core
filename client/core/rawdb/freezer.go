@@ -22,10 +22,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/ethdb"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/metrics"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/metrics"
 	"github.com/gofrs/flock"
 )
 

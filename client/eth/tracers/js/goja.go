@@ -20,12 +20,12 @@ import (
 
 	"github.com/dop251/goja"
 
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/common/hexutil"
-	"github.com/r5-codebase/r5-core/core/vm"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/eth/tracers"
-	jsassets "github.com/r5-codebase/r5-core/eth/tracers/js/internal/tracers"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/eth/tracers"
+	jsassets "github.com/r5-labs/r5-core/eth/tracers/js/internal/tracers"
 )
 
 var assetTracers = make(map[string]string)

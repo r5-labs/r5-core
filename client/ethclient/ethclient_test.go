@@ -22,17 +22,17 @@ import (
 	"testing"
 	"time"
 
-	ethereum "github.com/r5-codebase/r5-core"
-	"github.com/r5-codebase/r5-core/common"
-	"github.com/r5-codebase/r5-core/consensus/ethash"
-	"github.com/r5-codebase/r5-core/core"
-	"github.com/r5-codebase/r5-core/core/types"
-	"github.com/r5-codebase/r5-core/crypto"
-	"github.com/r5-codebase/r5-core/eth"
-	"github.com/r5-codebase/r5-core/eth/ethconfig"
-	"github.com/r5-codebase/r5-core/node"
-	"github.com/r5-codebase/r5-core/params"
-	"github.com/r5-codebase/r5-core/rpc"
+	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/consensus/ethash"
+	"github.com/r5-labs/r5-core/core"
+	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/eth"
+	"github.com/r5-labs/r5-core/eth/ethconfig"
+	"github.com/r5-labs/r5-core/node"
+	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 // Verify that Client implements the ethereum interfaces.
