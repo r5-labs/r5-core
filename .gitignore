@@ -1,9 +1,22 @@
-/devtools/*.txt
-/cliwallet/build/*
+# General
 /build/*
+/dist/*
+
+# DevTools
+/devtools/*.txt
+
+# R5 CLI Wallet
+/cliewallet/r5.key
+/cliwallet/r5wallet.spec
+/cliwallet/build/*
+/cliwallet/dist/*
+/cliwallet/r5wallet.egg-info/*
 
 # Relayer
+/relayer/r5-relayer.spec
 /relayer/node.ini
+/relayer/build/*
+/relayer/dist/*
 /relayer/bin/*
 /relayer/json/*
 /relayer/config/*
