@@ -36,13 +36,18 @@ import (
 // Constants used for supply and reward calculations
 //
 const (
-	// supplyCapBlock is the block height at which the total supply is capped.
-	// Calculation: 
-	//   Supply through epoch 6 = 28,000,000 R5.
-	//   Additional supply needed = 66,337,700 - 28,000,000 = 38,337,700 R5.
-	//   Blocks required in epoch 7 = 38,337,700 / 0.03125 = 1,226,806,400.
-	//   Therefore, supply cap block = 128,000,000 + 1,226,806,400 = 1,354,806,400.
-	supplyCapBlock uint64 = 1354806400
+	// preminedSupply is the amount of R5 pre-allocated (in wei).
+	// 2,000,000 R5 * 1e18 wei per R5.
+	preminedSupply = 2000000 * 1000000000000000000
+
+	// supplyCapBlock is the block height at which the total block reward emission is capped.
+	// Original total supply target: 66,337,700 R5.
+	// With 2,000,000 premined, block rewards total 64,337,700 R5.
+	// Supply through epoch 6 = 28,000,000 R5.
+	// Additional supply needed = 64,337,700 - 28,000,000 = 36,337,700 R5.
+	// Blocks required in epoch 7 = 36,337,700 / 0.03125 = 1,162,406,400.
+	// Therefore, supply cap block = 128,000,000 + 1,162,406,400 = 1,290,406,400.
+	supplyCapBlock uint64 = 1290406400
 )
 
 // R5 proof-of-work protocol parameters.
@@ -429,33 +434,33 @@ func (r5 *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.Head
 }
 
 func (r5 *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error) {
-    if len(withdrawals) > 0 {
-        return nil, errors.New("R5 does not support withdrawals")
-    }
-    r5.Finalize(chain, header, state, txs, uncles, nil)
-    
-    // Calculate the total transaction fees.
-    fees := new(big.Int)
-    for i, tx := range txs {
-        // Calculate fee = tx.GasPrice * receipt.GasUsed.
-        gasUsed := new(big.Int).SetUint64(receipts[i].GasUsed)
-        fee := new(big.Int).Mul(gasUsed, tx.GasPrice())
-        fees.Add(fees, fee)
-    }
-    
-    // If the supply cap is not reached, route fees to the fee pool.
-    // Otherwise (after cap), fees remain with the miner.
-    if header.Number.Uint64() < supplyCapBlock {
-        // Define the feePoolWallet wallet placeholder; replace with the actual feePoolWallet wallet address.
-        feePoolWalletWallet := common.HexToAddress("0x...")
-        
-        // Redirect fees: subtract fees from the coinbase balance and add them to the feePoolWallet wallet.
-        state.SubBalance(header.Coinbase, fees)
-        state.AddBalance(feePoolWalletWallet, fees)
-    }
-    
-    header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
-    return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
+	if len(withdrawals) > 0 {
+		return nil, errors.New("R5 does not support withdrawals")
+	}
+	r5.Finalize(chain, header, state, txs, uncles, nil)
+
+	// Calculate the total transaction fees.
+	fees := new(big.Int)
+	for i, tx := range txs {
+		// Calculate fee = tx.GasPrice * receipt.GasUsed.
+		gasUsed := new(big.Int).SetUint64(receipts[i].GasUsed)
+		fee := new(big.Int).Mul(gasUsed, tx.GasPrice())
+		fees.Add(fees, fee)
+	}
+
+	// If the supply cap is not reached, route fees to the fee pool.
+	// Otherwise (after cap), fees remain with the miner.
+	if header.Number.Uint64() < supplyCapBlock {
+		// Define the feePoolWallet wallet placeholder; replace with the actual feePoolWallet wallet address.
+		feePoolWalletWallet := common.HexToAddress("0x...")
+
+		// Redirect fees: subtract fees from the coinbase balance and add them to the feePoolWallet wallet.
+		state.SubBalance(header.Coinbase, fees)
+		state.AddBalance(feePoolWalletWallet, fees)
+	}
+
+	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
+	return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
 }
 
 // SealHash returns the hash of a block prior to sealing.
@@ -492,6 +497,7 @@ func (r5 *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 //
 // This function computes the cumulative supply based on the block number,
 // according to the current Super Epoch emission schedule.
+// The circulating supply includes the pre-mined 2,000,000 R5.
 //
 //   Super Epoch 1 (Blocks 1 - 4,000,000):       2 R5 per block
 //   Super Epoch 2 (Blocks 4,000,001 - 8,000,000):  1 R5 per block
@@ -505,7 +511,8 @@ func (r5 *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 	// 1 R5 is represented as 1e18 wei.
 	weiPerR5 := big.NewInt(1000000000000000000)
-	supply := big.NewInt(0)
+	// Start with the pre-mined supply.
+	supply := new(big.Int).Set(preminedSupplyBig())
 
 	// Define the epoch endpoints.
 	const epoch1End = 4000000
@@ -515,9 +522,11 @@ func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 	const epoch5End = 64000000
 	const epoch6End = 128000000
 
-	// If blockNum is at or above the cap, return the maximum supply (66,337,700 R5).
+	// If blockNum is at or above the cap, return the maximum supply:
+	// preminedSupply + 64,337,700 R5 block rewards.
 	if blockNum >= supplyCapBlock {
-		return new(big.Int).Mul(big.NewInt(66337700), weiPerR5)
+		totalReward := new(big.Int).Mul(big.NewInt(64337700), weiPerR5)
+		return new(big.Int).Add(preminedSupplyBig(), totalReward)
 	}
 
 	// Helper function: returns the number of blocks in [start, min(blockNum, end)].
@@ -543,7 +552,7 @@ func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 
 	// Epoch 3: blocks 8,000,001 to 16,000,000, reward 0.5 R5.
 	blocks = minBlocks(epoch2End+1, epoch3End)
-	// 0.5 R5 in wei is 0.5 * 1e18 = 500000000000000000.
+	// 0.5 R5 in wei is 500000000000000000.
 	reward = big.NewInt(500000000000000000)
 	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), reward))
 
@@ -572,6 +581,11 @@ func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 	return supply
 }
 
+// preminedSupplyBig returns the premined supply as a *big.Int.
+func preminedSupplyBig() *big.Int {
+	return new(big.Int).SetInt64(preminedSupply)
+}
+
 //
 // This function calculates the mining reward according to the current 
 // Super Epoch emission schedule.
@@ -587,7 +601,8 @@ func CalculateCirculatingSupply(blockNum uint64) *big.Int {
 // If the current block number is at or beyond the supply cap,
 // no reward is issued. Otherwise, reward is applied as per the custom schedule.
 //
-// If the block number is at or beyond supplyCapBlock, the function returns the cap value.
+// (Note: The rewards here only cover block issuance; the premined 2,000,000 R5 are assumed
+// to have been allocated at genesis.)
 func accumulateRewards(_ *params.ChainConfig, state *state.StateDB, header *types.Header, _ []*types.Header) {
 	blockNum := header.Number.Uint64()
 
