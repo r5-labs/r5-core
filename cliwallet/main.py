@@ -25,6 +25,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from web3 import Web3
 import platform
+import configparser  # NEW: Use configparser for INI settings
 
 def set_window_title(title):
     if os.name == 'nt':  # Windows
@@ -35,7 +36,8 @@ def set_window_title(title):
 set_window_title("R5 CLI Wallet")
 
 WALLET_FILENAME = "r5.key"
-SETTINGS_FILENAME = "settings.r5w"
+# Update settings filename to use a standard INI file
+SETTINGS_FILENAME = "wallet.ini"
 DEFAULT_RPC_ADDRESS = "http://localhost:8545"
 DEFAULT_QUERY_INTERVAL = 60
 
@@ -61,11 +63,9 @@ def print_header():
     print("")
 
 def pause():
-    # Waits for input but auto-continues after 5 seconds.
     _ = timed_input("Refreshing in 5 seconds. Press any key to refresh now.", 5)
 
 def manual_pause():
-    # Waits until the user presses Enter.
     input("Press any key to continue.")
 
 def timed_input(prompt, timeout):
@@ -96,48 +96,46 @@ def timed_input(prompt, timeout):
 # Settings File Functions
 # -------------------------------
 def load_settings():
+    """
+    Load wallet settings from an INI file ("wallet.ini") using a standard format.
+    If the file or required settings are missing, create a new settings file with defaults.
+    """
     settings = {}
+    config = configparser.ConfigParser()
     if os.path.exists(SETTINGS_FILENAME):
         try:
-            with open(SETTINGS_FILENAME, "r") as f:
-                lines = f.readlines()
-            # Check for a proper header and footer
-            if not lines or not lines[0].strip().startswith("# r5w") or not lines[-1].strip().startswith("#r5w"):
-                raise ValueError("Header/footer missing")
-            for line in lines[1:-1]:
-                line = line.strip()
-                if line and "=" in line:
-                    key, value = line.split("=", 1)
-                    settings[key.strip()] = value.strip()
+            config.read(SETTINGS_FILENAME)
+            if 'Wallet' not in config:
+                raise ValueError("Missing [Wallet] section")
+            settings = dict(config['Wallet'])
         except Exception as e:
             print("Warning: Settings file not detected or corrupted. Creating new settings file...")
             pause()
             settings = create_default_settings()
     else:
-        print("Warning: Settings file not detected or corrupted. Creating new settings file...")
+        print("Warning: Settings file not detected. Creating new settings file...")
         pause()
         settings = create_default_settings()
     if "rpc_address" not in settings:
         print("Warning: Required setting 'rpc_address' missing. Creating new settings file with defaults...")
         pause()
         settings = create_default_settings()
-    # Ensure query_interval exists (default to DEFAULT_QUERY_INTERVAL)
     if "query_interval" not in settings:
         settings["query_interval"] = str(DEFAULT_QUERY_INTERVAL)
+        config['Wallet'] = settings
         with open(SETTINGS_FILENAME, "w") as f:
-            f.write("# r5w-start\n")
-            for key, value in settings.items():
-                f.write(f"{key} = {value}\n")
-            f.write("# r5w-end\n")
+            config.write(f)
     return settings
 
 def create_default_settings():
+    """
+    Create default wallet settings and write them to wallet.ini in standard INI format.
+    """
     settings = {"rpc_address": DEFAULT_RPC_ADDRESS, "query_interval": str(DEFAULT_QUERY_INTERVAL)}
+    config = configparser.ConfigParser()
+    config['Wallet'] = settings
     with open(SETTINGS_FILENAME, "w") as f:
-        f.write("# r5w-start\n")
-        for key, value in settings.items():
-            f.write(f"{key} = {value}\n")
-        f.write("# r5w-end\n")
+        config.write(f)
     return settings
 
 # -------------------------------
@@ -308,7 +306,6 @@ def fetch_history(w3: Web3, wallet: dict, block_range: int = 1080):
     current_block = fetch_block_height(w3)
     start_block = max(0, current_block - block_range)
     transactions = []
-    # Note: Removed printing here for a cleaner final TX history screen.
     for blk in range(start_block, current_block + 1):
         try:
             block = w3.eth.get_block(blk, full_transactions=True)
@@ -374,7 +371,6 @@ def send_tx(w3: Web3, wallet: dict):
         except ValueError:
             print("Invalid max fee. Using default.")
             gas_limit = default_gas
-    # New field for gas price
     default_gas_price = w3.eth.gas_price
     gas_price_input = input(f"Gas Price [Estimated: {w3.from_wei(default_gas_price, 'gwei'):.0f}]: ").strip()
     if gas_price_input == "":
@@ -438,13 +434,11 @@ def send_tx(w3: Web3, wallet: dict):
 # Menu Functions
 # -------------------------------
 def expose_private_key(wallet: dict):
-    # Get the password without showing the subsequent UI
     entered_password = getpass.getpass("Enter encryption password to expose private key: ")
     try:
         with open(WALLET_FILENAME, "r") as f:
             file_data = json.load(f)
         _ = decrypt_wallet(file_data, entered_password)
-        # Once verified, clear the screen and show only the key
         clear_screen()
         print_header()
         print("\n└→ PRIVATE KEY")
@@ -483,15 +477,11 @@ def reset_wallet():
         pause()
 
 def show_tx_history(w3: Web3, wallet: dict):
-    # Show a temporary message, then clear it when done.
     clear_screen()
     print_header()
-    print("\nFetching transaction history. Please wait...")
-    transactions, block_range = fetch_history(w3, wallet)
-    clear_screen()
-    print_header()
-    print(f"\n└→ TRANSACTION HISTORY (PAST {block_range} BLOCKS):")
+    print("\n└→ TRANSACTION HISTORY (PAST 1080 BLOCKS):")
     print("-" * 68)
+    transactions, block_range = fetch_history(w3, wallet)
     if not transactions:
         print("No transactions found in the specified block range.")
     else:
@@ -525,13 +515,12 @@ def run_main_menu(w3: Web3, wallet: dict, query_interval: int):
         print("5. Reset Wallet (!!)")
         print("6. Exit")
         print("-" * 68)
-        # Use timed_input so that if no option is entered in query_interval seconds, the page refreshes.
         choice = timed_input(">", query_interval)
         print("-" * 68)
         if choice == '1':
             send_tx(w3, wallet)
         elif choice == '2':
-            continue  # Simply refreshes the menu (which now shows updated block height and balance)
+            continue
         elif choice == '3':
             show_tx_history(w3, wallet)
         elif choice == '4':

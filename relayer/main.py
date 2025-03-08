@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2025 R5
 # This file is part of the R5 Core library.
 #
@@ -17,6 +18,7 @@ import configparser
 import os
 import sys
 import subprocess
+import shutil
 
 DEFAULT_INI = """[R5 Node Relayer]
 network = mainnet
@@ -83,7 +85,6 @@ def load_ini_config(args):
     config.read(ini_filename)
     section = "R5 Node Relayer"
     
-    # For each value, if its value is not "default", update the args.
     # network:
     net_val = config.get(section, "network", fallback="default")
     if net_val.lower() != "default":
@@ -92,8 +93,7 @@ def load_ini_config(args):
     rpc_val = config.get(section, "rpc", fallback="default")
     if rpc_val.lower() != "default":
         args.rpc = rpc_val.lower() == "true"
-    # mode: note our argparse default is "full", so if the INI value is not "default",
-    # we expect one of archive, full, or light.
+    # mode:
     mode_val = config.get(section, "mode", fallback="default")
     if mode_val.lower() != "default":
         args.mode = mode_val.lower()
@@ -108,12 +108,19 @@ def load_ini_config(args):
         if threads_val.lower() != "default":
             miner_list.append(f"threads={threads_val}")
         args.miner = miner_list if miner_list else []
-    # For the config file override:
+    # config override:
     config_val = config.get(section, "config", fallback="default")
     if config_val.lower() != "default":
         args.config_override = config_val
     else:
         args.config_override = None
+    # genesis: new processing – if not "default", use provided genesis path;
+    # otherwise, for non-mainnet networks, later we auto-select genesis file.
+    genesis_val = config.get(section, "genesis", fallback="default")
+    if genesis_val.lower() != "default":
+        args.genesis = genesis_val
+    else:
+        args.genesis = None
 
     return args
 
@@ -128,6 +135,16 @@ def build_command(args):
     else:
         config_file = os.path.join("config", f"{args.network}.config")
     cmd.extend(["-config", config_file])
+    
+    # Add genesis flag if applicable.
+    if args.genesis:
+        genesis_file = args.genesis
+    elif args.network != "mainnet":
+        genesis_file = os.path.join("genesis", f"{args.network}.json")
+    else:
+        genesis_file = None
+    if genesis_file:
+        cmd.extend(["-genesis", genesis_file])
     
     if args.rpc:
         rpc_flags = [
@@ -240,7 +257,6 @@ def parse_args():
     parser.add_argument("--r5console", action="store_true",
                         help="Run the R5 console binary instead of the node binary. Must be used alone.")
 
-    # We will later add a hidden attribute for a config override (from the INI file)
     parser.set_defaults(config_override=None)
     args = parser.parse_args()
 
@@ -249,13 +265,11 @@ def parse_args():
     if args.jsconsole:
         advanced_flags.append("--jsconsole")
     if args.bypass is not None:
-        # Note: nargs=REMAINDER returns an empty list if not used; we consider that as set.
         if len(args.bypass) > 0:
             advanced_flags.append("--bypass")
     if args.cliwallet:
         advanced_flags.append("--cliwallet")
     if args.proxy is not None:
-        # args.proxy will be None if not used.
         advanced_flags.append("--proxy")
     if args.r5console:
         advanced_flags.append("--r5console")
@@ -264,7 +278,6 @@ def parse_args():
     if advanced_flags and (args.network != "mainnet" or args.rpc or args.mode != "full" or args.miner is not None):
         parser.error("Advanced flags must be used alone; do not combine with --network, --rpc, --mode, or --miner.")
 
-    # Only load node.ini settings if no advanced flag is used and no flags are provided.
     if not (args.jsconsole or args.bypass or args.cliwallet or args.proxy or args.r5console) and len(sys.argv) == 1:
         args = load_ini_config(args)
         print("Loaded settings from node.ini:")
@@ -280,7 +293,6 @@ def parse_args():
 def main():
     args = parse_args()
     
-    # Advanced flag handling:
     if args.jsconsole:
         cmd = build_jsconsole_command()
         print("Attaching to JS console with command:")
@@ -336,11 +348,7 @@ def main():
             sys.exit(1)
         sys.exit(0)
     
-    # Build the command to run the node.
     cmd = build_command(args)
-    # Uncomment for verbose debugging:
-    # print("Starting R5 node with command:")
-    # print(" ".join(cmd))
     try:
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:

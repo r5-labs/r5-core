@@ -6,8 +6,13 @@
 # DevTools
 /devtools/*.txt
 
+# R5 Console
+/r5console/console.spec
+/r5console/build/*
+/r5console/dist/*
+
 # R5 CLI Wallet
-/cliwallet/settings.r5w
+/cliwallet/wallet.ini
 /cliwallet/r5.key
 /cliwallet/cliwallet.spec
 /cliwallet/build/*

@@ -110,6 +110,24 @@ def build_proxy():
     except subprocess.CalledProcessError as e:
         handle_error(f"Proxy build failed: {e}")
     print("Proxy build completed successfully.")
+    
+def build_r5console():
+    print("Building R5 Console executable...")
+    # Prepare the pyinstaller command.
+    cmd = [
+        'pyinstaller',
+        '--onefile',
+        '--name', 'console',
+        '--icon', 'icon.ico',
+        'main.py'
+    ]
+    r5console_dir = os.path.join(os.getcwd(), "r5console")
+    print("Executing:", ' '.join(cmd), "in", r5console_dir)
+    try:
+        subprocess.check_call(cmd, cwd=r5console_dir)
+    except subprocess.CalledProcessError as e:
+        handle_error(f"R5 Console build failed: {e}")
+    print("R5 Console build completed successfully.")
 
 def move_file(src, dst):
     """
@@ -191,13 +209,21 @@ def main():
     dest_wallet = os.path.join("build", "bin", wallet_bin)
     move_file(src_wallet, dest_wallet)
     
-    # 5. Build the Proxy executable.
+    # 6. Build the Proxy executable.
     build_proxy()
     # Copy the Proxy binary from /proxy/dist to /build/bin/proxy (or proxy.exe).
     proxy_bin = "proxy.exe" if sys.platform.startswith("win") else "proxy"
     src_proxy = os.path.join("proxy", "dist", proxy_bin)
     dest_proxy = os.path.join("build", "bin", proxy_bin)
     move_file(src_proxy, dest_proxy)
+    
+    # 7. Build the R5 Console executable.
+    build_r5console()
+    # Copy the R5 Console binary from /r5console/dist to /build/bin/console (or console.exe).
+    r5console_bin = "console.exe" if sys.platform.startswith("win") else "console"
+    src_r5console = os.path.join("r5console", "dist", r5console_bin)
+    dest_r5console = os.path.join("build", "bin", r5console_bin)
+    move_file(src_r5console, dest_r5console)
 
     print("\nFull build completed successfully. The folder structure is ready for deployment.")
 

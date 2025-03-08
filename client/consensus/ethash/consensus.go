@@ -448,7 +448,7 @@ func (r5 *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header 
 	// Otherwise (after cap), fees remain with the miner.
 	if header.Number.Uint64() < supplyCapBlock {
 		// Define the feePoolWallet wallet placeholder; replace with the actual feePoolWallet wallet address.
-		feePoolWalletWallet := common.HexToAddress("0x...")
+		feePoolWalletWallet := common.HexToAddress("0x366D7b25624795a6f7071829c7A50C3D116C69E3")
 
 		// Redirect fees: subtract fees from the coinbase balance and add them to the feePoolWallet wallet.
 		state.SubBalance(header.Coinbase, fees)
