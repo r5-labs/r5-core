@@ -596,7 +596,7 @@ func (ethash *Ethash) cache(block uint64) *cache {
 // stored on disk, and finally generating one if none can be found.
 //
 // If async is specified, not only the future but the current DAG is also
-// generates on a background thread.
+// generated on a background thread.
 func (ethash *Ethash) dataset(block uint64, async bool) *dataset {
 	// Retrieve the requested ethash dataset
 	epoch := block / epochLength
@@ -656,7 +656,7 @@ func (ethash *Ethash) SetThreads(threads int) {
 // Note the returned hashrate includes local hashrate, but also includes the total
 // hashrate of all remote miner.
 func (ethash *Ethash) Hashrate() float64 {
-	// Short circuit if we are run the ethash in normal/test mode.
+	// Short circuit if we run ethash in normal/test mode.
 	if ethash.config.PowMode != ModeNormal && ethash.config.PowMode != ModeTest {
 		return ethash.hashrate.Rate1()
 	}
@@ -675,7 +675,7 @@ func (ethash *Ethash) Hashrate() float64 {
 
 // APIs implements consensus.Engine, returning the user facing RPC APIs.
 func (ethash *Ethash) APIs(chain consensus.ChainHeaderReader) []rpc.API {
-	// In order to ensure backward compatibility, we exposes ethash RPC APIs
+	// In order to ensure backward compatibility, we expose ethash RPC APIs
 	// to both eth and ethash namespaces.
 	return []rpc.API{
 		{

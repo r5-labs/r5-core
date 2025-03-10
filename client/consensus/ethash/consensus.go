@@ -21,7 +21,6 @@ import (
 	"time"
 
 	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/math"
 	"github.com/r5-labs/r5-core/consensus"
 	"github.com/r5-labs/r5-core/consensus/misc"
 	"github.com/r5-labs/r5-core/core/state"
@@ -264,7 +263,6 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 // Consolidated constants to avoid repeated allocations.
 //
 var (
-	expDiffPeriod = big.NewInt(100000)
 	big1          = big.NewInt(1)
 	big2          = big.NewInt(2)
 	bigMinus99    = big.NewInt(-99)
@@ -323,13 +321,6 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
 	}
-	periodCount := new(big.Int).Add(parent.Number, big1)
-	periodCount.Div(periodCount, expDiffPeriod)
-	if periodCount.Cmp(big1) > 0 {
-		y.Sub(periodCount, big2)
-		y.Exp(big2, y, nil)
-		x.Add(x, y)
-	}
 	return x
 }
 
@@ -349,14 +340,6 @@ func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
 	}
 	if diff.Cmp(params.MinimumDifficulty) < 0 {
 		diff.Set(params.MinimumDifficulty)
-	}
-	periodCount := new(big.Int).Add(parent.Number, big1)
-	periodCount.Div(periodCount, expDiffPeriod)
-	if periodCount.Cmp(big1) > 0 {
-		expDiff := periodCount.Sub(periodCount, big2)
-		expDiff.Exp(big2, expDiff, nil)
-		diff.Add(diff, expDiff)
-		diff = math.BigMax(diff, params.MinimumDifficulty)
 	}
 	return diff
 }
