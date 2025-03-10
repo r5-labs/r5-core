@@ -12,7 +12,7 @@ Please note that these are the **minimum** hardware requirements for running eac
 | ----------- | -------------- | --------------- | -------------- |
 | CPU Cores   | 12             | 4               | 2              |
 | RAM         | 10 GB          | 8 GB            | 2 GB           |
-| Storage     | SSD 1 TB       | SSD 240 GB      | HDD 240GB      |
+| Storage     | SSD 1 TB       | SSD 240 GB      | HDD 1GB        |
 | Network     | Stable 125MB/s | Stable 100MB/s  | Stable 10MB/s  |
 
 ## Pre-Requisites
