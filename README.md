@@ -6,37 +6,18 @@ R5 revisits the proof‑of‑work consensus mechanism to create a high‑perform
 
 ## Hardware Requirements
 
-#### Archive Nodes
+Please note that these are the **minimum** hardware requirements for running each one of the node types specified. For more information, including **recommended** harware specs, please visit https://docs.r5.network/for-developers/hardware-requirements.
 
-| Description | Required       | Recommended     |
-| ----------- | -------------- | --------------- |
-| CPU Cores   | 12             | 16              |
-| RAM         | 10 GB          | 24 GB           |
-| Storage     | SSD 1 TB       | NVMe 4 TB       |
-| Network     | Stable 125MB/s | Stable >500MB/s |
-
-#### Full Nodes
-
-| Description | Required       | Recommended     |
-| ----------- | -------------- | --------------- |
-| CPU Cores   | 4              | 8               |
-| RAM         | 8 GB           | 16 GB           |
-| Storage     | SSD 240 GB     | NVME 1 TB       |
-| Network     | Stable 100MB/s | Stable >100MB/s |
-
-#### Light Nodes
-
-| Description | Required      | Recommended    |
-| ----------- | ------------- | -------------- |
-| CPU Cores   | 2             | 4              |
-| RAM         | 2 GB          | 8 GB           |
-| Storage     | HDD 240 GB    | SSD >240GB     |
-| Network     | Stable 10MB/s | Stable >10MB/s |
-
+| Description | Archive Nodes  | Full Nodes      | Light Nodes    |
+| ----------- | -------------- | --------------- | -------------- |
+| CPU Cores   | 12             | 4               | 2              |
+| RAM         | 10 GB          | 8 GB            | 2 GB           |
+| Storage     | SSD 1 TB       | SSD 240 GB      | HDD 240GB      |
+| Network     | Stable 125MB/s | Stable 100MB/s  | Stable 10MB/s  |
 
 ## Pre-Requisites
 
-You will need to have `Golang` and a `C` compiler to build the core binary, and additional Python dependencies when building the full set of protocol tools.
+You will need to have `Python`, `Golang`, and a `C` compiler to build the core binary, and additional Python dependencies when building the full set of protocol tools.
 
 If you prefer, the `install.py` script installs all required dependencies automatically. If you are running Windows, you might need to install a C compiler separately, even after running the install script.
 
