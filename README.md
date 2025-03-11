@@ -1,5 +1,7 @@
 # R5 Core
 
+![R5 Logo](img/r5.png)
+
 R5 revisits the proof‑of‑work consensus mechanism to create a high‑performance, secure blockchain. It is designed to process over 1,000 transactions per second while establishing a fair economic dynamic for all participants. This repository contains the core implementation of the R5 Protocol, including the r5 node relayer and all accompanying SDK tools.
 
 **This repository is constantly evolving; some information above may change over time. Please refer to the latest documentation for up‑to‑date details.**
