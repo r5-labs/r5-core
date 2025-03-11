@@ -128,6 +128,24 @@ def build_r5console():
     except subprocess.CalledProcessError as e:
         handle_error(f"R5 Console build failed: {e}")
     print("R5 Console build completed successfully.")
+    
+def build_scdev():
+    print("Building SCdev executable...")
+    # Prepare the pyinstaller command.
+    cmd = [
+        'pyinstaller',
+        '--onefile',
+        '--name', 'scdev',
+        '--icon', 'icon.ico',
+        'main.py'
+    ]
+    scdev_dir = os.path.join(os.getcwd(), "scdev")
+    print("Executing:", ' '.join(cmd), "in", scdev_dir)
+    try:
+        subprocess.check_call(cmd, cwd=scdev_dir)
+    except subprocess.CalledProcessError as e:
+        handle_error(f"SCdev build failed: {e}")
+    print("SCdev build completed successfully.")
 
 def move_file(src, dst):
     """
@@ -224,6 +242,14 @@ def main():
     src_r5console = os.path.join("r5console", "dist", r5console_bin)
     dest_r5console = os.path.join("build", "bin", r5console_bin)
     move_file(src_r5console, dest_r5console)
+    
+    # 8. Build the SCdev executable.
+    build_scdev()
+    # Copy the SCdev binary from /scdev/dist to /build/bin/scdev (or scdev.exe).
+    scdev_bin = "scdev.exe" if sys.platform.startswith("win") else "scdev"
+    src_scdev = os.path.join("scdev", "dist", scdev_bin)
+    dest_scdev = os.path.join("build", "bin", scdev_bin)
+    move_file(src_scdev, dest_scdev)
 
     print("\nFull build completed successfully. The folder structure is ready for deployment.")
 

@@ -19,6 +19,12 @@
 /cliwallet/dist/*
 /cliwallet/r5wallet.egg-info/*
 
+# SCdev
+/scdev/scdev.ini
+/scdev/scdev.spec
+/scdev/build/*
+/scdev/dist/*
+
 # Proxy
 /proxy/proxy.ini
 /proxy/proxy.spec
