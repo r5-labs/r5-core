@@ -59,8 +59,9 @@ This build compiles all the tools included with the R5 Protocol, giving you a fu
 |------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | cliwallet  | A CLI wallet module that can generate wallet addresses, send transactions, and perform other wallet functions.                                           |
 | node       | The core binary of the R5 node. It can be executed separately and accepts flags, though we recommend starting the node via the provided relayer.         |
-| proxy      | A native SSL proxy for RPC operators. It accepts the --gencert flag to generate self-signed certificates and can serve requests via the SSL port.       |
-| console  | R5's custom CLI console module, offering a user-friendly interface even for beginners.                                                                   |
+| proxy      | A native SSL proxy for RPC operators. It accepts the --gencert flag to generate self-signed certificates and can serve requests via the SSL port.        |
+| console    | R5's custom CLI console module, offering a user-friendly interface even for beginners.                                                                   |
+| scdev      | SCdev is a powerful smart contract interface that allows you to compile, deploy, and interact with smart contracts, as well as manage accounts.          |
 
 For more information about each tool, please visit R5's documentation library at https://docs.r5.network.
 
@@ -102,7 +103,7 @@ The `/build` folder should contain the following subdirectories:
 |--------------|-------------------------------------------------------------------------------------------------|
 | `/bin`         | Contains the main binaries and their dependencies, including configuration files and tools.   |
 | `/config`      | Contains configuration files for R5 networks.                                                 |
-| `/genesis`        | Contains genesis files for testnet, devnet, and local networks.                                 |
+| `/genesis`        | Contains genesis files for testnet, devnet, and local networks.                            |
 
 Additional directories, such as the main data storage folder, will be created when the node starts.
 
