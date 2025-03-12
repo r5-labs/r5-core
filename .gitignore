@@ -3,6 +3,9 @@
 /dist/*
 /r5_tools.egg-info/*
 
+# R5 VEnv
+/r5-venv/*
+
 # DevTools
 /devtools/*.txt
 
