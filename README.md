@@ -19,7 +19,7 @@ Please note that these are the **minimum** hardware requirements for running eac
 
 ## Pre-Requisites
 
-You will need to have `Python`, `Golang`, and a `C` compiler to build the core binary, and additional Python dependencies when building the full set of protocol tools.
+You will need to have `Python 3`, `Golang 1.19`, and a `C` compiler (such as `gcc`, for example) to build the core binary, and additional Python dependencies when building the full set of protocol tools.
 
 If you prefer, the `install.py` script installs all required dependencies automatically. If you are running Windows, you might need to install a C compiler separately, even after running the install script.
 
@@ -34,6 +34,42 @@ Or, if on Windows:
 ```cmd
 python install.py
 ```
+
+### !! IMPORTANT !!
+
+If your system restricts system-wide package installing - eg. Ubuntu Desktop 24.04 - you will have to take some extra steps to install all dependencies before building the package.
+
+First, make sure you have `golang-1.19/stable` installed. If you're using Ubuntu, you can install it via `snap` with the following command:
+
+```bash
+sudo snap install go --channel=1.19/stable --classic
+```
+
+To install the `python` dependencies, you will need to create a virtual environment to separate the program packages from your system packages. First, install `v-env` with the following command:
+
+```bash
+sudo apt install python3.12-venv
+```
+
+Then, create the virtual environment (named `r5` in this example):
+
+```bash
+python3 -m venv r5
+```
+
+Enter the virtual environment you have just created with:
+
+```bash
+source r5/bin/activate
+```
+
+Now you can install the python dependencies with:
+
+```bash
+pip install .
+```
+
+And follow the instructions below to build the binaries. Please be aware that you still need to have your virtual environment active to be able to build the SDK tools, otherwise, you will only be able to build the main node binary using the `build.py` script with the `--coreonly` flag.
 
 ## Building R5
 
