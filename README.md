@@ -10,12 +10,12 @@ R5 revisits the proof‑of‑work consensus mechanism to create a high‑perform
 
 Please note that these are the **minimum** hardware requirements for running each one of the node types specified. For more information, including **recommended** harware specs, please visit https://docs.r5.network/for-developers/hardware-requirements.
 
-| Description | Archive Nodes  | Full Nodes      | Light Nodes    |
-| ----------- | -------------- | --------------- | -------------- |
-| CPU Cores   | 12             | 4               | 2              |
-| RAM         | 10 GB          | 8 GB            | 2 GB           |
-| Storage     | SSD 1 TB       | SSD 240 GB      | HDD 1GB        |
-| Network     | Stable 125MB/s | Stable 100MB/s  | Stable 10MB/s  |
+| Description | Archive Nodes  | Full Nodes     | Light Nodes   |
+| ----------- | -------------- | -------------- | ------------- |
+| CPU Cores   | 12             | 4              | 2             |
+| RAM         | 10 GB          | 8 GB           | 2 GB          |
+| Storage     | SSD 1 TB       | SSD 240 GB     | HDD 1GB       |
+| Network     | Stable 125MB/s | Stable 100MB/s | Stable 10MB/s |
 
 ## Pre-Requisites
 
@@ -91,13 +91,13 @@ python build.py
 
 This build compiles all the tools included with the R5 Protocol, giving you a fully functioning node in your `/build` folder. The main `r5` binary is the custom node relayer, and inside the `/build/bin` folder you will find:
 
-| File       | Description                                                                                                                                              |
-|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| cliwallet  | A CLI wallet module that can generate wallet addresses, send transactions, and perform other wallet functions.                                           |
-| node       | The core binary of the R5 node. It can be executed separately and accepts flags, though we recommend starting the node via the provided relayer.         |
-| proxy      | A native SSL proxy for RPC operators. It accepts the --gencert flag to generate self-signed certificates and can serve requests via the SSL port.        |
-| console    | R5's custom CLI console module, offering a user-friendly interface even for beginners.                                                                   |
-| scdev      | SCdev is a powerful smart contract interface that allows you to compile, deploy, and interact with smart contracts, as well as manage accounts.          |
+| File      | Description                                                                                                                                       |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| cliwallet | A CLI wallet module that can generate wallet addresses, send transactions, and perform other wallet functions.                                    |
+| node      | The core binary of the R5 node. It can be executed separately and accepts flags, though we recommend starting the node via the provided relayer.  |
+| proxy     | A native SSL proxy for RPC operators. It accepts the --gencert flag to generate self-signed certificates and can serve requests via the SSL port. |
+| console   | R5's custom CLI console module, offering a user-friendly interface even for beginners.                                                            |
+| scdev     | SCdev is a powerful smart contract interface that allows you to compile, deploy, and interact with smart contracts, as well as manage accounts.   |
 
 For more information about each tool, please visit R5's documentation library at https://docs.r5.network.
 
@@ -105,7 +105,7 @@ For more information about each tool, please visit R5's documentation library at
 
 Inside the `/build` folder, you will find the main node binary, named `r5` (or `r5.exe` on Windows). This is the recommended entry point for your R5 node. The relayer simplifies node startup by consolidating the traditional `Geth` flag structure into an easier-to-use set of initialisation options.
 
-<table><thead><tr><th width="143">Flag</th><th width="147">Parameters</th><th>Information</th></tr></thead><tbody><tr><td><code>--bypass</code></td><td></td><td>Used to bypass commands directly to your <code>node</code> binary for advanced configuration. <strong>Use with caution! This flag must be used alone.</strong></td></tr><tr><td><code>--cliwallet</code></td><td></td><td>Starts the CLI Wallet. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>-h</code> or <code>--help</code></td><td></td><td>Prints the list of supported flags and parameters. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--jsconsole</code></td><td></td><td>Starts the JS Console. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--miner</code></td><td><code>coinbase</code><br><code>threads</code></td><td>Starts the node with mining enabled. If you don't set a custom <code>coinbase</code> it will burn the mining rewards by default, and if you want active mining directly on the node's CPU, you need to set <code>threads</code> > 0. Disabled by default.</td></tr><tr><td><code>--network</code></td><td><code>mainnet</code><br><code>testnet</code><br><code>devnet</code><br><code>local</code></td><td>Defines the network you want to connect your node to. Local networks use <code>ChainId</code> <code>13512</code> by default. Defaults to <code>mainnet</code> .</td></tr><tr><td><code>--node</code></td><td><code>archive</code><br><code>full</code><br><code>light</code></td><td>Defines the type of node to start. Defaults to <code>full</code>.</td></tr><tr><td><code>--proxy</code></td><td><code>gencert</code></td><td>Starts the SSL Proxy server. Note that it requires a running node to work. By default, it forwards incoming requests on port <code>443</code> to port <code>8545</code>. You can use the <code>gencert</code> flag to generate self-signed certificates. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--r5console</code></td><td></td><td>Starts the built-in R5 Console. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--rpc</code></td><td></td><td>Enables the node's RPC service. It enables the <code>http</code>, <code>ws</code>, and <code>graphql</code> services, and opens the <code>web3</code>, <code>eth</code>, <code>r5</code>, and <code>net</code> API endpoints by default. <code>http</code> requests are served on port <code>8545</code>. <strong>For production environments, it is recommended to be used alongside the SSL Proxy provided.</strong> Disabled by default.</td></tr></tbody></table>
+<table><thead><tr><th width="143">Flag</th><th width="147">Parameters</th><th>Information</th></tr></thead><tbody><tr><td><code>--bypass</code></td><td></td><td>Used to bypass commands directly to your <code>node</code> binary for advanced configuration. <strong>Use with caution! This flag must be used alone.</strong></td></tr><tr><td><code>--cliwallet</code></td><td></td><td>Starts the CLI Wallet. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>-h</code> or <code>--help</code></td><td></td><td>Prints the list of supported flags and parameters. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--jsconsole</code></td><td></td><td>Starts the JS Console. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--miner</code></td><td><code>coinbase</code><br><code>threads</code></td><td>Starts the node with mining enabled. If you don't set a custom <code>coinbase</code> it will burn the mining rewards by default, and if you want active mining directly on the node's CPU, you need to set <code>threads</code> > 0. Disabled by default.</td></tr><tr><td><code>--network</code></td><td><code>mainnet</code><br><code>testnet</code><br><code>devnet</code><br><code>local</code></td><td>Defines the network you want to connect your node to. Local networks use <code>ChainId</code> <code>13512</code> by default. Defaults to <code>mainnet</code> .</td></tr><tr><td><code>--mode</code></td><td><code>archive</code><br><code>full</code><br><code>light</code></td><td>Defines the type of node to start. Defaults to <code>full</code>.</td></tr><tr><td><code>--proxy</code></td><td><code>gencert</code></td><td>Starts the SSL Proxy server. Note that it requires a running node to work. By default, it forwards incoming requests on port <code>443</code> to port <code>8545</code>. You can use the <code>gencert</code> flag to generate self-signed certificates. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--r5console</code></td><td></td><td>Starts the built-in R5 Console. <strong>This flag must be used alone.</strong></td></tr><tr><td><code>--rpc</code></td><td></td><td>Enables the node's RPC service. It enables the <code>http</code>, <code>ws</code>, and <code>graphql</code> services, and opens the <code>web3</code>, <code>eth</code>, <code>r5</code>, and <code>net</code> API endpoints by default. <code>http</code> requests are served on port <code>8545</code>. <strong>For production environments, it is recommended to be used alongside the SSL Proxy provided.</strong> Disabled by default.</td></tr></tbody></table>
 
 **Usage Example:** Starting a mainnet RPC archive node with mining enabled:
 
@@ -135,11 +135,11 @@ config = default
 
 The `/build` folder should contain the following subdirectories:
 
-| Subdirectory | Description                                                                                     |
-|--------------|-------------------------------------------------------------------------------------------------|
-| `/bin`         | Contains the main binaries and their dependencies, including configuration files and tools.   |
-| `/config`      | Contains configuration files for R5 networks.                                                 |
-| `/genesis`        | Contains genesis files for testnet, devnet, and local networks.                            |
+| Subdirectory | Description                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| `/bin`       | Contains the main binaries and their dependencies, including configuration files and tools. |
+| `/config`    | Contains configuration files for R5 networks.                                               |
+| `/genesis`   | Contains genesis files for testnet, devnet, and local networks.                             |
 
 Additional directories, such as the main data storage folder, will be created when the node starts.
 

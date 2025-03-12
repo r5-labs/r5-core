@@ -111,9 +111,9 @@ def load_ini_config(args):
     # config override:
     config_val = config.get(section, "config", fallback="default")
     if config_val.lower() != "default":
-        args.config_override = config_val
+        args.config = config_val
     else:
-        args.config_override = None
+        args.config = None
     # genesis:
     genesis_val = config.get(section, "genesis", fallback="default")
     if genesis_val.lower() != "default":
@@ -129,8 +129,8 @@ def build_command(args):
     """
     cmd = [get_node_binary()]
     
-    if args.config_override:
-        config_file = args.config_override
+    if args.config:
+        config_file = args.config
     else:
         config_file = os.path.join("config", f"{args.network}.config")
     cmd.extend(["-config", config_file])
@@ -229,7 +229,6 @@ def get_datadir_from_config(config_file):
         if "[Node]" in content:
             for line in content.splitlines():
                 if line.strip().startswith("DataDir"):
-                    # For example, line: DataDir = "blockchain_testnet"
                     parts = line.split("=")
                     if len(parts) >= 2:
                         return parts[1].strip().strip('"')
@@ -246,26 +245,22 @@ def get_datadir_from_config(config_file):
 
 def init_genesis(args):
     """
-    If the selected network is not mainnet, run genesis initialization using the appropriate genesis file.
-    We now import the datadir setting from the config file so that the genesis is initialized
-    in the correct data directory.
+    Initialize genesis using the appropriate genesis file.
+    The genesis file is determined solely by the --network flag (or ini file override).
     """
-    # Determine the genesis file path.
     if args.genesis:
         genesis_file = args.genesis
     else:
         genesis_file = os.path.abspath(os.path.join("genesis", f"{args.network}.json"))
     print(f"Initializing genesis for network '{args.network}' using {genesis_file}...")
     
-    # Determine the config file to use.
-    if args.config_override:
-        config_file = args.config_override
+    if args.config:
+        config_file = args.config
     else:
         config_file = os.path.join("config", f"{args.network}.config")
     
     datadir = get_datadir_from_config(config_file)
     if datadir:
-        # Place the --datadir flag before "init"
         init_cmd = [get_node_binary(), "--datadir", datadir, "init", genesis_file]
     else:
         print("Warning: datadir not found in config file; using default datadir.")
@@ -309,15 +304,16 @@ def parse_args():
     parser.add_argument("--r5console", action="store_true",
                         help="Run the R5 console binary instead of the node binary. Must be used alone.")
 
-    parser.set_defaults(config_override=None)
+    parser.set_defaults(genesis=None)
+    parser.set_defaults(config=None)
+    
     args = parser.parse_args()
 
     advanced_flags = []
     if args.jsconsole:
         advanced_flags.append("--jsconsole")
-    if args.bypass is not None:
-        if len(args.bypass) > 0:
-            advanced_flags.append("--bypass")
+    if args.bypass is not None and len(args.bypass) > 0:
+        advanced_flags.append("--bypass")
     if args.cliwallet:
         advanced_flags.append("--cliwallet")
     if args.proxy is not None:
@@ -329,6 +325,7 @@ def parse_args():
     if advanced_flags and (args.network != "mainnet" or args.rpc or args.mode != "full" or args.miner is not None):
         parser.error("Advanced flags must be used alone; do not combine with --network, --rpc, --mode, or --miner.")
 
+    # If no advanced flags and no additional command-line arguments, load settings from node.ini.
     if not (args.jsconsole or args.bypass or args.cliwallet or args.proxy or args.r5console) and len(sys.argv) == 1:
         args = load_ini_config(args)
         print("Loaded settings from node.ini:")
@@ -337,8 +334,10 @@ def parse_args():
         print(f"  mode: {args.mode}")
         if args.miner is not None:
             print(f"  miner: {args.miner}")
-        if args.config_override:
-            print(f"  config file override: {args.config_override}")
+        if args.config:
+            print(f"  config file override: {args.config}")
+        if args.genesis:
+            print(f"  genesis override: {args.genesis}")
     return args
 
 def main():
@@ -399,7 +398,7 @@ def main():
             sys.exit(1)
         sys.exit(0)
     
-    # For non-mainnet networks, initialize genesis if needed.
+    # For networks other than mainnet, initialize genesis if needed.
     if args.network != "mainnet":
         init_genesis(args)
     
