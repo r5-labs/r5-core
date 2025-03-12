@@ -76,7 +76,7 @@ def build_relayer():
     print("Building relayer executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'python',
+        sys.executable,
         '-m',
         'PyInstaller',
         '--onefile',
@@ -96,7 +96,7 @@ def build_cliwallet():
     print("Building CLI wallet executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'python',
+        sys.executable,
         '-m',
         'PyInstaller',
         '--onefile',
@@ -116,7 +116,7 @@ def build_proxy():
     print("Building Proxy executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'python',
+        sys.executable,
         '-m',
         'PyInstaller',
         '--onefile',
@@ -136,7 +136,7 @@ def build_r5console():
     print("Building R5 Console executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'python',
+        sys.executable,
         '-m',
         'PyInstaller',
         '--onefile',
@@ -156,7 +156,7 @@ def build_scdev():
     print("Building SCdev executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'python',
+        sys.executable,
         '-m',
         'PyInstaller',
         '--onefile',
