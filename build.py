@@ -19,6 +19,21 @@ import sys
 import subprocess
 import shutil
 
+# --- SUDO check and virtual environment entry on Linux ---
+if sys.platform.startswith("linux"):
+    # Check for SUDO privileges.
+    if os.geteuid() != 0:
+        print("This script requires SUDO privileges to run. Please run with sudo.")
+        sys.exit(1)
+    # If not running from the virtual environment 'r5-venv', re-execute using it.
+    if "r5-venv" not in sys.executable:
+        venv_python = os.path.join(os.getcwd(), "r5-venv", "bin", "python")
+        if not os.path.exists(venv_python):
+            print("Virtual environment 'r5-venv' not found. Please run the install script first.")
+            sys.exit(1)
+        print("Entering virtual environment 'r5-venv'...")
+        os.execv(venv_python, [venv_python] + sys.argv)
+
 def handle_error(msg):
     print(f"Error: {msg}")
     sys.exit(1)
@@ -61,7 +76,9 @@ def build_relayer():
     print("Building relayer executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'pyinstaller',
+        'python',
+        '-m',
+        'PyInstaller',
         '--onefile',
         '--name', 'relayer',
         '--icon', 'icon.ico',
@@ -79,7 +96,9 @@ def build_cliwallet():
     print("Building CLI wallet executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'pyinstaller',
+        'python',
+        '-m',
+        'PyInstaller',
         '--onefile',
         '--name', 'cliwallet',
         '--icon', 'icon.ico',
@@ -97,7 +116,9 @@ def build_proxy():
     print("Building Proxy executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'pyinstaller',
+        'python',
+        '-m',
+        'PyInstaller',
         '--onefile',
         '--name', 'proxy',
         '--icon', 'icon.ico',
@@ -115,7 +136,9 @@ def build_r5console():
     print("Building R5 Console executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'pyinstaller',
+        'python',
+        '-m',
+        'PyInstaller',
         '--onefile',
         '--name', 'console',
         '--icon', 'icon.ico',
@@ -133,7 +156,9 @@ def build_scdev():
     print("Building SCdev executable...")
     # Prepare the pyinstaller command.
     cmd = [
-        'pyinstaller',
+        'python',
+        '-m',
+        'PyInstaller',
         '--onefile',
         '--name', 'scdev',
         '--icon', 'icon.ico',

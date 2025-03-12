@@ -19,6 +19,7 @@ import os
 import sys
 import subprocess
 import shutil
+import secrets  # Added for bootnode key generation
 
 DEFAULT_INI = """[R5 Node Relayer]
 network = mainnet
@@ -30,6 +31,23 @@ miner_threads = default
 genesis = default
 config = default
 """
+
+def ensure_bootnode_key():
+    """
+    Check for the existence of bootnode.key in the current directory.
+    If not found, generate a new 32-byte hex key, save it to bootnode.key,
+    and return the key. Otherwise, return the key from the file.
+    """
+    key_file = "bootnode.key"
+    if not os.path.exists(key_file):
+        key = secrets.token_hex(32)
+        with open(key_file, "w") as f:
+            f.write(key)
+        print(f"Bootnode key not found. Generated new bootnode key and stored in {key_file}.")
+    else:
+        with open(key_file, "r") as f:
+            key = f.read().strip()
+    return key
 
 def get_node_binary():
     """Return the full path to the node binary, adjusted for OS."""
@@ -185,6 +203,11 @@ def build_command(args):
             threads = "0"
         cmd.extend(["--miner.etherbase", coinbase, f"--miner.threads={threads}"])
     
+    # --- NEW: Bootnode handling ---
+    if args.bootnode:
+        bootnode_key = ensure_bootnode_key()
+        cmd.extend(["-nodekey", bootnode_key])
+    
     return cmd
 
 def build_jsconsole_command():
@@ -303,7 +326,10 @@ def parse_args():
                         help="Run the proxy binary instead of the node binary. Optionally specify 'gencert' to generate self-signed certificates. Must be used alone.")
     parser.add_argument("--r5console", action="store_true",
                         help="Run the R5 console binary instead of the node binary. Must be used alone.")
-
+    # New flag for bootnode handling.
+    parser.add_argument("--bootnode", action="store_true",
+                        help="If provided, look for a bootnode.key file in the directory; if not found, create one with a bootnode key and pass it to the node with -nodekey.")
+    
     parser.set_defaults(genesis=None)
     parser.set_defaults(config=None)
     

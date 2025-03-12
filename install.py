@@ -11,16 +11,21 @@
 # from, out of or in connection with the software or the use or
 # other dealings in the software.
 #
-# This script installs the necessary system dependencies (e.g. GCC, Golang 1.19)
-# and then installs the Python dependencies (via our consolidated setup.py).
-# Administrative access may be required.
-# Compatible with Windows, Linux, and macOS.
+# This script installs the necessary system dependencies (e.g. GCC, Golang 1.19),
+# installs extra packages (python‑is‑python3 and python3‑venv on Linux), and then
+# installs the Python dependencies. Administrative access may be required.
 #
 # Author: ZNX
 
 import sys
 import subprocess
 import os
+
+# --- SUDO check for Linux ---
+if sys.platform.startswith("linux"):
+    if os.geteuid() != 0:
+        print("This script requires SUDO privileges to run. Please run with sudo.")
+        sys.exit(1)
 
 def run_command(command, shell=False):
     try:
@@ -73,17 +78,15 @@ def install_package(package, installer):
     elif installer == 'choco':
         # For Windows with Chocolatey, specify version for golang.
         if package == 'golang':
-            # Adjust the version string as needed.
             cmd = [installer, 'install', 'golang', '--version=1.19.4', '-y']
         elif package == 'mingw-w64':
-            # Use the mingw-w64 package for GCC on Windows.
             cmd = [installer, 'install', 'mingw-w64', '-y']
         else:
             cmd = [installer, 'install', package, '-y']
     elif sys.platform.startswith('linux'):
-        # For Linux, we attempt to use snap for Go 1.19.
+        # For Linux, use apt-get (or snap for golang)
         if package == 'golang':
-            cmd = ['sudo', 'snap', 'install', 'go', '--channel=1.19/stable']
+            cmd = ['sudo', 'snap', 'install', 'go', '--channel=1.19/stable', '--classic']
         else:
             cmd = ['sudo', 'apt-get', 'install', '-y', package]
     else:
@@ -95,17 +98,18 @@ def install_package(package, installer):
 
 def install_system_dependencies():
     if sys.platform.startswith('linux'):
-        # For Linux, install Go via snap and gcc via apt-get.
+        # Install extra packages on Linux.
+        install_package('python-is-python3', 'apt-get')
+        install_package('python3-venv', 'apt-get')
+        # Install Go and gcc.
         install_package('golang', 'snap')
         install_package('gcc', 'apt-get')
     elif sys.platform.startswith('darwin'):
         installer = check_or_install_package_manager()
-        # For macOS, install Go 1.19 and gcc.
         install_package('go', installer)
         install_package('gcc', installer)
     elif sys.platform.startswith('win'):
         installer = check_or_install_package_manager()
-        # For Windows, install golang (specified with version) and mingw-w64 (which provides gcc).
         install_package('golang', installer)
         install_package('mingw-w64', installer)
     else:
@@ -114,21 +118,36 @@ def install_system_dependencies():
 
 def install_python_dependencies():
     """
-    Run pip install . to install the Python dependencies (and create console scripts)
-    from the root setup.py.
+    Installs Python dependencies from the root setup.py using the system Python.
     """
-    print("Installing Python dependencies from setup.py...")
+    print("Installing Python dependencies from setup.py using the system Python...")
     try:
-        # Using sys.executable to get the current Python interpreter.
         subprocess.check_call([sys.executable, "-m", "pip", "install", "."])
         print("Python dependencies installed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Failed to install Python dependencies: {e}")
         sys.exit(e.returncode)
 
+def setup_virtualenv():
+    """
+    Creates a virtual environment named 'r5-venv' and installs Python dependencies inside it.
+    """
+    if sys.platform.startswith('linux'):
+        venv_dir = "r5-venv"
+        if not os.path.exists(venv_dir):
+            print(f"Creating virtual environment in {venv_dir}...")
+            subprocess.check_call([sys.executable, "-m", "venv", venv_dir])
+        venv_python = os.path.join(venv_dir, "bin", "python")
+        print("Installing Python dependencies in the virtual environment...")
+        subprocess.check_call([venv_python, "-m", "pip", "install", "."])
+        print("Virtual environment setup and dependencies installed successfully.")
+
 def main():
     install_system_dependencies()
-    install_python_dependencies()
+    if sys.platform.startswith('linux'):
+        setup_virtualenv()
+    else:
+        install_python_dependencies()
     print("All dependencies installed successfully.")
 
 if __name__ == "__main__":
