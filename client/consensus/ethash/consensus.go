@@ -45,15 +45,17 @@ const (
 	supplyCapBlock uint64 = 1290406400
 )
 
+//
 // R5 proof-of-work protocol parameters.
+//
 var (
 	// Maximum number of uncle blocks allowed per block.
 	maxUncles = 2
 
-	// Allowed future block time updated to 7 seconds.
-	allowedFutureBlockTimeSeconds = int64(7)
+	// Allowed future block time updated from 7 seconds to 3 seconds.
+	allowedFutureBlockTimeSeconds = int64(3)
 
-	// Difficulty adjustment calculators (tuned for a 7-second target, using division by 2).
+	// Difficulty adjustment calculators tuned for a 3-second target.
 	calcDifficultyEip5133        = makeDifficultyCalculator()
 	calcDifficultyEip4345        = makeDifficultyCalculator()
 	calcDifficultyEip3554        = makeDifficultyCalculator()
@@ -263,16 +265,16 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 // Consolidated constants to avoid repeated allocations.
 //
 var (
-	big1          = big.NewInt(1)
-	big2          = big.NewInt(2)
-	bigMinus99    = big.NewInt(-99)
+	big1       = big.NewInt(1)
+	big2       = big.NewInt(2)
+	bigMinus99 = big.NewInt(-99)
 )
 
-// makeDifficultyCalculator creates a difficulty calculator tuned for a ~7‑second target.
-// It uses a divisor of 2 instead of 3.
+// makeDifficultyCalculator creates a difficulty calculator tuned for a ~3‑second target.
+// We now use a target divisor of 3 instead of 2.
 func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int {
-	// Set target divisor to 2 for a ~7-second block target.
-	bigTargetDivisor := big.NewInt(2)
+	// Set target divisor to 3 for a ~3‑second block target.
+	bigTargetDivisor := big.NewInt(3)
 	return func(time uint64, parent *types.Header) *big.Int {
 		bigTime := new(big.Int).SetUint64(time)
 		bigParentTime := new(big.Int).SetUint64(parent.Time)
@@ -299,13 +301,13 @@ func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int
 	}
 }
 
-// calcDifficultyHomestead computes the difficulty using Homestead rules tuned for a ~7‑second target.
+// calcDifficultyHomestead computes the difficulty using Homestead rules tuned for a ~3‑second target.
 func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	// Use a divisor of 2 instead of 10.
-	bigTargetDivisor := big.NewInt(2)
+	// Use a divisor of 3 for a ~3‑second target.
+	bigTargetDivisor := big.NewInt(3)
 
 	x := new(big.Int)
 	y := new(big.Int)
@@ -324,15 +326,15 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	return x
 }
 
-// calcDifficultyFrontier computes the difficulty using Frontier rules tuned for a ~7‑second target.
+// calcDifficultyFrontier computes the difficulty using Frontier rules tuned for a ~3‑second target.
 func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
 	diff := new(big.Int)
 	adjust := new(big.Int).Div(parent.Difficulty, params.DifficultyBoundDivisor)
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	// Use a hardcoded 7-second target for comparison.
-	targetBlockTime := big.NewInt(7)
+	// Use a hardcoded 3-second target for comparison.
+	targetBlockTime := big.NewInt(3)
 	if bigTime.Sub(bigTime, bigParentTime).Cmp(targetBlockTime) < 0 {
 		diff.Add(parent.Difficulty, adjust)
 	} else {
@@ -472,7 +474,7 @@ func (r5 *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 }
 
 //
-// New Function: calculateCirculatingSupply
+// New Function: CalculateCirculatingSupply
 //
 // This function computes the cumulative supply based on the block number,
 // according to the current Super Epoch emission schedule.
