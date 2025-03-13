@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,

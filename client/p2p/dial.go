@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -331,7 +331,7 @@ func (d *dialScheduler) logStats() {
 		return
 	}
 	if d.dialPeers < dialStatsPeerLimit && d.dialPeers < d.maxDialPeers {
-		d.log.Info("Looking For Peer Network Nodes", "peercount", len(d.peers), "tried", d.doneSinceLastLog, "static", len(d.static))
+		d.log.Info("Looking for peers", "peercount", len(d.peers), "tried", d.doneSinceLastLog, "static", len(d.static))
 	}
 	d.doneSinceLastLog = 0
 	d.lastStatsLog = now

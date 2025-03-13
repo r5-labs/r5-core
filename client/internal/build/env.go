@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -93,7 +93,7 @@ func Env() Environment {
 
 // LocalEnv returns build environment metadata gathered from git.
 func LocalEnv() Environment {
-	env := applyEnvFlags(Environment{Name: "local", Repo: "ethereum/go-ethereum"})
+	env := applyEnvFlags(Environment{Name: "local", Repo: "r5-labs/r5-core"})
 
 	head := readGitFile("HEAD")
 	if fields := strings.Fields(head); len(fields) == 2 {

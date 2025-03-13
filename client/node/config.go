@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -288,7 +288,7 @@ func (c *Config) NodeName() string {
 	name := c.name()
 	// Backwards compatibility: previous versions used title-cased "Geth", keep that.
 	if name == "geth" || name == "geth-testnet" {
-		name = "R5"
+		name = "Geth"
 	}
 	if c.UserIdent != "" {
 		name += "/" + c.UserIdent

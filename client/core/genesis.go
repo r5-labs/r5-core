@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -298,10 +298,10 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, triedb *trie.Database, gen
 	stored := rawdb.ReadCanonicalHash(db, 0)
 	if (stored == common.Hash{}) {
 		if genesis == nil {
-			log.Info("Initializing Default Genesis Block...")
+			log.Info("Writing default main-net genesis block")
 			genesis = DefaultGenesisBlock()
 		} else {
-			log.Info("Initializing Custom Genesis Block...")
+			log.Info("Writing custom genesis block")
 		}
 		block, err := genesis.Commit(db, triedb)
 		if err != nil {
@@ -521,7 +521,7 @@ func DefaultGenesisBlock() *Genesis {
 		Config:     params.MainnetChainConfig,
 		Nonce:      0,
 		ExtraData:  hexutil.MustDecode("0x"),
-		GasLimit:   250000000,
+		GasLimit:   147000000,
 		Difficulty: big.NewInt(1),
 		Alloc:      nil,
 	}

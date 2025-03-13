@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -343,8 +343,8 @@ func UnsolicitedNeighbors(t *utesting.T) {
 		Nodes: []v4wire.Node{{
 			ID:  encFakeKey,
 			IP:  net.IP{1, 2, 3, 4},
-			UDP: 30303,
-			TCP: 30303,
+			UDP: 30135,
+			TCP: 30135,
 		}},
 	}
 	te.send(te.l1, &neighbors)

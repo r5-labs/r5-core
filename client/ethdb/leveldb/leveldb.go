@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -111,7 +111,7 @@ func NewCustom(file string, namespace string, customize func(options *opt.Option
 	if options.ReadOnly {
 		logCtx = append(logCtx, "readonly", "true")
 	}
-	logger.Info("Allocated Cache and File Handles", logCtx...)
+	logger.Info("Allocated cache and file handles", logCtx...)
 
 	// Open the db and recover any potential corruptions
 	db, err := leveldb.OpenFile(file, options)

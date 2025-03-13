@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -476,10 +476,10 @@ func New(config Config, notify []string, noverify bool) *Ethash {
 		config.CachesInMem = 1
 	}
 	if config.CacheDir != "" && config.CachesOnDisk > 0 {
-		config.Log.Info("Disk Storage Enabled for Mining Caches", "dir", config.CacheDir, "count", config.CachesOnDisk)
+		config.Log.Info("Disk storage enabled for ethash caches", "dir", config.CacheDir, "count", config.CachesOnDisk)
 	}
 	if config.DatasetDir != "" && config.DatasetsOnDisk > 0 {
-		config.Log.Info("Disk Storage Enabled for Mining DAGs", "dir", config.DatasetDir, "count", config.DatasetsOnDisk)
+		config.Log.Info("Disk storage enabled for ethash DAGs", "dir", config.DatasetDir, "count", config.DatasetsOnDisk)
 	}
 	ethash := &Ethash{
 		config:   config,

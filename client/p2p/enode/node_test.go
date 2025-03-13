@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -43,7 +43,7 @@ func TestPythonInterop(t *testing.T) {
 		wantID  = HexID("a448f24c6d18e575453db13171562b71999873db5b286df957af199ec94617f7")
 		wantSeq = uint64(1)
 		wantIP  = enr.IPv4{127, 0, 0, 1}
-		wantUDP = enr.UDP(30303)
+		wantUDP = enr.UDP(30135)
 	)
 	if n.Seq() != wantSeq {
 		t.Errorf("wrong seq: got %d, want %d", n.Seq(), wantSeq)

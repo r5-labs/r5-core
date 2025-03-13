@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -313,7 +313,7 @@ func NewLevelDBDatabase(file string, cache int, handles int, namespace string, r
 	if err != nil {
 		return nil, err
 	}
-	log.Info("Using LevelDB")
+	log.Info("Using LevelDB as the backing database")
 	return NewDatabase(db), nil
 }
 
@@ -372,7 +372,7 @@ func openKeyValueDatabase(o OpenOptions) (ethdb.Database, error) {
 	if len(o.Type) != 0 && o.Type != dbLeveldb {
 		return nil, fmt.Errorf("unknown db.engine %v", o.Type)
 	}
-	log.Info("Using LevelDB")
+	log.Info("Using leveldb as the backing database")
 	// Use leveldb, either as default (no explicit choice), or pre-existing, or chosen explicitly
 	return NewLevelDBDatabase(o.Directory, o.Cache, o.Handles, o.Namespace, o.ReadOnly)
 }

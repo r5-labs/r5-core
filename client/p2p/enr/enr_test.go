@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -221,7 +221,7 @@ func TestGetSetOverwrite(t *testing.T) {
 // TestSignEncodeAndDecode tests signing, RLP encoding and RLP decoding of a record.
 func TestSignEncodeAndDecode(t *testing.T) {
 	var r Record
-	r.Set(UDP(30303))
+	r.Set(UDP(30135))
 	r.Set(IPv4{127, 0, 0, 1})
 	require.NoError(t, signTest([]byte{5}, &r))
 

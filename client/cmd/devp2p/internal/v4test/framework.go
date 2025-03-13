@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -56,10 +56,10 @@ func newTestEnv(remote string, listen1, listen2 string) *testenv {
 			ip = net.ParseIP("127.0.0.1")
 		}
 		if tcpPort = node.TCP(); tcpPort == 0 {
-			tcpPort = 30303
+			tcpPort = 30135
 		}
 		if udpPort = node.TCP(); udpPort == 0 {
-			udpPort = 30303
+			udpPort = 30135
 		}
 		node = enode.NewV4(node.Pubkey(), ip, tcpPort, udpPort)
 	}

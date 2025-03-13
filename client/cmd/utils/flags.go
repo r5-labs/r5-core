@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -804,7 +804,7 @@ var (
 	ListenPortFlag = &cli.IntFlag{
 		Name:     "port",
 		Usage:    "Network listening port",
-		Value:    30303,
+		Value:    30135,
 		Category: flags.NetworkingCategory,
 	}
 	BootnodesFlag = &cli.StringFlag{
@@ -852,7 +852,7 @@ var (
 	DiscoveryPortFlag = &cli.IntFlag{
 		Name:     "discovery.port",
 		Usage:    "Use a custom UDP port for P2P discovery",
-		Value:    30303,
+		Value:    30135,
 		Category: flags.NetworkingCategory,
 	}
 
@@ -1414,7 +1414,7 @@ func SetP2PConfig(ctx *cli.Context, cfg *p2p.Config) {
 	if lightClient {
 		ethPeers = 0
 	}
-	log.Info("Maximum Peer Count", "ETH", ethPeers, "LES", lightPeers, "total", cfg.MaxPeers)
+	log.Info("Maximum peer count", "ETH", ethPeers, "LES", lightPeers, "total", cfg.MaxPeers)
 
 	if ctx.IsSet(MaxPendingPeersFlag.Name) {
 		cfg.MaxPendingPeers = ctx.Int(MaxPendingPeersFlag.Name)
@@ -1833,7 +1833,7 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		cfg.RPCGasCap = ctx.Uint64(RPCGlobalGasCapFlag.Name)
 	}
 	if cfg.RPCGasCap != 0 {
-		log.Info("Set Global Gas Cap", "cap", cfg.RPCGasCap)
+		log.Info("Set global gas cap", "cap", cfg.RPCGasCap)
 	} else {
 		log.Info("Global gas cap disabled")
 	}

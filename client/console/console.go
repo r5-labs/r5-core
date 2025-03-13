@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -25,11 +25,10 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/r5-labs/r5-core/internal/jsre/deps"
-
 	"github.com/dop251/goja"
 	"github.com/r5-labs/r5-core/console/prompt"
 	"github.com/r5-labs/r5-core/internal/jsre"
+	"github.com/r5-labs/r5-core/internal/jsre/deps"
 	"github.com/r5-labs/r5-core/internal/web3ext"
 	"github.com/r5-labs/r5-core/log"
 	"github.com/r5-labs/r5-core/rpc"
@@ -321,7 +320,7 @@ func (c *Console) Welcome() {
 
 	// Print some generic Geth metadata
 	if res, err := c.jsre.Run(`
-		var message = "Instance: R5 Core \n";
+		var message = "Instance: R5 v0.0.5 \n";
 		try {
 			message += "Coinbase: " + eth.coinbase + "\n";
 		} catch (err) {}

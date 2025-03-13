@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -18,10 +18,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/r5-labs/r5-core/internal/jsre/deps"
-
 	"github.com/dop251/goja"
 	"github.com/r5-labs/r5-core/internal/ethapi"
+	"github.com/r5-labs/r5-core/internal/jsre/deps"
 	"github.com/r5-labs/r5-core/log"
 	"github.com/r5-labs/r5-core/signer/core"
 	"github.com/r5-labs/r5-core/signer/storage"

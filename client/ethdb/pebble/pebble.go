@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -122,7 +122,7 @@ func New(file string, cache int, handles int, namespace string, readonly bool) (
 		handles = minHandles
 	}
 	logger := log.New("database", file)
-	logger.Info("Allocated Cache and File Handles", "cache", common.StorageSize(cache*1024*1024), "handles", handles)
+	logger.Info("Allocated cache and file handles", "cache", common.StorageSize(cache*1024*1024), "handles", handles)
 
 	// The max memtable size is limited by the uint32 offsets stored in
 	// internal/arenaskl.node, DeferredBatchOp, and flushableBatchEntry.

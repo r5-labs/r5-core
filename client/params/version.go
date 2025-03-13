@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -17,9 +17,9 @@ import (
 )
 
 const (
-	VersionMajor = 1        // Major version component of the current release
+	VersionMajor = 0        // Major version component of the current release
 	VersionMinor = 0        // Minor version component of the current release
-	VersionPatch = 0        // Patch version component of the current release
+	VersionPatch = 4        // Patch version component of the current release
 	VersionMeta  = "stable" // Version metadata to append to the version string
 )
 

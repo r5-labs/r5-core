@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -82,10 +82,10 @@ var Defaults = Config{
 	FilterLogCacheSize:      32,
 	Miner:                   miner.DefaultConfig,
 	TxPool:                  txpool.DefaultConfig,
-	RPCGasCap:               250000000,
+	RPCGasCap:               147000000,
 	RPCEVMTimeout:           5 * time.Second,
 	GPO:                     FullNodeGPO,
-	RPCTxFeeCap:             1, // 1 ether
+	RPCTxFeeCap:             1, // 1 r5
 }
 
 func init() {

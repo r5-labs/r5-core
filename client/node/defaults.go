@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -57,7 +57,7 @@ var DefaultConfig = Config{
 	GraphQLVirtualHosts: []string{"localhost"},
 	P2P: p2p.Config{
 		ListenAddr: ":30135",
-		MaxPeers:   75,
+		MaxPeers:   50,
 		NAT:        nat.Any(),
 	},
 	DBEngine: "",
@@ -71,25 +71,24 @@ func DefaultDataDir() string {
 	if home != "" {
 		switch runtime.GOOS {
 		case "darwin":
-			return filepath.Join(home, "Library", "R5")
+			return filepath.Join(home, "Library", "Ethereum")
 		case "windows":
 			// We used to put everything in %HOME%\AppData\Roaming, but this caused
 			// problems with non-typical setups. If this fallback location exists and
 			// is non-empty, use it, otherwise DTRT and check %LOCALAPPDATA%.
-			fallback := filepath.Join(home, "AppData", "Roaming", "R5")
+			fallback := filepath.Join(home, "AppData", "Roaming", "Ethereum")
 			appdata := windowsAppData()
 			if appdata == "" || isNonEmptyDir(fallback) {
 				return fallback
 			}
-			return filepath.Join(appdata, "R5")
+			return filepath.Join(appdata, "Ethereum")
 		default:
-			return filepath.Join(home, ".r5")
+			return filepath.Join(home, ".ethereum")
 		}
 	}
 	// As we cannot guess a stable location, return empty and handle later
 	return ""
 }
-
 
 func windowsAppData() string {
 	v := os.Getenv("LOCALAPPDATA")

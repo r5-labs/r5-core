@@ -18,25 +18,25 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/bloombits"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/event"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/rpc"
+	ethereum "github.com/r5-codebase/r5-core"
+	"github.com/r5-codebase/r5-core/accounts"
+	"github.com/r5-codebase/r5-core/common"
+	"github.com/r5-codebase/r5-core/consensus"
+	"github.com/r5-codebase/r5-core/core"
+	"github.com/r5-codebase/r5-core/core/bloombits"
+	"github.com/r5-codebase/r5-core/core/state"
+	"github.com/r5-codebase/r5-core/core/types"
+	"github.com/r5-codebase/r5-core/core/vm"
+	"github.com/r5-codebase/r5-core/ethdb"
+	"github.com/r5-codebase/r5-core/event"
+	"github.com/r5-codebase/r5-core/params"
+	"github.com/r5-codebase/r5-core/rpc"
 )
 
 // Backend interface provides the common API services (that are provided by
 // both full and light clients) with access to necessary functions.
 type Backend interface {
-	// General Ethereum API
+	// General API
 	SyncProgress() ethereum.SyncProgress
 
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
@@ -84,8 +84,6 @@ type Backend interface {
 	Engine() consensus.Engine
 
 	// This is copied from filters.Backend
-	// eth/filters needs to be initialized from this backend type, so methods needed by
-	// it must also be included here.
 	GetBody(ctx context.Context, hash common.Hash, number rpc.BlockNumber) (*types.Body, error)
 	GetLogs(ctx context.Context, blockHash common.Hash, number uint64) ([][]*types.Log, error)
 	SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEvent) event.Subscription
@@ -119,6 +117,20 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 		}, {
 			Namespace: "personal",
 			Service:   NewPersonalAccountAPI(apiBackend, nonceLock),
+		},
+		// R5 Custom API Endpoint: left for future custom endpoint development.
+		{
+			Namespace: "r5",
+			Service:   NewEthereumAPI(apiBackend),
+		}, {
+			Namespace: "r5",
+			Service:   NewBlockChainAPI(apiBackend),
+		}, {
+			Namespace: "r5",
+			Service:   NewTransactionAPI(apiBackend, nonceLock),
+		}, {
+			Namespace: "r5",
+			Service:   NewEthereumAccountAPI(apiBackend.AccountManager()),
 		},
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -148,7 +148,7 @@ func NewFreezer(datadir string, namespace string, readonly bool, maxTableSize ui
 	// Create the write batch.
 	freezer.writeBatch = newFreezerBatch(freezer)
 
-	log.Info("Opened Existing Database", "database", datadir, "readonly", readonly)
+	log.Info("Opened ancient database", "database", datadir, "readonly", readonly)
 	return freezer, nil
 }
 

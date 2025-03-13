@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -71,12 +71,12 @@ var (
 	tcpPortFlag = &cli.IntFlag{
 		Name:  "tcp",
 		Usage: "TCP port of the node",
-		Value: 30303,
+		Value: 30135,
 	}
 	udpPortFlag = &cli.IntFlag{
 		Name:  "udp",
 		Usage: "UDP port of the node",
-		Value: 30303,
+		Value: 30135,
 	}
 )
 
