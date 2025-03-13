@@ -32,6 +32,8 @@ genesis = default
 config = default
 """
 
+datadir = "blockchain"
+
 def ensure_bootnode_key():
     """
     Check for the existence of bootnode.key in the current directory.
@@ -368,6 +370,19 @@ def parse_args():
 
 def main():
     args = parse_args()
+    
+    # Determine the config file (either from args.config or by default)
+    if args.config:
+        config_file = args.config
+    else:
+        config_file = os.path.join("config", f"{args.network}.config")
+    
+    # Set the global datadir before any other command is executed
+    global datadir
+    datadir = get_datadir_from_config(config_file)
+    if not datadir:
+        print(f"Error: Could not determine datadir from {config_file}. Please ensure that DataDir is defined in the [Node] section.")
+        sys.exit(1)
     
     if args.jsconsole:
         cmd = build_jsconsole_command()

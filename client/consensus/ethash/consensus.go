@@ -53,7 +53,7 @@ var (
 	maxUncles = 2
 
 	// Allowed future block time
-	allowedFutureBlockTimeSeconds = int64(10)
+	allowedFutureBlockTimeSeconds = int64(3)
 
 	// Difficulty adjustment calculators tuned for a 3-second target.
 	calcDifficultyEip5133        = makeDifficultyCalculator()
