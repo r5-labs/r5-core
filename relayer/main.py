@@ -62,7 +62,7 @@ def get_jsconsole_ipc():
     if os.name == "nt":
         return r"\\.\pipe\r5"
     else:
-        return "r5.ipc"
+        return os.path.join(datadir, "r5")
 
 def get_cliwallet_binary():
     """Return the full path to the CLI Wallet binary, adjusted for OS."""

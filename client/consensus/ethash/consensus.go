@@ -52,8 +52,8 @@ var (
 	// Maximum number of uncle blocks allowed per block.
 	maxUncles = 2
 
-	// Allowed future block time updated from 7 seconds to 3 seconds.
-	allowedFutureBlockTimeSeconds = int64(3)
+	// Allowed future block time
+	allowedFutureBlockTimeSeconds = int64(10)
 
 	// Difficulty adjustment calculators tuned for a 3-second target.
 	calcDifficultyEip5133        = makeDifficultyCalculator()
