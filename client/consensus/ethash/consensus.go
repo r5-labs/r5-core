@@ -53,9 +53,9 @@ var (
 	maxUncles = 2
 
 	// Allowed future block time
-	allowedFutureBlockTimeSeconds = int64(3)
+	allowedFutureBlockTimeSeconds = int64(7)
 
-	// Difficulty adjustment calculators tuned for a 3-second target.
+	// Difficulty adjustment calculators tuned for a 7-second target.
 	calcDifficultyEip5133        = makeDifficultyCalculator()
 	calcDifficultyEip4345        = makeDifficultyCalculator()
 	calcDifficultyEip3554        = makeDifficultyCalculator()
@@ -274,7 +274,7 @@ var (
 // We now use a target divisor of 3 instead of 2.
 func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int {
 	// Set target divisor to 3 for a ~3‑second block target.
-	bigTargetDivisor := big.NewInt(3)
+	bigTargetDivisor := big.NewInt(7)
 	return func(time uint64, parent *types.Header) *big.Int {
 		bigTime := new(big.Int).SetUint64(time)
 		bigParentTime := new(big.Int).SetUint64(parent.Time)
@@ -307,7 +307,7 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
 	// Use a divisor of 3 for a ~3‑second target.
-	bigTargetDivisor := big.NewInt(3)
+	bigTargetDivisor := big.NewInt(7)
 
 	x := new(big.Int)
 	y := new(big.Int)
@@ -333,8 +333,8 @@ func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	// Use a hardcoded 3-second target for comparison.
-	targetBlockTime := big.NewInt(3)
+	// Use a hardcoded 7-second target for comparison.
+	targetBlockTime := big.NewInt(7)
 	if bigTime.Sub(bigTime, bigParentTime).Cmp(targetBlockTime) < 0 {
 		diff.Add(parent.Difficulty, adjust)
 	} else {
