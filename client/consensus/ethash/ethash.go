@@ -30,11 +30,11 @@ import (
 	"unsafe"
 
 	"github.com/edsrzf/mmap-go"
-	lrupkg "github.com/r5-codebase/r5-core/common/lru"
-	"github.com/r5-codebase/r5-core/consensus"
-	"github.com/r5-codebase/r5-core/log"
-	"github.com/r5-codebase/r5-core/metrics"
-	"github.com/r5-codebase/r5-core/rpc"
+	lrupkg "github.com/r5-labs/r5-core/common/lru"
+	"github.com/r5-labs/r5-core/consensus"
+	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/rpc"
 )
 
 var ErrInvalidDumpMagic = errors.New("invalid dump magic")
