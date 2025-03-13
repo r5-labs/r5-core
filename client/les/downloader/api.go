@@ -16,7 +16,7 @@ import (
 	"context"
 	"sync"
 
-	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core"
 	"github.com/r5-labs/r5-core/event"
 	"github.com/r5-labs/r5-core/rpc"
 )

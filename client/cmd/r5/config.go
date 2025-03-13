@@ -22,7 +22,6 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/naoina/toml"
 	"github.com/r5-labs/r5-core/accounts/external"
 	"github.com/r5-labs/r5-core/accounts/keystore"
 	"github.com/r5-labs/r5-core/accounts/scwallet"
@@ -37,6 +36,7 @@ import (
 	"github.com/r5-labs/r5-core/metrics"
 	"github.com/r5-labs/r5-core/node"
 	"github.com/r5-labs/r5-core/params"
+	"github.com/naoina/toml"
 )
 
 var (

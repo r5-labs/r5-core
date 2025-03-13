@@ -23,13 +23,13 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/golang/protobuf/proto"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/accounts/usbwallet/trezor"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/common/hexutil"
 	"github.com/r5-labs/r5-core/core/types"
 	"github.com/r5-labs/r5-core/log"
+	"github.com/golang/protobuf/proto"
 )
 
 // ErrTrezorPINNeeded is returned if opening the trezor requires a PIN code. In

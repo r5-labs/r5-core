@@ -1866,7 +1866,7 @@ func testRepair(t *testing.T, tt *rewindTest, snapshots bool) {
 	}
 }
 
-// TestIssue23496 tests scenario described in https://github.com/r5-labscore/pull/23496#issuecomment-926393893
+// TestIssue23496 tests scenario described in https://github.com/r5-labs/r5-core/pull/23496#issuecomment-926393893
 // Credits to @zzyalbert for finding the issue.
 //
 // Local chain owns these blocks:

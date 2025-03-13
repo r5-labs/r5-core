@@ -26,8 +26,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gorilla/websocket"
-	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/common/mclock"
 	"github.com/r5-labs/r5-core/consensus"
@@ -41,6 +40,7 @@ import (
 	"github.com/r5-labs/r5-core/node"
 	"github.com/r5-labs/r5-core/p2p"
 	"github.com/r5-labs/r5-core/rpc"
+	"github.com/gorilla/websocket"
 )
 
 const (
@@ -50,7 +50,7 @@ const (
 
 	// txChanSize is the size of channel listening to NewTxsEvent.
 	// The number is referenced from the size of tx pool.
-	txChanSize = 8192
+	txChanSize = 4096
 	// chainHeadChanSize is the size of channel listening to ChainHeadEvent.
 	chainHeadChanSize = 10
 

@@ -61,11 +61,11 @@ var Defaults = Config{
 	SyncMode: downloader.SnapSync,
 	Ethash: ethash.Config{
 		CacheDir:         "ethash",
-		CachesInMem:      3,
+		CachesInMem:      2,
 		CachesOnDisk:     3,
 		CachesLockMmap:   false,
 		DatasetsInMem:    1,
-		DatasetsOnDisk:   3,
+		DatasetsOnDisk:   2,
 		DatasetsLockMmap: false,
 	},
 	NetworkId:               135,
@@ -82,7 +82,7 @@ var Defaults = Config{
 	FilterLogCacheSize:      32,
 	Miner:                   miner.DefaultConfig,
 	TxPool:                  txpool.DefaultConfig,
-	RPCGasCap:               147000000,
+	RPCGasCap:               250000000,
 	RPCEVMTimeout:           5 * time.Second,
 	GPO:                     FullNodeGPO,
 	RPCTxFeeCap:             1, // 1 ether

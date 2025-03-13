@@ -30,7 +30,6 @@ import (
 	"strings"
 	"time"
 
-	pcsclite "github.com/gballet/go-libpcsclite"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/accounts/keystore"
 	"github.com/r5-labs/r5-core/common"
@@ -71,6 +70,7 @@ import (
 	"github.com/r5-labs/r5-core/params"
 	"github.com/r5-labs/r5-core/rlp"
 	"github.com/r5-labs/r5-core/rpc"
+	pcsclite "github.com/gballet/go-libpcsclite"
 	gopsutil "github.com/shirou/gopsutil/mem"
 	"github.com/urfave/cli/v2"
 )

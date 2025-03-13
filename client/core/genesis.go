@@ -298,10 +298,10 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, triedb *trie.Database, gen
 	stored := rawdb.ReadCanonicalHash(db, 0)
 	if (stored == common.Hash{}) {
 		if genesis == nil {
-			log.Info("Writing default main-net genesis block")
+			log.Info("Initializing Default Genesis Block...")
 			genesis = DefaultGenesisBlock()
 		} else {
-			log.Info("Writing custom genesis block")
+			log.Info("Initializing Custom Genesis Block...")
 		}
 		block, err := genesis.Commit(db, triedb)
 		if err != nil {
@@ -515,19 +515,15 @@ func (g *Genesis) MustCommit(db ethdb.Database) *types.Block {
 	return block
 }
 
-// DefaultGenesisBlock returns the R5 main net genesis block.
+// DefaultGenesisBlock returns the Ethereum main net genesis block.
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
 		Config:     params.MainnetChainConfig,
 		Nonce:      0,
 		ExtraData:  hexutil.MustDecode("0x"),
-		GasLimit:   147000000,
+		GasLimit:   250000000,
 		Difficulty: big.NewInt(1),
-		Alloc: GenesisAlloc{
-			common.HexToAddress("0xc657de8D48cAB170e98782815670f8B019005473"): {
-				Balance: new(big.Int).Mul(big.NewInt(2000000), big.NewInt(1000000000000000000)),
-			},
-		},
+		Alloc:      nil,
 	}
 }
 

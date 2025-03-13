@@ -50,7 +50,7 @@ func TestTestMode(t *testing.T) {
 }
 
 // This test checks that cache lru logic doesn't crash under load.
-// It reproduces https://github.com/r5-labscore/issues/14943
+// It reproduces https://github.com/r5-labs/r5-core/issues/14943
 func TestCacheFileEvict(t *testing.T) {
 	// TODO: t.TempDir fails to remove the directory on Windows
 	// \AppData\Local\Temp\1\TestCacheFileEvict2179435125\001\cache-R23-0000000000000000: Access is denied.

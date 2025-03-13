@@ -21,13 +21,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/karalabe/usb"
-	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/core/types"
 	"github.com/r5-labs/r5-core/crypto"
 	"github.com/r5-labs/r5-core/log"
+	"github.com/karalabe/usb"
 )
 
 // Maximum time between wallet health checks to detect USB unplugs.

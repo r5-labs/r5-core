@@ -182,7 +182,7 @@ func New(file string, cache int, handles int, namespace string, readonly bool) (
 			WriteStallEnd:   db.onWriteStallEnd,
 		},
 	}
-	// Disable seek compaction explicitly. Check https://github.com/r5-labscore/pull/20130
+	// Disable seek compaction explicitly. Check https://github.com/r5-labs/r5-core/pull/20130
 	// for more details.
 	opt.Experimental.ReadSamplingMultiplier = -1
 

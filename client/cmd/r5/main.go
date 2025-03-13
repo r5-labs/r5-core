@@ -10,8 +10,7 @@
 // from, out of or in connection with the software or the use or
 // other dealings in the software.
 
-// r5 is the official command-line client for R5.
-// (This version white-labels the "eth" domain by additionally exposing an "r5" API namespace.)
+// geth is the official command-line client for Ethereum.
 package main
 
 import (
@@ -45,8 +44,7 @@ import (
 )
 
 const (
-	// clientIdentifier is the identifier advertised over the network.
-	clientIdentifier = "r5-core"
+	clientIdentifier = "geth" // Client identifier to advertise over the network
 )
 
 var (
@@ -267,27 +265,35 @@ func main() {
 }
 
 // prepare manipulates memory cache allowance and setups metric system.
-// This function should be called before launching the devp2p stack.
+// This function should be called before launching devp2p stack.
 func prepare(ctx *cli.Context) {
 	// If we're running a known preset, log it for convenience.
 	switch {
 	case ctx.IsSet(utils.RinkebyFlag.Name):
-		log.Info("Starting R5 on Rinkeby testnet...")
+		log.Info("Starting Geth on Rinkeby testnet...")
 
 	case ctx.IsSet(utils.GoerliFlag.Name):
-		log.Info("Starting R5 on Görli testnet...")
+		log.Info("Starting Geth on Görli testnet...")
 
 	case ctx.IsSet(utils.SepoliaFlag.Name):
-		log.Info("Starting R5 on Sepolia testnet...")
+		log.Info("Starting Geth on Sepolia testnet...")
 
 	case ctx.IsSet(utils.DeveloperFlag.Name):
-		log.Info("Starting R5 in ephemeral dev mode...")
-		log.Warn(`You are running R5 in --dev mode. Please note the following:
-  1. This mode is only intended for fast, iterative development without assumptions on security or persistence.
-  2. The database is created in memory unless specified otherwise.
-  3. A random, pre-allocated developer account will be available and unlocked as eth.coinbase.
-  4. Mining is enabled by default if transactions are pending in the mempool.
-  5. Networking is disabled; there is no listen-address, maximum peers is set to 0, and discovery is disabled.
+		log.Info("Starting Geth in ephemeral dev mode...")
+		log.Warn(`You are running Geth in --dev mode. Please note the following:
+
+  1. This mode is only intended for fast, iterative development without assumptions on
+     security or persistence.
+  2. The database is created in memory unless specified otherwise. Therefore, shutting down
+     your computer or losing power will wipe your entire block data and chain state for
+     your dev environment.
+  3. A random, pre-allocated developer account will be available and unlocked as
+     eth.coinbase, which can be used for testing. The random dev account is temporary,
+     stored on a ramdisk, and will be lost if your machine is restarted.
+  4. Mining is enabled by default. However, the client will only seal blocks if transactions
+     are pending in the mempool. The miner's minimum accepted gas price is 1.
+  5. Networking is disabled; there is no listen-address, the maximum number of peers is set
+     to 0, and discovery is disabled.
 `)
 
 	case !ctx.IsSet(utils.NetworkIdFlag.Name):
@@ -295,10 +301,12 @@ func prepare(ctx *cli.Context) {
 	}
 	// If we're a full node on mainnet without --cache specified, bump default cache allowance
 	if ctx.String(utils.SyncModeFlag.Name) != "light" && !ctx.IsSet(utils.CacheFlag.Name) && !ctx.IsSet(utils.NetworkIdFlag.Name) {
+		// Make sure we're not on any supported preconfigured testnet either
 		if !ctx.IsSet(utils.SepoliaFlag.Name) &&
 			!ctx.IsSet(utils.RinkebyFlag.Name) &&
 			!ctx.IsSet(utils.GoerliFlag.Name) &&
 			!ctx.IsSet(utils.DeveloperFlag.Name) {
+			// Nope, we're really on mainnet. Bump that cache up!
 			log.Info("Bumping default cache on mainnet", "provided", ctx.Int(utils.CacheFlag.Name), "updated", 4096)
 			ctx.Set(utils.CacheFlag.Name, strconv.Itoa(4096))
 		}
@@ -317,6 +325,8 @@ func prepare(ctx *cli.Context) {
 }
 
 // geth is the main entry point into the system if no special subcommand is run.
+// It creates a default node based on the command line arguments and runs it in
+// blocking mode, waiting for it to be shut down.
 func geth(ctx *cli.Context) error {
 	if args := ctx.Args().Slice(); len(args) > 0 {
 		return fmt.Errorf("invalid command: %q", args[0])
@@ -331,8 +341,9 @@ func geth(ctx *cli.Context) error {
 	return nil
 }
 
-// startNode boots up the system node and all registered protocols, unlocks any requested accounts,
-// and starts the RPC/IPC interfaces and the miner.
+// startNode boots up the system node and all registered protocols, after which
+// it unlocks any requested accounts, and starts the RPC/IPC interfaces and the
+// miner.
 func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isConsole bool) {
 	debug.Memsize.Add("node", stack)
 
@@ -346,7 +357,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 	events := make(chan accounts.WalletEvent, 16)
 	stack.AccountManager().Subscribe(events)
 
-	// Create a client to interact with the local R5 node.
+	// Create a client to interact with local geth node.
 	rpcClient, err := stack.Attach()
 	if err != nil {
 		utils.Fatalf("Failed to attach to self: %v", err)
@@ -360,7 +371,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 				log.Warn("Failed to open wallet", "url", wallet.URL(), "err", err)
 			}
 		}
-		// Listen for wallet events until termination
+		// Listen for wallet event till termination
 		for event := range events {
 			switch event.Kind {
 			case accounts.WalletArrived:
@@ -370,12 +381,15 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 			case accounts.WalletOpened:
 				status, _ := event.Wallet.Status()
 				log.Info("New wallet appeared", "url", event.Wallet.URL(), "status", status)
+
 				var derivationPaths []accounts.DerivationPath
 				if event.Wallet.URL().Scheme == "ledger" {
 					derivationPaths = append(derivationPaths, accounts.LegacyLedgerBaseDerivationPath)
 				}
 				derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
+
 				event.Wallet.SelfDerive(derivationPaths, ethClient)
+
 			case accounts.WalletDropped:
 				log.Info("Old wallet dropped", "url", event.Wallet.URL())
 				event.Wallet.Close()
@@ -383,7 +397,8 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 		}
 	}()
 
-	// Optionally exit when synchronization is complete.
+	// Spawn a standalone goroutine for status synchronization monitoring,
+	// close the node when synchronization is complete if user required.
 	if ctx.Bool(utils.ExitWhenSyncedFlag.Name) {
 		go func() {
 			sub := stack.EventMux().Subscribe(downloader.DoneEvent{})
@@ -398,7 +413,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 					continue
 				}
 				if timestamp := time.Unix(int64(done.Latest.Time), 0); time.Since(timestamp) < 10*time.Minute {
-					log.Info("Synchronization completed", "latestnum", done.Latest.Number, "latesthash", done.Latest.Hash(),
+					log.Info("Synchronisation completed", "latestnum", done.Latest.Number, "latesthash", done.Latest.Hash(),
 						"age", common.PrettyAge(timestamp))
 					stack.Close()
 				}
@@ -408,6 +423,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 
 	// Start auxiliary services if enabled
 	if ctx.Bool(utils.MiningEnabledFlag.Name) || ctx.Bool(utils.DeveloperFlag.Name) {
+		// Mining only makes sense if a full node is running
 		if ctx.String(utils.SyncModeFlag.Name) == "light" {
 			utils.Fatalf("Light clients do not support mining")
 		}
@@ -415,8 +431,10 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 		if !ok {
 			utils.Fatalf("R5 service not running")
 		}
+		// Set the gas price to the limits from the CLI and start mining
 		gasprice := flags.GlobalBig(ctx, utils.MinerGasPriceFlag.Name)
 		ethBackend.TxPool().SetGasPrice(gasprice)
+		// start mining
 		threads := ctx.Int(utils.MinerThreadsFlag.Name)
 		if err := ethBackend.StartMining(threads); err != nil {
 			utils.Fatalf("Failed to start mining: %v", err)
@@ -433,9 +451,12 @@ func unlockAccounts(ctx *cli.Context, stack *node.Node) {
 			unlocks = append(unlocks, trimmed)
 		}
 	}
+	// Short circuit if there is no account to unlock.
 	if len(unlocks) == 0 {
 		return
 	}
+	// If insecure account unlocking is not allowed if node's APIs are exposed to external.
+	// Print warning log to user and skip unlocking.
 	if !stack.Config().InsecureUnlockAllowed && stack.Config().ExtRPCEnabled() {
 		utils.Fatalf("Account unlock with HTTP access is forbidden!")
 	}

@@ -22,7 +22,7 @@ import (
 	"testing"
 	"time"
 
-	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/consensus/ethash"
 	"github.com/r5-labs/r5-core/core"

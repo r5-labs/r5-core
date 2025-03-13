@@ -76,20 +76,6 @@ func (s *EthereumAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, e
 	return (*hexutil.Big)(tipcap), err
 }
 
-// GetSupply returns the current circulating supply as a hex string.
-// It retrieves the current block header from the backend and uses the
-// ethash.CalculateCirculatingSupply function to compute the supply.
-func (s *EthereumAPI) GetSupply(ctx context.Context) (string, error) {
-	header := s.b.CurrentHeader()
-	if header == nil {
-		return "", fmt.Errorf("no current block header available")
-	}
-	// Call the supply calculation function from the ethash package.
-	supply := ethash.CalculateCirculatingSupply(header.Number.Uint64())
-	// Return the supply as a hex string.
-	return fmt.Sprintf("0x%x", supply), nil
-}
-
 type feeHistoryResult struct {
 	OldestBlock  *hexutil.Big     `json:"oldestBlock"`
 	Reward       [][]*hexutil.Big `json:"reward,omitempty"`
@@ -523,7 +509,7 @@ func (s *PersonalAccountAPI) SignTransaction(ctx context.Context, args Transacti
 //
 // The key used to calculate the signature is decrypted with the given password.
 //
-// https://github.com/r5-labscore/wiki/Management-APIs#personal_sign
+// https://github.com/r5-labs/r5-core/wiki/Management-APIs#personal_sign
 func (s *PersonalAccountAPI) Sign(ctx context.Context, data hexutil.Bytes, addr common.Address, passwd string) (hexutil.Bytes, error) {
 	// Look up the wallet containing the requested signer
 	account := accounts.Account{Address: addr}
@@ -551,7 +537,7 @@ func (s *PersonalAccountAPI) Sign(ctx context.Context, data hexutil.Bytes, addr 
 // Note, the signature must conform to the secp256k1 curve R, S and V values, where
 // the V value must be 27 or 28 for legacy reasons.
 //
-// https://github.com/r5-labscore/wiki/Management-APIs#personal_ecRecover
+// https://github.com/r5-labs/r5-core/wiki/Management-APIs#personal_ecRecover
 func (s *PersonalAccountAPI) EcRecover(ctx context.Context, data, sig hexutil.Bytes) (common.Address, error) {
 	if len(sig) != crypto.SignatureLength {
 		return common.Address{}, fmt.Errorf("signature must be %d bytes long", crypto.SignatureLength)

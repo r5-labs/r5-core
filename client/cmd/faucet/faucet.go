@@ -35,7 +35,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/accounts/keystore"
 	"github.com/r5-labs/r5-core/cmd/utils"
@@ -54,6 +53,7 @@ import (
 	"github.com/r5-labs/r5-core/p2p/enode"
 	"github.com/r5-labs/r5-core/p2p/nat"
 	"github.com/r5-labs/r5-core/params"
+	"github.com/gorilla/websocket"
 )
 
 var (
@@ -459,7 +459,7 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 			id = username
 		default:
 			//lint:ignore ST1005 This error is to be displayed in the browser
-			err = errors.New("Something funky happened, please open an issue at https://github.com/r5-labscore/issues")
+			err = errors.New("Something funky happened, please open an issue at https://github.com/r5-labs/r5-core/issues")
 		}
 		if err != nil {
 			if err = sendError(wsconn, err); err != nil {
