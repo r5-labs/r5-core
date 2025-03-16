@@ -21,7 +21,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-labs/r5-core"
+	ethereum "github.com/r5-labs/r5-core"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/common/lru"
 	"github.com/r5-labs/r5-core/core"
@@ -164,7 +164,7 @@ const (
 const (
 	// txChanSize is the size of channel listening to NewTxsEvent.
 	// The number is referenced from the size of tx pool.
-	txChanSize = 4096
+	txChanSize = 8192
 	// rmLogsChanSize is the size of channel listening to RemovedLogsEvent.
 	rmLogsChanSize = 10
 	// logsChanSize is the size of channel listening to LogsEvent.

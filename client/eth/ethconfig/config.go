@@ -61,11 +61,11 @@ var Defaults = Config{
 	SyncMode: downloader.SnapSync,
 	Ethash: ethash.Config{
 		CacheDir:         "ethash",
-		CachesInMem:      2,
+		CachesInMem:      3,
 		CachesOnDisk:     3,
 		CachesLockMmap:   false,
 		DatasetsInMem:    1,
-		DatasetsOnDisk:   2,
+		DatasetsOnDisk:   3,
 		DatasetsLockMmap: false,
 	},
 	NetworkId:               135,

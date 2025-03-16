@@ -212,6 +212,8 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    import time
+    start = time.time()
     args = parse_args()
     if args.coreonly:
         # Build only the core binary and move it to /build.
@@ -220,6 +222,8 @@ def main():
         binary_name = "r5.exe" if sys.platform.startswith("win") else "r5"
         os.makedirs(dest_dir, exist_ok=True)
         move_core_binary(dest_dir, binary_name)
+        end = time.time()
+        print(f"\nBuilt R5 in {end - start:.2f} seconds")
         sys.exit(0)
 
     # Full build:
@@ -277,6 +281,8 @@ def main():
     move_file(src_scdev, dest_scdev)
 
     print("\nFull build completed successfully. The folder structure is ready for deployment.")
+    end = time.time()
+    print(f"R5 Build finished in {end - start:.2f} seconds")
 
 if __name__ == "__main__":
     main()
