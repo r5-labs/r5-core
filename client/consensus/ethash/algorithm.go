@@ -1,4 +1,4 @@
-// Copyright 2025 R5 Labs
+// Copyright 2025 R5
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -9,6 +9,14 @@
 // whether in an action of contract, tort or otherwise, arising
 // from, out of or in connection with the software or the use or
 // other dealings in the software.
+
+// ETHASH-R5 Implementation
+// --------------------------------------------------------------
+// Visit https://r5.network for more information
+// Miner software developers should adjust for the 4 extra mixing
+// rounds to generate correct hashes. Regular ETHASH miners won't
+// work with ETHASH-R5 if not adjusted accordingly.
+// --------------------------------------------------------------
 
 package ethash
 
@@ -332,43 +340,81 @@ func generateDataset(dest []uint32, epoch uint64, cache []uint32) {
 // hashimoto aggregates data from the full dataset in order to produce our final
 // value for a particular header hash and nonce.
 func hashimoto(hash []byte, nonce uint64, size uint64, lookup func(index uint32) []uint32) ([]byte, []byte) {
-	// Calculate the number of theoretical rows (we use one buffer nonetheless)
-	rows := uint32(size / mixBytes)
+    // -----------------------------------------------------------------------
+    // 1. Standard Hashimoto (inherited from standard Ethash)
+    // -----------------------------------------------------------------------
+    rows := uint32(size / mixBytes)
 
-	// Combine header+nonce into a 40 byte seed
-	seed := make([]byte, 40)
-	copy(seed, hash)
-	binary.LittleEndian.PutUint64(seed[32:], nonce)
+    // Combine header+nonce into a 40-byte seed
+    seed := make([]byte, 40)
+    copy(seed, hash)
+    binary.LittleEndian.PutUint64(seed[32:], nonce)
 
-	seed = crypto.Keccak512(seed)
-	seedHead := binary.LittleEndian.Uint32(seed)
+    // Keccak-512 of the seed
+    seed = crypto.Keccak512(seed)
+    seedHead := binary.LittleEndian.Uint32(seed)
 
-	// Start the mix with replicated seed
-	mix := make([]uint32, mixBytes/4)
-	for i := 0; i < len(mix); i++ {
-		mix[i] = binary.LittleEndian.Uint32(seed[i%16*4:])
-	}
-	// Mix in random dataset nodes
-	temp := make([]uint32, len(mix))
+    // Initialize the mix
+    mix := make([]uint32, mixBytes/4)
+    for i := 0; i < len(mix); i++ {
+        // replicate the 512-bit seed across mix
+        mix[i] = binary.LittleEndian.Uint32(seed[(i%16)*4:])
+    }
 
-	for i := 0; i < loopAccesses; i++ {
-		parent := fnv(uint32(i)^seedHead, mix[i%len(mix)]) % rows
-		for j := uint32(0); j < mixBytes/hashBytes; j++ {
-			copy(temp[j*hashWords:], lookup(2*parent+j))
-		}
-		fnvHash(mix, temp)
-	}
-	// Compress mix
-	for i := 0; i < len(mix); i += 4 {
-		mix[i/4] = fnv(fnv(fnv(mix[i], mix[i+1]), mix[i+2]), mix[i+3])
-	}
-	mix = mix[:len(mix)/4]
+    // Main loop: combine mix with pseudo-random data from the dataset
+    temp := make([]uint32, len(mix))
+    for i := 0; i < loopAccesses; i++ {
+        parent := fnv(uint32(i)^seedHead, mix[i%len(mix)]) % rows
+        for j := uint32(0); j < mixBytes/hashBytes; j++ {
+            copy(temp[j*hashWords:], lookup(2*parent+j))
+        }
+        fnvHash(mix, temp)
+    }
 
-	digest := make([]byte, common.HashLength)
-	for i, val := range mix {
-		binary.LittleEndian.PutUint32(digest[i*4:], val)
-	}
-	return digest, crypto.Keccak256(append(seed, digest...))
+    // Compress mix to a 32-byte digest
+    for i := 0; i < len(mix); i += 4 {
+        mix[i/4] = fnv(fnv(fnv(mix[i], mix[i+1]), mix[i+2]), mix[i+3])
+    }
+    mix = mix[:len(mix)/4]
+
+    digest := make([]byte, 32) // 32 bytes = common.HashLength
+    for i, val := range mix {
+        binary.LittleEndian.PutUint32(digest[i*4:], val)
+    }
+
+    // -----------------------------------------------------------------------
+    // 2. Ethash-R5 extension: four extra mixing rounds
+    //    (Keccak256 ∘ FNV_Mix)^4 applied to the digest
+    // -----------------------------------------------------------------------
+    extraKeccak := makeHasher(sha3.NewLegacyKeccak256())
+
+    for round := 0; round < 4; round++ {
+        // Interpret digest as array of uint32
+        extra := make([]uint32, len(digest)/4)
+        for i := 0; i < len(extra); i++ {
+            extra[i] = binary.LittleEndian.Uint32(digest[i*4:])
+        }
+
+        // FNV-mix the array with itself
+        // (you could mix with other data if your design requires)
+        fnvHash(extra, extra)
+
+        // Convert back to bytes
+        for i, val := range extra {
+            binary.LittleEndian.PutUint32(digest[i*4:], val)
+        }
+
+        // Keccak256 on the result
+        tmp := make([]byte, len(digest))
+        extraKeccak(tmp, digest)
+        copy(digest, tmp)
+    }
+
+    // -----------------------------------------------------------------------
+    // 3. Final hash remains the same: Keccak256(seed || digest)
+    // -----------------------------------------------------------------------
+    finalHash := crypto.Keccak256(append(seed, digest...))
+    return digest, finalHash
 }
 
 // hashimotoLight aggregates data from the full dataset (using only a small
@@ -1146,3 +1192,4 @@ var cacheSizes = [maxEpoch]uint64{
 	283377344, 283508416, 283639744, 283770304, 283901504, 284032576,
 	284163136, 284294848, 284426176, 284556992, 284687296, 284819264,
 	284950208, 285081536}
+	
