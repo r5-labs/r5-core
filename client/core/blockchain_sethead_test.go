@@ -16,9 +16,7 @@
 package core
 
 import (
-	"fmt"
 	"math/big"
-	"strings"
 	"testing"
 	"time"
 
@@ -48,7 +46,7 @@ type rewindTest struct {
 }
 
 //nolint:unused
-func (tt *rewindTest) dump(crash bool) string {
+/* func (tt *rewindTest) dump(crash bool) string {
 	buffer := new(strings.Builder)
 
 	fmt.Fprint(buffer, "Chain:\n  G")
@@ -139,7 +137,7 @@ func (tt *rewindTest) dump(crash bool) string {
 		fmt.Fprintf(buffer, "Expected head block     : C%d\n", tt.expHeadBlock)
 	}
 	return buffer.String()
-}
+} */
 
 // Tests a sethead for a short canonical chain where a recent block was already
 // committed to disk and then the sethead called. In this case we expect the full

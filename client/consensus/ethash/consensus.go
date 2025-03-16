@@ -699,11 +699,21 @@ func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 	ethash.Finalize(chain, header, state, txs, uncles, nil)
 
 	// Fee distribution:
-	// Compute fees as GasUsed * BaseFee (if BaseFee is set, else zero).
-	feeAmount := big.NewInt(0)
+	var feeAmount *big.Int
+	// If header.BaseFee is set (EIP-1559 style) use it...
 	if header.BaseFee != nil {
 		feeAmount = new(big.Int).Mul(big.NewInt(int64(header.GasUsed)), header.BaseFee)
+	} else {
+		// Otherwise, in our Berlin-style (pre-EIP1559) chain, compute fees as:
+		// Sum(tx.GasPrice * receipt.GasUsed) for all transactions.
+		feeAmount = big.NewInt(0)
+		for i, tx := range txs {
+			// Ensure receipts[i].GasUsed corresponds to tx[i].
+			fee := new(big.Int).Mul(tx.GasPrice(), big.NewInt(int64(receipts[i].GasUsed)))
+			feeAmount.Add(feeAmount, fee)
+		}
 	}
+
 	// Retrieve current total supply based on the block number.
 	totalSupply := CalculateCirculatingSupply(header.Number.Uint64())
 	// If total supply is below the cap, divert fees to the feePoolWallet.
@@ -716,7 +726,7 @@ func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 
 	// Assign the final state root to header.
 	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
-	// Assemble the block.
+	// Assemble and return the block.
 	return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
 }
 
