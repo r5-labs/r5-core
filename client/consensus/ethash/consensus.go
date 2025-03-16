@@ -22,7 +22,6 @@ import (
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/math"
 	"github.com/r5-labs/r5-core/consensus"
 	"github.com/r5-labs/r5-core/consensus/misc"
 	"github.com/r5-labs/r5-core/core/state"
@@ -359,7 +358,6 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 
 // Some weird constants to avoid constant memory allocs for them.
 var (
-	expDiffPeriod = big.NewInt(100000)
 	big1          = big.NewInt(1)
 	big2          = big.NewInt(2)
 	big9          = big.NewInt(9)
