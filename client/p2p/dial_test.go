@@ -48,18 +48,18 @@ func TestDialSchedDynDial(t *testing.T) {
 				{flags: dynDialedConn, node: newNode(uintID(0x02), "")},
 			},
 			discovered: []*enode.Node{
-				newNode(uintID(0x00), "127.0.0.1:30135"), // not dialed because already connected as static peer
-				newNode(uintID(0x02), "127.0.0.1:30135"), // ...
-				newNode(uintID(0x03), "127.0.0.1:30135"),
-				newNode(uintID(0x04), "127.0.0.1:30135"),
-				newNode(uintID(0x05), "127.0.0.1:30135"), // not dialed because there are only two slots
-				newNode(uintID(0x06), "127.0.0.1:30135"), // ...
-				newNode(uintID(0x07), "127.0.0.1:30135"), // ...
-				newNode(uintID(0x08), "127.0.0.1:30135"), // ...
+				newNode(uintID(0x00), "127.0.0.1:30337"), // not dialed because already connected as static peer
+				newNode(uintID(0x02), "127.0.0.1:30337"), // ...
+				newNode(uintID(0x03), "127.0.0.1:30337"),
+				newNode(uintID(0x04), "127.0.0.1:30337"),
+				newNode(uintID(0x05), "127.0.0.1:30337"), // not dialed because there are only two slots
+				newNode(uintID(0x06), "127.0.0.1:30337"), // ...
+				newNode(uintID(0x07), "127.0.0.1:30337"), // ...
+				newNode(uintID(0x08), "127.0.0.1:30337"), // ...
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x03), "127.0.0.1:30135"),
-				newNode(uintID(0x04), "127.0.0.1:30135"),
+				newNode(uintID(0x03), "127.0.0.1:30337"),
+				newNode(uintID(0x04), "127.0.0.1:30337"),
 			},
 		},
 
@@ -69,7 +69,7 @@ func TestDialSchedDynDial(t *testing.T) {
 				uintID(0x04),
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x05), "127.0.0.1:30135"),
+				newNode(uintID(0x05), "127.0.0.1:30337"),
 			},
 		},
 
@@ -82,7 +82,7 @@ func TestDialSchedDynDial(t *testing.T) {
 				uintID(0x05),
 			},
 			discovered: []*enode.Node{
-				newNode(uintID(0x09), "127.0.0.1:30135"), // not dialed because there are no free slots
+				newNode(uintID(0x09), "127.0.0.1:30337"), // not dialed because there are no free slots
 			},
 		},
 
@@ -95,18 +95,18 @@ func TestDialSchedDynDial(t *testing.T) {
 				uintID(0x02),
 			},
 			discovered: []*enode.Node{
-				newNode(uintID(0x0a), "127.0.0.1:30135"),
-				newNode(uintID(0x0b), "127.0.0.1:30135"),
-				newNode(uintID(0x0c), "127.0.0.1:30135"),
-				newNode(uintID(0x0d), "127.0.0.1:30135"),
-				newNode(uintID(0x0f), "127.0.0.1:30135"),
+				newNode(uintID(0x0a), "127.0.0.1:30337"),
+				newNode(uintID(0x0b), "127.0.0.1:30337"),
+				newNode(uintID(0x0c), "127.0.0.1:30337"),
+				newNode(uintID(0x0d), "127.0.0.1:30337"),
+				newNode(uintID(0x0f), "127.0.0.1:30337"),
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x06), "127.0.0.1:30135"),
-				newNode(uintID(0x07), "127.0.0.1:30135"),
-				newNode(uintID(0x08), "127.0.0.1:30135"),
-				newNode(uintID(0x09), "127.0.0.1:30135"),
-				newNode(uintID(0x0a), "127.0.0.1:30135"),
+				newNode(uintID(0x06), "127.0.0.1:30337"),
+				newNode(uintID(0x07), "127.0.0.1:30337"),
+				newNode(uintID(0x08), "127.0.0.1:30337"),
+				newNode(uintID(0x09), "127.0.0.1:30337"),
+				newNode(uintID(0x0a), "127.0.0.1:30337"),
 			},
 		},
 	})
@@ -117,14 +117,14 @@ func TestDialSchedNetRestrict(t *testing.T) {
 	t.Parallel()
 
 	nodes := []*enode.Node{
-		newNode(uintID(0x01), "127.0.0.1:30135"),
-		newNode(uintID(0x02), "127.0.0.2:30135"),
-		newNode(uintID(0x03), "127.0.0.3:30135"),
-		newNode(uintID(0x04), "127.0.0.4:30135"),
-		newNode(uintID(0x05), "127.0.2.5:30135"),
-		newNode(uintID(0x06), "127.0.2.6:30135"),
-		newNode(uintID(0x07), "127.0.2.7:30135"),
-		newNode(uintID(0x08), "127.0.2.8:30135"),
+		newNode(uintID(0x01), "127.0.0.1:30337"),
+		newNode(uintID(0x02), "127.0.0.2:30337"),
+		newNode(uintID(0x03), "127.0.0.3:30337"),
+		newNode(uintID(0x04), "127.0.0.4:30337"),
+		newNode(uintID(0x05), "127.0.2.5:30337"),
+		newNode(uintID(0x06), "127.0.2.6:30337"),
+		newNode(uintID(0x07), "127.0.2.7:30337"),
+		newNode(uintID(0x08), "127.0.2.8:30337"),
 	}
 	config := dialConfig{
 		netRestrict:    new(netutil.Netlist),
@@ -161,28 +161,28 @@ func TestDialSchedStaticDial(t *testing.T) {
 		// aren't yet connected.
 		{
 			peersAdded: []*conn{
-				{flags: dynDialedConn, node: newNode(uintID(0x01), "127.0.0.1:30135")},
-				{flags: dynDialedConn, node: newNode(uintID(0x02), "127.0.0.2:30135")},
+				{flags: dynDialedConn, node: newNode(uintID(0x01), "127.0.0.1:30337")},
+				{flags: dynDialedConn, node: newNode(uintID(0x02), "127.0.0.2:30337")},
 			},
 			update: func(d *dialScheduler) {
 				// These two are not dialed because they're already connected
 				// as dynamic peers.
-				d.addStatic(newNode(uintID(0x01), "127.0.0.1:30135"))
-				d.addStatic(newNode(uintID(0x02), "127.0.0.2:30135"))
+				d.addStatic(newNode(uintID(0x01), "127.0.0.1:30337"))
+				d.addStatic(newNode(uintID(0x02), "127.0.0.2:30337"))
 				// These nodes will be dialed:
-				d.addStatic(newNode(uintID(0x03), "127.0.0.3:30135"))
-				d.addStatic(newNode(uintID(0x04), "127.0.0.4:30135"))
-				d.addStatic(newNode(uintID(0x05), "127.0.0.5:30135"))
-				d.addStatic(newNode(uintID(0x06), "127.0.0.6:30135"))
-				d.addStatic(newNode(uintID(0x07), "127.0.0.7:30135"))
-				d.addStatic(newNode(uintID(0x08), "127.0.0.8:30135"))
-				d.addStatic(newNode(uintID(0x09), "127.0.0.9:30135"))
+				d.addStatic(newNode(uintID(0x03), "127.0.0.3:30337"))
+				d.addStatic(newNode(uintID(0x04), "127.0.0.4:30337"))
+				d.addStatic(newNode(uintID(0x05), "127.0.0.5:30337"))
+				d.addStatic(newNode(uintID(0x06), "127.0.0.6:30337"))
+				d.addStatic(newNode(uintID(0x07), "127.0.0.7:30337"))
+				d.addStatic(newNode(uintID(0x08), "127.0.0.8:30337"))
+				d.addStatic(newNode(uintID(0x09), "127.0.0.9:30337"))
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x03), "127.0.0.3:30135"),
-				newNode(uintID(0x04), "127.0.0.4:30135"),
-				newNode(uintID(0x05), "127.0.0.5:30135"),
-				newNode(uintID(0x06), "127.0.0.6:30135"),
+				newNode(uintID(0x03), "127.0.0.3:30337"),
+				newNode(uintID(0x04), "127.0.0.4:30337"),
+				newNode(uintID(0x05), "127.0.0.5:30337"),
+				newNode(uintID(0x06), "127.0.0.6:30337"),
 			},
 		},
 		// Dial to 0x03 completes, filling a peer slot. One slot remains,
@@ -202,21 +202,21 @@ func TestDialSchedStaticDial(t *testing.T) {
 				uintID(0x06): nil,
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x08), "127.0.0.8:30135"),
-				newNode(uintID(0x09), "127.0.0.9:30135"),
+				newNode(uintID(0x08), "127.0.0.8:30337"),
+				newNode(uintID(0x09), "127.0.0.9:30337"),
 			},
 		},
 		// Peer 0x01 drops and 0x07 connects as inbound peer.
 		// Only 0x01 is dialed.
 		{
 			peersAdded: []*conn{
-				{flags: inboundConn, node: newNode(uintID(0x07), "127.0.0.7:30135")},
+				{flags: inboundConn, node: newNode(uintID(0x07), "127.0.0.7:30337")},
 			},
 			peersRemoved: []enode.ID{
 				uintID(0x01),
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x01), "127.0.0.1:30135"),
+				newNode(uintID(0x01), "127.0.0.1:30337"),
 			},
 		},
 	})
@@ -234,12 +234,12 @@ func TestDialSchedRemoveStatic(t *testing.T) {
 		// Add static nodes.
 		{
 			update: func(d *dialScheduler) {
-				d.addStatic(newNode(uintID(0x01), "127.0.0.1:30135"))
-				d.addStatic(newNode(uintID(0x02), "127.0.0.2:30135"))
-				d.addStatic(newNode(uintID(0x03), "127.0.0.3:30135"))
+				d.addStatic(newNode(uintID(0x01), "127.0.0.1:30337"))
+				d.addStatic(newNode(uintID(0x02), "127.0.0.2:30337"))
+				d.addStatic(newNode(uintID(0x03), "127.0.0.3:30337"))
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x01), "127.0.0.1:30135"),
+				newNode(uintID(0x01), "127.0.0.1:30337"),
 			},
 		},
 		// Dial to 0x01 fails.
@@ -251,16 +251,16 @@ func TestDialSchedRemoveStatic(t *testing.T) {
 				uintID(0x01): nil,
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x02), "127.0.0.2:30135"),
+				newNode(uintID(0x02), "127.0.0.2:30337"),
 			},
 		},
 		// All static nodes are removed. 0x01 is in history, 0x02 is being
 		// dialed, 0x03 is in staticPool.
 		{
 			update: func(d *dialScheduler) {
-				d.removeStatic(newNode(uintID(0x01), "127.0.0.1:30135"))
-				d.removeStatic(newNode(uintID(0x02), "127.0.0.2:30135"))
-				d.removeStatic(newNode(uintID(0x03), "127.0.0.3:30135"))
+				d.removeStatic(newNode(uintID(0x01), "127.0.0.1:30337"))
+				d.removeStatic(newNode(uintID(0x02), "127.0.0.2:30337"))
+				d.removeStatic(newNode(uintID(0x03), "127.0.0.3:30337"))
 			},
 			failed: []enode.ID{
 				uintID(0x02),
@@ -287,7 +287,7 @@ func TestDialSchedManyStaticNodes(t *testing.T) {
 			},
 			update: func(d *dialScheduler) {
 				for id := uint16(0); id < 2000; id++ {
-					n := newNode(uintID(id), "127.0.0.1:30135")
+					n := newNode(uintID(id), "127.0.0.1:30337")
 					d.addStatic(n)
 				}
 			},
@@ -298,10 +298,10 @@ func TestDialSchedManyStaticNodes(t *testing.T) {
 				uintID(0xFFFF),
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x0085), "127.0.0.1:30135"),
-				newNode(uintID(0x02dc), "127.0.0.1:30135"),
-				newNode(uintID(0x0285), "127.0.0.1:30135"),
-				newNode(uintID(0x00cb), "127.0.0.1:30135"),
+				newNode(uintID(0x0085), "127.0.0.1:30337"),
+				newNode(uintID(0x02dc), "127.0.0.1:30337"),
+				newNode(uintID(0x0285), "127.0.0.1:30337"),
+				newNode(uintID(0x00cb), "127.0.0.1:30337"),
 			},
 		},
 	})
@@ -318,14 +318,14 @@ func TestDialSchedHistory(t *testing.T) {
 	runDialTest(t, config, []dialTestRound{
 		{
 			update: func(d *dialScheduler) {
-				d.addStatic(newNode(uintID(0x01), "127.0.0.1:30135"))
-				d.addStatic(newNode(uintID(0x02), "127.0.0.2:30135"))
-				d.addStatic(newNode(uintID(0x03), "127.0.0.3:30135"))
+				d.addStatic(newNode(uintID(0x01), "127.0.0.1:30337"))
+				d.addStatic(newNode(uintID(0x02), "127.0.0.2:30337"))
+				d.addStatic(newNode(uintID(0x03), "127.0.0.3:30337"))
 			},
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x01), "127.0.0.1:30135"),
-				newNode(uintID(0x02), "127.0.0.2:30135"),
-				newNode(uintID(0x03), "127.0.0.3:30135"),
+				newNode(uintID(0x01), "127.0.0.1:30337"),
+				newNode(uintID(0x02), "127.0.0.2:30337"),
+				newNode(uintID(0x03), "127.0.0.3:30337"),
 			},
 		},
 		// No new tasks are launched in this round because all static
@@ -348,7 +348,7 @@ func TestDialSchedHistory(t *testing.T) {
 		// The cache entry for node 0x03 has expired and is retried.
 		{
 			wantNewDials: []*enode.Node{
-				newNode(uintID(0x03), "127.0.0.3:30135"),
+				newNode(uintID(0x03), "127.0.0.3:30337"),
 			},
 		},
 	})
@@ -362,8 +362,8 @@ func TestDialSchedResolve(t *testing.T) {
 		maxDialPeers:   1,
 	}
 	node := newNode(uintID(0x01), "")
-	resolved := newNode(uintID(0x01), "127.0.0.1:30135")
-	resolved2 := newNode(uintID(0x01), "127.0.0.55:30135")
+	resolved := newNode(uintID(0x01), "127.0.0.1:30337")
+	resolved2 := newNode(uintID(0x01), "127.0.0.55:30337")
 	runDialTest(t, config, []dialTestRound{
 		{
 			update: func(d *dialScheduler) {

@@ -44,7 +44,7 @@ import (
 )
 
 const (
-	clientIdentifier = "r5" // Client identifier to advertise over the network
+	clientIdentifier = "r5-core" // Client identifier to advertise over the network
 )
 
 var (

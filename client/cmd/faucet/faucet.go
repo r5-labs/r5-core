@@ -35,6 +35,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gorilla/websocket"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/accounts/keystore"
 	"github.com/r5-labs/r5-core/cmd/utils"
@@ -53,13 +54,12 @@ import (
 	"github.com/r5-labs/r5-core/p2p/enode"
 	"github.com/r5-labs/r5-core/p2p/nat"
 	"github.com/r5-labs/r5-core/params"
-	"github.com/gorilla/websocket"
 )
 
 var (
 	genesisFlag = flag.String("genesis", "", "Genesis json file to seed the chain with")
 	apiPortFlag = flag.Int("apiport", 8080, "Listener port for the HTTP API connection")
-	ethPortFlag = flag.Int("ethport", 30135, "Listener port for the devp2p connection")
+	ethPortFlag = flag.Int("ethport", 30337, "Listener port for the devp2p connection")
 	bootFlag    = flag.String("bootnodes", "", "Comma separated bootnode enode URLs to seed with")
 	netFlag     = flag.Uint64("network", 0, "Network ID to use for the Ethereum protocol")
 	statsFlag   = flag.String("ethstats", "", "Ethstats network monitoring auth string")

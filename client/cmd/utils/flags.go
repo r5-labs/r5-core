@@ -30,6 +30,7 @@ import (
 	"strings"
 	"time"
 
+	pcsclite "github.com/gballet/go-libpcsclite"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/accounts/keystore"
 	"github.com/r5-labs/r5-core/common"
@@ -70,7 +71,6 @@ import (
 	"github.com/r5-labs/r5-core/params"
 	"github.com/r5-labs/r5-core/rlp"
 	"github.com/r5-labs/r5-core/rpc"
-	pcsclite "github.com/gballet/go-libpcsclite"
 	gopsutil "github.com/shirou/gopsutil/mem"
 	"github.com/urfave/cli/v2"
 )
@@ -804,7 +804,7 @@ var (
 	ListenPortFlag = &cli.IntFlag{
 		Name:     "port",
 		Usage:    "Network listening port",
-		Value:    30135,
+		Value:    30337,
 		Category: flags.NetworkingCategory,
 	}
 	BootnodesFlag = &cli.StringFlag{
@@ -852,7 +852,7 @@ var (
 	DiscoveryPortFlag = &cli.IntFlag{
 		Name:     "discovery.port",
 		Usage:    "Use a custom UDP port for P2P discovery",
-		Value:    30135,
+		Value:    30337,
 		Category: flags.NetworkingCategory,
 	}
 

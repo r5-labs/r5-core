@@ -343,8 +343,8 @@ func UnsolicitedNeighbors(t *utesting.T) {
 		Nodes: []v4wire.Node{{
 			ID:  encFakeKey,
 			IP:  net.IP{1, 2, 3, 4},
-			UDP: 30135,
-			TCP: 30135,
+			UDP: 30337,
+			TCP: 30337,
 		}},
 	}
 	te.send(te.l1, &neighbors)
