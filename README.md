@@ -10,12 +10,18 @@ R5 revisits the proof‑of‑work consensus mechanism to create a high‑perform
 
 Please note that these are the **minimum** hardware requirements for running each one of the node types specified. For more information, including **recommended** harware specs, please visit https://docs.r5.network/for-developers/hardware-requirements.
 
-| Description | Archive Nodes  | Full Nodes     | Light Nodes   |
-| ----------- | -------------- | -------------- | ------------- |
-| CPU Cores   | 12             | 4              | 2             |
-| RAM         | 10 GB          | 8 GB           | 2 GB          |
-| Storage     | SSD 1 TB       | SSD 240 GB     | HDD 1GB       |
-| Network     | Stable 125MB/s | Stable 100MB/s | Stable 10MB/s |
+| Description | RPC Nodes      | Archive Nodes  | Full Nodes     | Light Nodes   |
+| ----------- | -------------- | -------------- | -------------- | ------------- |
+| CPU Cores   | 12             | 12             | 4              | 2             |
+| RAM         | 32 GB          | 10 GB          | 8 GB           | 2 GB          |
+| Storage     | NVMe >240GB*   | SSD 1 TB       | SSD 240 GB     | HDD 1GB       |
+| Network     | Stable 125MB/s | Stable 125MB/s | Stable 100MB/s | Stable 10MB/s |
+
+*RPC Node storage requirements will vary based on the type of underlying node (Archive or Full).*
+
+### What happens if I bypass the minimum hardware requirements?
+
+There are hardcoded checks that will prevent the node from starting, but if you bypass those, there is a good chance that your node will either be unstable - best case scenario - or it will try to sync, but due to not being able to "keep up" with the rest of the network, it will fork and stop. The **Light Node** hardware requirements are very basic, and meant to support even "outdated" and "old" devices, and you can always opt to run a light node if your machine doesn't meet the minimum requirements for a Full or an Archive node.
 
 ## Pre-Requisites
 
