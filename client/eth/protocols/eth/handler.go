@@ -136,7 +136,7 @@ func nodeInfo(chain *core.BlockChain, network uint64) *NodeInfo {
 	hash := head.Hash()
 
 	return &NodeInfo{
-		Network:    135,
+		Network:    337,
 		Difficulty: chain.GetTd(hash, head.Number.Uint64()),
 		Genesis:    chain.Genesis().Hash(),
 		Config:     chain.Config(),

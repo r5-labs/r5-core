@@ -52,7 +52,7 @@ var (
 
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
-		ChainID:             big.NewInt(135),
+		ChainID:             big.NewInt(337),
 		HomesteadBlock:      big.NewInt(0),
 		EIP150Block:         big.NewInt(0),
 		EIP155Block:         big.NewInt(0),
@@ -281,7 +281,7 @@ var (
 	// NonActivatedConfig defines the chain configuration without activating
 	// any protocol change (EIPs).
 	NonActivatedConfig = &ChainConfig{
-		ChainID:                       big.NewInt(135),
+		ChainID:                       big.NewInt(337),
 		HomesteadBlock:                nil,
 		DAOForkBlock:                  nil,
 		DAOForkSupport:                false,
