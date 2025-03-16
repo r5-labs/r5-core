@@ -17,7 +17,10 @@ package core
 
 import (
 	"bytes"
+	"fmt"
 	"math/big"
+	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -151,7 +154,7 @@ func (basic *snapshotTestBasic) verify(t *testing.T, chain *BlockChain, blocks [
 }
 
 //nolint:unused
-/* func (basic *snapshotTestBasic) dump() string {
+func (basic *snapshotTestBasic) dump() string {
 	buffer := new(strings.Builder)
 
 	fmt.Fprint(buffer, "Chain:\n  G")
@@ -203,7 +206,7 @@ func (basic *snapshotTestBasic) teardown() {
 	basic.db.Close()
 	basic.genDb.Close()
 	os.RemoveAll(basic.datadir)
-} */
+}
 
 // snapshotTest is a test case type for normal snapshot recovery.
 // It can be used for testing that restart Geth normally.
@@ -439,7 +442,7 @@ func TestRestartWithNewSnapshot(t *testing.T) {
 		},
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
 
 // Tests a Geth was crashed and restarts with a broken snapshot. In this case the
@@ -478,7 +481,7 @@ func TestNoCommitCrashWithNewSnapshot(t *testing.T) {
 		},
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
 
 // Tests a Geth was crashed and restarts with a broken snapshot. In this case the
@@ -517,7 +520,7 @@ func TestLowCommitCrashWithNewSnapshot(t *testing.T) {
 		},
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
 
 // Tests a Geth was crashed and restarts with a broken snapshot. In this case
@@ -556,7 +559,7 @@ func TestHighCommitCrashWithNewSnapshot(t *testing.T) {
 		},
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
 
 // Tests a Geth was running with snapshot enabled. Then restarts without
@@ -594,7 +597,7 @@ func TestGappedNewSnapshot(t *testing.T) {
 		gapped: 2,
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
 
 // Tests the Geth was running with snapshot enabled and resetHead is applied.
@@ -632,7 +635,7 @@ func TestSetHeadWithNewSnapshot(t *testing.T) {
 		setHead: 4,
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
 
 // Tests the Geth was running with a complete snapshot and then imports a few
@@ -670,5 +673,5 @@ func TestRecoverSnapshotFromWipingCrash(t *testing.T) {
 		newBlocks: 2,
 	}
 	test.test(t)
-//	test.teardown()
+	test.teardown()
 }
