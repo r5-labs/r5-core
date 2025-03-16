@@ -412,84 +412,65 @@ func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int
 	}
 }
 
-// calcDifficultyHomestead is the difficulty adjustment algorithm. It returns
-// the difficulty that a new block should have when created at time given the
-// parent block's time and difficulty. The calculation uses the Homestead rules.
+// calcDifficultyHomestead computes the block difficulty using Homestead rules
+// without applying any exponential bomb factor.
 func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
-	// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
-	// algorithm:
-	// diff = (parent_diff +
-	//         (parent_diff / 2048 * max(1 - (block_timestamp - parent_timestamp) // 10, -99))
-	//        ) + 2^(periodCount - 2)
-
+	// According to EIP-2, the formula is:
+	// diff = parent_diff + (parent_diff / 2048 * max(1 - (block_timestamp - parent_timestamp) // 10, -99))
+	
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	// holds intermediate values to make the algo easier to read & audit
+	// x will hold the adjustment factor: 1 - ((time - parent.Time) // 10)
 	x := new(big.Int)
+	// y will temporarily hold parent_diff / 2048.
 	y := new(big.Int)
 
-	// 1 - (block_timestamp - parent_timestamp) // 10
+	// Compute (time - parent.Time) // 10
 	x.Sub(bigTime, bigParentTime)
-	x.Div(x, big10)
-	x.Sub(big1, x)
+	x.Div(x, big10) // big10 is assumed to be big.NewInt(10)
+	// Now compute: 1 - (time - parent.Time)//10
+	x.Sub(big1, x) // big1 is assumed to be big.NewInt(1)
 
-	// max(1 - (block_timestamp - parent_timestamp) // 10, -99)
-	if x.Cmp(bigMinus99) < 0 {
+	// Ensure the adjustment is at least -99
+	if x.Cmp(bigMinus99) < 0 { // bigMinus99 is assumed to be big.NewInt(-99)
 		x.Set(bigMinus99)
 	}
-	// (parent_diff + parent_diff // 2048 * max(1 - (block_timestamp - parent_timestamp) // 10, -99))
+
+	// Compute parent_diff / 2048 (params.DifficultyBoundDivisor should equal 11, i.e. 2^11 = 2048)
 	y.Div(parent.Difficulty, params.DifficultyBoundDivisor)
+	// Multiply adjustment factor by (parent_diff / 2048)
 	x.Mul(y, x)
+	// Add the adjustment to the parent difficulty
 	x.Add(parent.Difficulty, x)
 
-	// minimum difficulty can ever be (before exponential factor)
+	// Ensure difficulty does not fall below the minimum threshold
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
-	}
-	// for the exponential factor
-	periodCount := new(big.Int).Add(parent.Number, big1)
-	periodCount.Div(periodCount, expDiffPeriod)
-
-	// the exponential factor, commonly referred to as "the bomb"
-	// diff = diff + 2^(periodCount - 2)
-	if periodCount.Cmp(big1) > 0 {
-		y.Sub(periodCount, big2)
-		y.Exp(big2, y, nil)
-		x.Add(x, y)
 	}
 	return x
 }
 
-// calcDifficultyFrontier is the difficulty adjustment algorithm. It returns the
-// difficulty that a new block should have when created at time given the parent
-// block's time and difficulty. The calculation uses the Frontier rules.
+// calcDifficultyFrontier computes the block difficulty using Frontier rules
+// without any exponential bomb component.
 func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
 	diff := new(big.Int)
+	// Calculate adjustment = parent_diff / 2048
 	adjust := new(big.Int).Div(parent.Difficulty, params.DifficultyBoundDivisor)
-	bigTime := new(big.Int)
-	bigParentTime := new(big.Int)
+	
+	bigTime := new(big.Int).SetUint64(time)
+	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	bigTime.SetUint64(time)
-	bigParentTime.SetUint64(parent.Time)
-
+	// If the time difference is less than the duration limit, increase difficulty;
+	// otherwise, decrease it.
 	if bigTime.Sub(bigTime, bigParentTime).Cmp(params.DurationLimit) < 0 {
 		diff.Add(parent.Difficulty, adjust)
 	} else {
 		diff.Sub(parent.Difficulty, adjust)
 	}
+	// Ensure the difficulty does not drop below the minimum
 	if diff.Cmp(params.MinimumDifficulty) < 0 {
 		diff.Set(params.MinimumDifficulty)
-	}
-
-	periodCount := new(big.Int).Add(parent.Number, big1)
-	periodCount.Div(periodCount, expDiffPeriod)
-	if periodCount.Cmp(big1) > 0 {
-		// diff = diff + 2^(periodCount - 2)
-		expDiff := periodCount.Sub(periodCount, big2)
-		expDiff.Exp(big2, expDiff, nil)
-		diff.Add(diff, expDiff)
-		diff = math.BigMax(diff, params.MinimumDifficulty)
 	}
 	return diff
 }
