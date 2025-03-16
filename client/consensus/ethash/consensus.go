@@ -28,9 +28,7 @@ import (
 	"github.com/r5-labs/r5-core/core/state"
 	"github.com/r5-labs/r5-core/core/types"
 	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/rlp"
 	"github.com/r5-labs/r5-core/trie"
-	"golang.org/x/crypto/sha3"
 )
 
 // Ethash-R5 proof-of-work protocol constants.
@@ -689,9 +687,15 @@ func (ethash *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.
 // FinalizeAndAssemble finalizes the block by applying rewards and fee distribution.
 // Transaction fees are diverted to the feePoolWallet (the global variable) if the
 // total supply is below the cap; otherwise, fees go to the miner.
-func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB,
-	txs []*types.Transaction, uncles []*types.Header, receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error) {
-
+func (ethash *Ethash) FinalizeAndAssemble(
+	chain consensus.ChainHeaderReader,
+	header *types.Header,
+	state *state.StateDB,
+	txs []*types.Transaction,
+	uncles []*types.Header,
+	receipts []*types.Receipt,
+	withdrawals []*types.Withdrawal,
+) (*types.Block, error) {
 	if len(withdrawals) > 0 {
 		return nil, errors.New("ethash does not support withdrawals")
 	}
@@ -699,55 +703,35 @@ func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 	ethash.Finalize(chain, header, state, txs, uncles, nil)
 
 	// Fee distribution:
-	// Compute fees as GasUsed * BaseFee (if BaseFee is set, else zero).
+	// Initialize feeAmount to zero.
 	feeAmount := big.NewInt(0)
+	// If header.BaseFee is set (EIP-1559 style), use it.
 	if header.BaseFee != nil {
-		feeAmount = new(big.Int).Mul(big.NewInt(int64(header.GasUsed)), header.BaseFee)
+		// feeAmount = block.GasUsed * header.BaseFee
+		feeAmount.Mul(big.NewInt(int64(header.GasUsed)), header.BaseFee)
+	} else {
+		// Berlin-style: sum over transactions: fee = Σ(tx.GasPrice() * receipt.GasUsed)
+		for i, tx := range txs {
+			// Call tx.GasPrice() to obtain the *big.Int fee value.
+			txFee := new(big.Int).Mul(tx.GasPrice(), big.NewInt(int64(receipts[i].GasUsed)))
+			feeAmount.Add(feeAmount, txFee)
+		}
 	}
-	// Retrieve current total supply based on the block number.
+
+	// Retrieve the current total supply based on the block number.
 	totalSupply := CalculateCirculatingSupply(header.Number.Uint64())
-	// If total supply is below the cap, divert fees to the feePoolWallet.
+
+	// Divert fees: if total supply is below the cap, send fees to feePoolWallet; else to the miner.
 	if totalSupply.Cmp(SupplyCap) < 0 {
 		state.AddBalance(feePoolWallet, feeAmount)
 	} else {
-		// Otherwise, fees go to the miner.
 		state.AddBalance(header.Coinbase, feeAmount)
 	}
 
-	// Assign the final state root to header.
+	// Compute the final state root after fee distribution.
 	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
-	// Assemble the block.
+	// Assemble and return the block.
 	return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
-}
-
-// SealHash returns the hash of a block prior to it being sealed.
-func (ethash *Ethash) SealHash(header *types.Header) (hash common.Hash) {
-	hasher := sha3.NewLegacyKeccak256()
-
-	enc := []interface{}{
-		header.ParentHash,
-		header.UncleHash,
-		header.Coinbase,
-		header.Root,
-		header.TxHash,
-		header.ReceiptHash,
-		header.Bloom,
-		header.Difficulty,
-		header.Number,
-		header.GasLimit,
-		header.GasUsed,
-		header.Time,
-		header.Extra,
-	}
-	if header.BaseFee != nil {
-		enc = append(enc, header.BaseFee)
-	}
-	if header.WithdrawalsHash != nil {
-		panic("withdrawal hash set on ethash")
-	}
-	rlp.Encode(hasher, enc)
-	hasher.Sum(hash[:0])
-	return hash
 }
 
 // Some weird constants to avoid constant memory allocs for them.
