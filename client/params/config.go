@@ -462,7 +462,7 @@ func (c *ChainConfig) Description() string {
 			banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
 		}
 	default:
-		banner += "Consensus: PoW (Ethash)\n"
+		banner += "Consensus/Algorithm: PoW/Ethash-R5\n"
 	}
 	banner += "\n"
 

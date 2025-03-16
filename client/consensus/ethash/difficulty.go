@@ -15,15 +15,15 @@ package ethash
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/core/types"
 	"github.com/holiman/uint256"
+	"github.com/r5-labs/r5-core/core/types"
 )
 
 const (
 	// frontierDurationLimit is for Frontier:
 	// The decision boundary on the blocktime duration used to determine
 	// whether difficulty should go up or down.
-	frontierDurationLimit = 13
+	frontierDurationLimit = 7
 	// minimumDifficulty The minimum that the difficulty may ever be.
 	minimumDifficulty = 131072
 	// difficultyBoundDivisorBitShift is the bound divisor of the difficulty (2048),
@@ -59,7 +59,7 @@ func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
 	adjust.Rsh(adjust, difficultyBoundDivisor) // adjust = parent.difficulty / 2048
 
 	// Compute time adjustment factor.
-	x := (time - parent.Time) / 10
+	x := (time - parent.Time) / 7
 	neg := true
 	if x == 0 {
 		x = 1
@@ -90,10 +90,10 @@ func MakeDifficultyCalculatorU256() func(time uint64, parent *types.Header) *big
 		/*
 			Byzantium adjustment:
 			child_diff = parent_diff + (parent_diff / 2048) * adjustment_factor
-			where adjustment_factor = |( (timestamp - parent_timestamp) / 9 - C)|
+			where adjustment_factor = |( (timestamp - parent_timestamp) / 7 - C)|
 			and C = 1 if no uncles, 2 if uncles exist, capped at 99.
 		*/
-		x := (time - parent.Time) / 9
+		x := (time - parent.Time) / 7
 		c := uint64(1)
 		if parent.UncleHash != types.EmptyUncleHash {
 			c = 2

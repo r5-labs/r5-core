@@ -26,14 +26,14 @@ import (
 	"syscall"
 
 	"github.com/dop251/goja"
+	"github.com/mattn/go-colorable"
+	"github.com/peterh/liner"
 	"github.com/r5-labs/r5-core/console/prompt"
 	"github.com/r5-labs/r5-core/internal/jsre"
 	"github.com/r5-labs/r5-core/internal/jsre/deps"
 	"github.com/r5-labs/r5-core/internal/web3ext"
 	"github.com/r5-labs/r5-core/log"
 	"github.com/r5-labs/r5-core/rpc"
-	"github.com/mattn/go-colorable"
-	"github.com/peterh/liner"
 )
 
 var (
@@ -318,9 +318,9 @@ func (c *Console) AutoCompleteInput(line string, pos int) (string, []string, str
 func (c *Console) Welcome() {
 	message := "Welcome to the CLI console for your R5 Node.\n\n"
 
-	// Print some generic Geth metadata
+	// Print some generic metadata
 	if res, err := c.jsre.Run(`
-		var message = "Instance: R5 v0.0.5 \n";
+		var message = "Instance: R5 Core \n";
 		try {
 			message += "Coinbase: " + eth.coinbase + "\n";
 		} catch (err) {}

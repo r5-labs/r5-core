@@ -21,6 +21,7 @@ import (
 	"time"
 
 	mapset "github.com/deckarep/golang-set/v2"
+	"github.com/holiman/uint256"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/consensus"
 	"github.com/r5-labs/r5-core/consensus/misc"
@@ -38,7 +39,7 @@ var (
 	ByzantiumBlockReward          = big.NewInt(1e+18) // Block reward in wei for successfully mining a block upward from Byzantium
 	ConstantinopleBlockReward     = big.NewInt(1e+18) // Block reward in wei for successfully mining a block upward from Constantinople
 	maxUncles                     = 2                 // Maximum number of uncles allowed in a single block
-	allowedFutureBlockTimeSeconds = int64(15)         // Max seconds from current time allowed for blocks, before they're considered future blocks
+	allowedFutureBlockTimeSeconds = int64(8)         // Max seconds from current time allowed for blocks, before they're considered future blocks
 
 	// calcDifficultyEip5133 is the difficulty adjustment algorithm as specified by EIP 5133.
 	// It offsets the bomb a total of 11.4M blocks.
@@ -358,91 +359,88 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 
 // Some weird constants to avoid constant memory allocs for them.
 var (
-	big1          = big.NewInt(1)
-	big2          = big.NewInt(2)
-	big9          = big.NewInt(9)
-	big10         = big.NewInt(10)
-	bigMinus99    = big.NewInt(-99)
+	big1			= big.NewInt(1)
+//	big2			= big.NewInt(2) // no longer used with new diff calculation
+	big7			= big.NewInt(7)
+//	big9 			= big.NewInt(9) // no longer used with new diff calculation
+//	big10			= big.NewInt(10) // no longer used with new diff calculation
+	bigMinus99		= big.NewInt(-99)
 )
 
-// makeDifficultyCalculator creates a difficultyCalculator with the given bomb-delay.
-// the difficulty is calculated with Byzantium rules, which differs from Homestead in
-// how uncles affect the calculation
+// makeDifficultyCalculator creates a difficulty calculator using Byzantium rules,
+// with an adjustment factor computed for a 7-second target.
 func makeDifficultyCalculator() func(time uint64, parent *types.Header) *big.Int {
-	// Note, the calculations below looks at the parent number, which is 1 below
-	// the block number. Thus we remove one from the delay given
+	// Note: calculations below use parent's block time (which is one less than the block number).
 	return func(time uint64, parent *types.Header) *big.Int {
-		// https://github.com/ethereum/EIPs/issues/100.
-		// algorithm:
-		// diff = (parent_diff +
-		//         (parent_diff / 2048 * max((2 if len(parent.uncles) else 1) - ((timestamp - parent.timestamp) // 9), -99))
-		//        ) + 2^(periodCount - 2)
-
-		bigTime := new(big.Int).SetUint64(time)
-		bigParentTime := new(big.Int).SetUint64(parent.Time)
-
-		// holds intermediate values to make the algo easier to read & audit
-		x := new(big.Int)
-		y := new(big.Int)
-
-		// (2 if len(parent_uncles) else 1) - (block_timestamp - parent_timestamp) // 9
-		x.Sub(bigTime, bigParentTime)
-		x.Div(x, big9)
-		if parent.UncleHash == types.EmptyUncleHash {
-			x.Sub(big1, x)
+		/*
+			Byzantium adjustment:
+			child_diff = parent_diff + (parent_diff / 2048) * adjustment_factor
+			where adjustment_factor = |( (timestamp - parent_timestamp) / 7 - C)|
+			and C = 1 if no uncles, 2 if uncles exist, capped at 99.
+		*/
+		x := (time - parent.Time) / 7  // changed divisor from 9 to 7
+		c := uint64(1)
+		if parent.UncleHash != types.EmptyUncleHash {
+			c = 2
+		}
+		xNeg := x >= c
+		if xNeg {
+			x = x - c
 		} else {
-			x.Sub(big2, x)
+			x = c - x
 		}
-		// max((2 if len(parent_uncles) else 1) - (block_timestamp - parent_timestamp) // 9, -99)
-		if x.Cmp(bigMinus99) < 0 {
-			x.Set(bigMinus99)
+		if x > 99 {
+			x = 99
 		}
-		// parent_diff + (parent_diff / 2048 * max((2 if len(parent.uncles) else 1) - ((timestamp - parent.timestamp) // 9), -99))
-		y.Div(parent.Difficulty, params.DifficultyBoundDivisor)
-		x.Mul(y, x)
-		x.Add(parent.Difficulty, x)
-
-		// minimum difficulty can ever be (before exponential factor)
-		if x.Cmp(params.MinimumDifficulty) < 0 {
-			x.Set(params.MinimumDifficulty)
+		y := new(uint256.Int)
+		y.SetFromBig(parent.Difficulty)
+		pDiff := y.Clone()
+		z := new(uint256.Int).SetUint64(x)
+		y.Rsh(y, difficultyBoundDivisor) // y becomes parent.difficulty / 2048
+		z.Mul(y, z)
+		if xNeg {
+			y.Sub(pDiff, z)
+		} else {
+			y.Add(pDiff, z)
 		}
-		return x
+		if y.LtUint64(minimumDifficulty) {
+			y.SetUint64(minimumDifficulty)
+		}
+		return y.ToBig()
 	}
 }
 
 // calcDifficultyHomestead computes the block difficulty using Homestead rules
 // without applying any exponential bomb factor.
+// New formula: diff = parent_diff + (parent_diff / 2048 * max(1 - ((time - parent.Time) // 7), -99))
 func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
-	// According to EIP-2, the formula is:
-	// diff = parent_diff + (parent_diff / 2048 * max(1 - (block_timestamp - parent_timestamp) // 10, -99))
-	
 	bigTime := new(big.Int).SetUint64(time)
 	bigParentTime := new(big.Int).SetUint64(parent.Time)
 
-	// x will hold the adjustment factor: 1 - ((time - parent.Time) // 10)
+	// x will hold the adjustment factor: 1 - ((time - parent.Time) // 7)
 	x := new(big.Int)
 	// y will temporarily hold parent_diff / 2048.
 	y := new(big.Int)
 
-	// Compute (time - parent.Time) // 10
+	// Compute (time - parent.Time) // 7
 	x.Sub(bigTime, bigParentTime)
-	x.Div(x, big10) // big10 is assumed to be big.NewInt(10)
-	// Now compute: 1 - (time - parent.Time)//10
-	x.Sub(big1, x) // big1 is assumed to be big.NewInt(1)
+	x.Div(x, big7) // changed divisor from big10 to big7
+	// Now compute: 1 - ((time - parent.Time) // 7)
+	x.Sub(big1, x)
 
-	// Ensure the adjustment is at least -99
-	if x.Cmp(bigMinus99) < 0 { // bigMinus99 is assumed to be big.NewInt(-99)
+	// Ensure the adjustment is at least -99.
+	if x.Cmp(bigMinus99) < 0 {
 		x.Set(bigMinus99)
 	}
 
-	// Compute parent_diff / 2048 (params.DifficultyBoundDivisor should equal 11, i.e. 2^11 = 2048)
+	// Compute parent_diff / 2048 (using DifficultyBoundDivisor == 11)
 	y.Div(parent.Difficulty, params.DifficultyBoundDivisor)
-	// Multiply adjustment factor by (parent_diff / 2048)
+	// Multiply the adjustment factor by (parent_diff / 2048)
 	x.Mul(y, x)
-	// Add the adjustment to the parent difficulty
+	// Add the adjustment to the parent difficulty.
 	x.Add(parent.Difficulty, x)
 
-	// Ensure difficulty does not fall below the minimum threshold
+	// Ensure difficulty does not fall below the minimum threshold.
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
 	}
