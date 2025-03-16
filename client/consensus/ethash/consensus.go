@@ -42,7 +42,7 @@ var (
 	allowedFutureBlockTimeSeconds 	= int64(8)				// Max seconds from current time allowed for blocks, before they're considered future blocks
 	
 	// Wallet that will collect all the transaction fees up until supply cap is reached
-	feePoolWallet 					= common.HexToAddress("0xc657de8D48cAB170e98782815670f8B019005473")
+	feePoolWallet 					= common.HexToAddress("0x366D7b25624795a6f7071829c7A50C3D116C69E3")
 	
 	// Supply cap definitions, SupplyCap needs to be validated by finalBlock, according
 	// to the emission schedule
