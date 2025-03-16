@@ -2,7 +2,7 @@
 
 ![R5 Logo](img/r5.png)
 
-R5 revisits the proof‑of‑work consensus mechanism to create a high‑performance, secure blockchain. It is designed to process over 1,000 transactions per second while establishing a fair economic dynamic for all participants. This repository contains the core implementation of the R5 Protocol, including the r5 node relayer and all accompanying SDK tools.
+R5 revisits the proof‑of‑work consensus mechanism to create a high‑performance, secure blockchain. It is designed to process over 1,000 transactions per second while establishing a fair economic dynamic for all participants. This repository contains the core implementation of the R5 Protocol, including the R5 node relayer and all accompanying SDK tools.
 
 **This repository is constantly evolving; some information above may change over time. Please refer to the latest documentation for up‑to‑date details.**
 
@@ -37,7 +37,9 @@ python install.py
 
 ### !! IMPORTANT !!
 
-If your system restricts system-wide package installing - eg. Ubuntu Desktop 24.04 - you will have to take some extra steps to install all dependencies before building the package.
+If your system restricts system-wide package installing - eg. Ubuntu Desktop 24.04 - you may have to take some extra steps to install all dependencies before building the package.
+
+The `build.py` script will automatically detect most of such limitations and do all the work for you, however, if after installing all dependencies you face issue with building the code from source, please follow the steps below.
 
 First, make sure you have `golang-1.19/stable` installed. If you're using Ubuntu, you can install it via `snap` with the following command:
 
@@ -51,16 +53,16 @@ To install the `python` dependencies, you will need to create a virtual environm
 sudo apt install python3.12-venv
 ```
 
-Then, create the virtual environment (named `r5` in this example):
+Then, create the virtual environment (named `r5-venv` in this example):
 
 ```bash
-python3 -m venv r5
+python3 -m venv r5-venv
 ```
 
 Enter the virtual environment you have just created with:
 
 ```bash
-source r5/bin/activate
+source r5-venv/bin/activate
 ```
 
 Now you can install the python dependencies with:
