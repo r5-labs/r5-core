@@ -2094,7 +2094,6 @@ func toHexSlice(b [][]byte) []string {
 	return r
 }
 
-/* comment for testing
 // GetSupply returns the current circulating supply as a hex string.
 // It retrieves the current block header from the backend and uses the
 // ethash.CalculateCirculatingSupply function to compute the supply.
@@ -2108,4 +2107,3 @@ func (s *EthereumAPI) GetSupply(ctx context.Context) (string, error) {
 	// Return the supply as a hex string.
 	return fmt.Sprintf("0x%x", supply), nil
 }
-*/
