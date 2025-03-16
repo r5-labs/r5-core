@@ -33,13 +33,22 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-// Ethash proof-of-work protocol constants.
+// Ethash-R5 proof-of-work protocol constants.
 var (
-	FrontierBlockReward           = big.NewInt(1e+18) // Block reward in wei for successfully mining a block
-	ByzantiumBlockReward          = big.NewInt(1e+18) // Block reward in wei for successfully mining a block upward from Byzantium
-	ConstantinopleBlockReward     = big.NewInt(1e+18) // Block reward in wei for successfully mining a block upward from Constantinople
-	maxUncles                     = 2                 // Maximum number of uncles allowed in a single block
-	allowedFutureBlockTimeSeconds = int64(8)         // Max seconds from current time allowed for blocks, before they're considered future blocks
+	FrontierBlockReward           	= big.NewInt(1e+18)		// Block reward in wei for successfully mining a block
+	ByzantiumBlockReward          	= big.NewInt(1e+18)		// Block reward in wei for successfully mining a block upward from Byzantium
+	ConstantinopleBlockReward     	= big.NewInt(1e+18)		// Block reward in wei for successfully mining a block upward from Constantinople
+	maxUncles                     	= 2						// Maximum number of uncles allowed in a single block
+	allowedFutureBlockTimeSeconds 	= int64(8)				// Max seconds from current time allowed for blocks, before they're considered future blocks
+	
+	// Wallet that will collect all the transaction fees up until supply cap is reached
+	feePoolWallet 					= common.HexToAddress("0xc657de8D48cAB170e98782815670f8B019005473")
+	
+	// Supply cap definitions, SupplyCap needs to be validated by finalBlock, according
+	// to the emission schedule
+	SupplyCap 						= new(big.Int).Mul(big.NewInt(66337700), big.NewInt(1e18))
+	preminedSupply 					= new(big.Int).Mul(big.NewInt(2000000), big.NewInt(1000000000000000000))
+	finalBlock 						= uint64(1290406400)
 
 	// calcDifficultyEip5133 is the difficulty adjustment algorithm as specified by EIP 5133.
 	// It offsets the bomb a total of 11.4M blocks.
@@ -74,6 +83,85 @@ var (
 	// Specification EIP-649: https://eips.ethereum.org/EIPS/eip-649
 	calcDifficultyByzantium = makeDifficultyCalculator()
 )
+
+// CalculateCirculatingSupply returns the current circulating supply (in wei) at the given block number.
+// It sums the pre-mined supply and the cumulative block rewards as defined by the Super Epoch schedule.
+// For blocks >= finalBlock, it returns the maximum supply (i.e. premined supply plus all block rewards).
+func CalculateCirculatingSupply(blockNum uint64) *big.Int {
+	// 1 R5 = 1e18 wei.
+	weiPerR5 := big.NewInt(1000000000000000000)
+	// Start with the pre-mined supply.
+	supply := new(big.Int).Set(preminedSupply)
+
+	// Define epoch endpoints (block numbers).
+	const (
+		epoch1End = 4000000
+		epoch2End = 8000000
+		epoch3End = 16000000
+		epoch4End = 32000000
+		epoch5End = 64000000
+		epoch6End = 128000000
+	)
+	// If blockNum is at or beyond the final block number, return the full issuance.
+	if blockNum >= finalBlock {
+		// When blockNum is at or beyond finalBlock, the total block rewards issued
+		// should equal 66,337,700 - 2,000,000 = 64,337,700 R5.
+		totalBlockRewards := new(big.Int).Mul(big.NewInt(64337700), weiPerR5)
+		return new(big.Int).Add(preminedSupply, totalBlockRewards)
+	}	
+
+	// Helper: minBlocks returns the number of blocks in the interval [start, min(blockNum, end)].
+	minBlocks := func(start, end uint64) uint64 {
+		if blockNum < start {
+			return 0
+		}
+		if blockNum > end {
+			return end - start + 1
+		}
+		return blockNum - start + 1
+	}
+
+	var epochReward *big.Int
+
+	// Epoch 1: Blocks 1 to 4,000,000, reward 2 R5 per block.
+	blocks := minBlocks(1, epoch1End)
+	epochReward = new(big.Int).Mul(big.NewInt(2), weiPerR5)
+	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+
+	// Epoch 2: Blocks 4,000,001 to 8,000,000, reward 1 R5 per block.
+	blocks = minBlocks(epoch1End+1, epoch2End)
+	epochReward = new(big.Int).Set(weiPerR5)
+	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+
+	// Epoch 3: Blocks 8,000,001 to 16,000,000, reward 0.5 R5 per block.
+	blocks = minBlocks(epoch2End+1, epoch3End)
+	epochReward = big.NewInt(500000000000000000) // 0.5 R5 in wei
+	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+
+	// Epoch 4: Blocks 16,000,001 to 32,000,000, reward 0.25 R5 per block.
+	blocks = minBlocks(epoch3End+1, epoch4End)
+	epochReward = big.NewInt(250000000000000000) // 0.25 R5 in wei
+	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+
+	// Epoch 5: Blocks 32,000,001 to 64,000,000, reward 0.125 R5 per block.
+	blocks = minBlocks(epoch4End+1, epoch5End)
+	epochReward = big.NewInt(125000000000000000) // 0.125 R5 in wei
+	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+
+	// Epoch 6: Blocks 64,000,001 to 128,000,000, reward 0.0625 R5 per block.
+	blocks = minBlocks(epoch5End+1, epoch6End)
+	epochReward = big.NewInt(62500000000000000) // 0.0625 R5 in wei
+	supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+
+	// Epoch 7: Blocks 128,000,001 up to blockNum, reward 0.03125 R5 per block.
+	if blockNum > epoch6End {
+		blocks = minBlocks(epoch6End+1, blockNum)
+		epochReward = big.NewInt(31250000000000000) // 0.03125 R5 in wei
+		supply.Add(supply, new(big.Int).Mul(big.NewInt(int64(blocks)), epochReward))
+	}
+
+	return supply
+}
 
 // Various error messages to mark blocks invalid. These should be private to
 // prevent engine specific errors from being referenced in the remainder of the
@@ -553,25 +641,82 @@ func (ethash *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.H
 	return nil
 }
 
+// calculateBlockReward returns the block reward (in wei) for the given block number,
+// according to the super epoch schedule, or zero if the supply cap is reached.
+// (Assumes that totalSupply includes the premine.)
+func calculateBlockReward(blockNumber uint64, totalSupply *big.Int) *big.Int {
+	// If total supply is at or above the cap, no new block reward is issued.
+	if totalSupply.Cmp(SupplyCap) >= 0 {
+		return big.NewInt(0)
+	}
+
+	// Define 1 R5 in wei.
+	oneR5 := new(big.Int).Mul(big.NewInt(1), big.NewInt(1e18))
+	var reward *big.Int
+
+	switch {
+	case blockNumber <= 4000000:
+		// Super Epoch 1: 2 R5 per block.
+		reward = new(big.Int).Mul(big.NewInt(2), oneR5)
+	case blockNumber <= 8000000:
+		// Super Epoch 2: 1 R5 per block.
+		reward = new(big.Int).Set(oneR5)
+	case blockNumber <= 16000000:
+		// Super Epoch 3: 0.5 R5 per block.
+		reward = new(big.Int).Div(oneR5, big.NewInt(2))
+	case blockNumber <= 32000000:
+		// Super Epoch 4: 0.25 R5 per block.
+		reward = new(big.Int).Div(oneR5, big.NewInt(4))
+	case blockNumber <= 64000000:
+		// Super Epoch 5: 0.125 R5 per block.
+		reward = new(big.Int).Div(oneR5, big.NewInt(8))
+	case blockNumber <= 128000000:
+		// Super Epoch 6: 0.0625 R5 per block.
+		reward = new(big.Int).Div(oneR5, big.NewInt(16))
+	default:
+		// Super Epoch 7: 0.03125 R5 per block.
+		reward = new(big.Int).Div(oneR5, big.NewInt(32))
+	}
+	return reward
+}
+
 // Finalize implements consensus.Engine, accumulating the block and uncle rewards.
 func (ethash *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, withdrawals []*types.Withdrawal) {
 	// Accumulate any block and uncle rewards
 	accumulateRewards(chain.Config(), state, header, uncles)
 }
 
-// FinalizeAndAssemble implements consensus.Engine, accumulating the block and
-// uncle rewards, setting the final state and assembling the block.
-func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error) {
+// FinalizeAndAssemble finalizes the block by applying rewards and fee distribution.
+// Transaction fees are diverted to the feePoolWallet (the global variable) if the
+// total supply is below the cap; otherwise, fees go to the miner.
+func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB,
+	txs []*types.Transaction, uncles []*types.Header, receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error) {
+
 	if len(withdrawals) > 0 {
 		return nil, errors.New("ethash does not support withdrawals")
 	}
-	// Finalize block
+	// Finalize block rewards and uncle handling.
 	ethash.Finalize(chain, header, state, txs, uncles, nil)
+
+	// Fee distribution:
+	// Compute fees as GasUsed * BaseFee (if BaseFee is set, else zero).
+	feeAmount := big.NewInt(0)
+	if header.BaseFee != nil {
+		feeAmount = new(big.Int).Mul(big.NewInt(int64(header.GasUsed)), header.BaseFee)
+	}
+	// Retrieve current total supply based on the block number.
+	totalSupply := CalculateCirculatingSupply(header.Number.Uint64())
+	// If total supply is below the cap, divert fees to the feePoolWallet.
+	if totalSupply.Cmp(SupplyCap) < 0 {
+		state.AddBalance(feePoolWallet, feeAmount)
+	} else {
+		// Otherwise, fees go to the miner.
+		state.AddBalance(header.Coinbase, feeAmount)
+	}
 
 	// Assign the final state root to header.
 	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
-
-	// Header seems complete, assemble into a block and return
+	// Assemble the block.
 	return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
 }
 
@@ -607,34 +752,21 @@ func (ethash *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 
 // Some weird constants to avoid constant memory allocs for them.
 var (
-	big8  = big.NewInt(8)
-	big32 = big.NewInt(32)
+//	big8  = big.NewInt(8) // not used in new r5 consensus
+//	big32 = big.NewInt(32) // not used in new r5 consensus
 )
 
-// AccumulateRewards credits the coinbase of the given block with the mining
-// reward. The total reward consists of the static block reward and rewards for
-// included uncles. The coinbase of each uncle block is also rewarded.
+// In accumulateRewards, replace the call to state.GetTotalSupply() with CalculateCirculatingSupply.
+// (Assuming your state does not provide a GetTotalSupply method.)
 func accumulateRewards(config *params.ChainConfig, state *state.StateDB, header *types.Header, uncles []*types.Header) {
-	// Select the correct block reward based on chain progression
-	blockReward := FrontierBlockReward
-	if config.IsByzantium(header.Number) {
-		blockReward = ByzantiumBlockReward
-	}
-	if config.IsConstantinople(header.Number) {
-		blockReward = ConstantinopleBlockReward
-	}
-	// Accumulate the rewards for the miner and any included uncles
-	reward := new(big.Int).Set(blockReward)
-	r := new(big.Int)
-	for _, uncle := range uncles {
-		r.Add(uncle.Number, big8)
-		r.Sub(r, header.Number)
-		r.Mul(r, blockReward)
-		r.Div(r, big8)
-		state.AddBalance(uncle.Coinbase, r)
+	// Calculate current total supply from the block number.
+	totalSupply := CalculateCirculatingSupply(header.Number.Uint64())
 
-		r.Div(blockReward, big32)
-		reward.Add(reward, r)
-	}
+	// Calculate the block reward for the current block.
+	reward := calculateBlockReward(header.Number.Uint64(), totalSupply)
+
+	// Credit the block reward to the miner's balance.
 	state.AddBalance(header.Coinbase, reward)
+
+	// Since uncle rewards are eliminated, we do nothing for uncles.
 }
