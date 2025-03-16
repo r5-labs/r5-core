@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -18,7 +18,7 @@ import (
 	"math/big"
 	"time"
 
-	ethereum "github.com/r5-labs/r5-core"
+	"github.com/r5-labs/r5-core"
 	"github.com/r5-labs/r5-core/accounts"
 	"github.com/r5-labs/r5-core/common"
 	"github.com/r5-labs/r5-core/consensus"
@@ -84,6 +84,8 @@ type Backend interface {
 	Engine() consensus.Engine
 
 	// This is copied from filters.Backend
+	// eth/filters needs to be initialized from this backend type, so methods needed by
+	// it must also be included here.
 	GetBody(ctx context.Context, hash common.Hash, number rpc.BlockNumber) (*types.Body, error)
 	GetLogs(ctx context.Context, blockHash common.Hash, number uint64) ([][]*types.Log, error)
 	SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEvent) event.Subscription

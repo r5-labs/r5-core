@@ -866,7 +866,7 @@ var decodeTests = []decodeTest{
 
 	// fuzzer crashes
 	{
-		input: "c330f9c030f93030ce3030303030303030bd303030303030",
+		input: "c330f9c030f93030ce3013503013503030bd301350301350",
 		ptr:   new(interface{}),
 		error: "rlp: element is larger than containing list",
 	},

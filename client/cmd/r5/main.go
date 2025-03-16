@@ -1,4 +1,4 @@
-// Copyright 2025 R5
+// Copyright 2025 R5 Labs
 // This file is part of the R5 Core library.
 //
 // This software is provided "as is", without warranty of any kind,
@@ -196,7 +196,7 @@ var (
 	}
 )
 
-var app = flags.NewApp("the R5 command line interface")
+var app = flags.NewApp("the r5 command line interface")
 
 func init() {
 	// Initialize the CLI app and start R5
@@ -297,7 +297,7 @@ func prepare(ctx *cli.Context) {
 `)
 
 	case !ctx.IsSet(utils.NetworkIdFlag.Name):
-		log.Info("Starting R5 mainnet node...")
+		log.Info("Starting R5 Core on R5 mainnet...")
 	}
 	// If we're a full node on mainnet without --cache specified, bump default cache allowance
 	if ctx.String(utils.SyncModeFlag.Name) != "light" && !ctx.IsSet(utils.CacheFlag.Name) && !ctx.IsSet(utils.NetworkIdFlag.Name) {
