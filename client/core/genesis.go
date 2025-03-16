@@ -523,14 +523,9 @@ func DefaultGenesisBlock() *Genesis {
 		ExtraData:  hexutil.MustDecode("0x"),
 		GasLimit:   147000000,
 		Difficulty: big.NewInt(1),
-		Alloc: map[common.Address]GenesisAccount{
-			common.HexToAddress("0xc657de8D48cAB170e98782815670f8B019005473"): {
-				Balance: new(big.Int).Mul(big.NewInt(2000000), big.NewInt(1000000000000000000)),
-			},
-		},
+		Alloc:      nil,
 	}
 }
-
 
 // DefaultRinkebyGenesisBlock returns the Rinkeby network genesis block.
 func DefaultRinkebyGenesisBlock() *Genesis {
