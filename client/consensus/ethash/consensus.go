@@ -41,9 +41,6 @@ var (
 	maxUncles                     	= 2						// Maximum number of uncles allowed in a single block
 	allowedFutureBlockTimeSeconds 	= int64(8)				// Max seconds from current time allowed for blocks, before they're considered future blocks
 	
-	// Wallet that will collect all the transaction fees up until supply cap is reached
-	feePoolWallet 					= common.HexToAddress("0x366D7b25624795a6f7071829c7A50C3D116C69E3")
-	
 	// Supply cap definitions, SupplyCap needs to be validated by finalBlock, according
 	// to the emission schedule
 	SupplyCap 						= new(big.Int).Mul(big.NewInt(66337700), big.NewInt(1e18))
@@ -686,61 +683,19 @@ func (ethash *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.
 	accumulateRewards(chain.Config(), state, header, uncles)
 }
 
-// FinalizeAndAssemble finalizes the block by applying block rewards and fee distribution.
-// In our custom scheme, if the circulating supply is below the cap, transaction fees are
-// “redirected” to the feePoolWallet by first subtracting them from the miner’s balance.
-// Once the supply cap is reached, fees go to the miner as usual.
-func (ethash *Ethash) FinalizeAndAssemble(
-	chain consensus.ChainHeaderReader,
-	header *types.Header,
-	state *state.StateDB,
-	txs []*types.Transaction,
-	uncles []*types.Header,
-	receipts []*types.Receipt,
-	withdrawals []*types.Withdrawal,
-) (*types.Block, error) {
-	// Withdrawals are not supported.
+// FinalizeAndAssemble implements consensus.Engine, accumulating the block and
+// uncle rewards, setting the final state and assembling the block.
+func (ethash *Ethash) FinalizeAndAssemble(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error) {
 	if len(withdrawals) > 0 {
 		return nil, errors.New("ethash-r5 does not support withdrawals")
 	}
-
-	// Finalize block rewards and uncle handling.
+	// Finalize block
 	ethash.Finalize(chain, header, state, txs, uncles, nil)
 
-	// --- Fee Distribution Step ---
-	// Compute the total fee amount for the block.
-	feeAmount := big.NewInt(0)
-	if header.BaseFee != nil {
-		// For EIP-1559 style transactions: fee = block.GasUsed * BaseFee.
-		feeAmount.Mul(big.NewInt(int64(header.GasUsed)), header.BaseFee)
-	} else {
-		// For Berlin-style (pre-EIP1559), sum fees from each transaction:
-		// fee = Σ(tx.GasPrice() * receipt.GasUsed)
-		for i, tx := range txs {
-			txFee := new(big.Int).Mul(tx.GasPrice(), big.NewInt(int64(receipts[i].GasUsed)))
-			feeAmount.Add(feeAmount, txFee)
-		}
-	}
-
-	// Retrieve the current circulating supply based on the block number.
-	totalSupply := CalculateCirculatingSupply(header.Number.Uint64())
-
-	// If the supply cap has not been reached, we want fees to go to the feePoolWallet.
-	// However, the miner would normally have been credited the feeAmount.
-	// So we subtract feeAmount from the miner’s balance and add it to the feePoolWallet.
-	if totalSupply.Cmp(SupplyCap) < 0 {
-		state.SubBalance(header.Coinbase, feeAmount)
-		state.AddBalance(feePoolWallet, feeAmount)
-	} else {
-		// Otherwise, if the supply cap is reached, fees go to the miner as usual.
-		state.AddBalance(header.Coinbase, feeAmount)
-	}
-	// --- End Fee Distribution Step ---
-
-	// Update the header's state root.
+	// Assign the final state root to header.
 	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
 
-	// Assemble and return the final block.
+	// Header seems complete, assemble into a block and return
 	return types.NewBlock(header, txs, uncles, receipts, trie.NewStackTrie(nil)), nil
 }
 
