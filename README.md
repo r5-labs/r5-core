@@ -45,7 +45,7 @@ python install.py
 
 If your system restricts system-wide package installing - eg. Ubuntu Desktop 24.04 - you may have to take some extra steps to install all dependencies before building the package.
 
-The `build.py` script will automatically detect most of such limitations and do all the work for you, however, if after installing all dependencies you face issue with building the code from source, please follow the steps below.
+The `build.py` script will automatically detect most of such limitations and do all the work for you, however, if after installing all dependencies you face issues with building the code from source, please follow the steps below.
 
 First, make sure you have `golang-1.19/stable` installed. If you're using Ubuntu, you can install it via `snap` with the following command:
 
