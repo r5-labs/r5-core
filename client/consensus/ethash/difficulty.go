@@ -17,8 +17,10 @@ import (
 
 	"github.com/holiman/uint256"
 	"github.com/r5-labs/r5-core/core/types"
+	// We'll use big.Rat for fixed-point arithmetic.
 )
 
+// Constants remain unchanged.
 const (
 	// frontierDurationLimit is for Frontier:
 	// The decision boundary on the blocktime duration used to determine
@@ -26,101 +28,160 @@ const (
 	frontierDurationLimit = 7
 	// minimumDifficulty The minimum that the difficulty may ever be.
 	minimumDifficulty = 131072
-	// difficultyBoundDivisorBitShift is the bound divisor of the difficulty (2048),
-	// This constant is the right-shifts to use for the division.
+	// difficultyBoundDivisor is the bit shift used for dividing by 2048.
 	difficultyBoundDivisor = 11
 )
 
-// CalcDifficultyFrontierU256 is the difficulty adjustment algorithm. It returns the
-// difficulty that a new block should have when created at time given the parent
-// block's time and difficulty. The calculation uses the Frontier rules.
-func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
-	pDiff, _ := uint256.FromBig(parent.Difficulty)
-	adjust := pDiff.Clone()
-	adjust.Rsh(adjust, difficultyBoundDivisor) // adjust = parent.difficulty / 2048
-
-	if time-parent.Time < frontierDurationLimit {
-		pDiff.Add(pDiff, adjust)
-	} else {
-		pDiff.Sub(pDiff, adjust)
+// roundRat rounds a big.Rat to the nearest integer.
+func roundRat(r *big.Rat) *big.Int {
+	// Get numerator and denominator.
+	num := new(big.Int).Set(r.Num())
+	denom := new(big.Int).Set(r.Denom())
+	// Compute quotient and remainder.
+	quotient, remainder := new(big.Int).QuoRem(num, denom, new(big.Int))
+	// Multiply remainder by 2 and compare with denom.
+	two := big.NewInt(2)
+	if new(big.Int).Mul(remainder, two).Cmp(denom) >= 0 {
+		quotient.Add(quotient, big.NewInt(1))
 	}
-	if pDiff.LtUint64(minimumDifficulty) {
-		pDiff.SetUint64(minimumDifficulty)
-	}
-	return pDiff.ToBig()
+	return quotient
 }
 
-// CalcDifficultyHomesteadU256 is the difficulty adjustment algorithm. It returns
-// the difficulty that a new block should have when created at time given the
-// parent block's time and difficulty. The calculation uses the Homestead rules.
+// CalcDifficultyFrontierU256 now uses fixed‐point division by 7.
+func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
+	// pDiff = parent.Difficulty as a uint256.Int
+	pDiff, _ := uint256.FromBig(parent.Difficulty)
+	// adjust = pDiff >> difficultyBoundDivisor (i.e. parent.Difficulty / 2048)
+	adjust := pDiff.Clone()
+	adjust.Rsh(adjust, difficultyBoundDivisor)
+
+	// Compute the exact time difference as a rational number:
+	// x = (time - parent.Time) / 7
+	diffSec := int64(time - parent.Time)
+	x := new(big.Rat).SetFrac64(diffSec, 7)
+
+	// Determine the expected target factor c:
+	// c = 1 if no uncles, 2 if uncles exist.
+	cVal := int64(1)
+	if parent.UncleHash != types.EmptyUncleHash {
+		cVal = 2
+	}
+	cRat := new(big.Rat).SetInt64(cVal)
+
+	// Compute delta = x - c. (This can be negative.)
+	delta := new(big.Rat).Sub(x, cRat)
+
+	// Let absDelta = |delta|
+	absDelta := new(big.Rat).Abs(delta)
+
+	// Convert the "adjust" (parent.Difficulty/2048) to a big.Int.
+	adjustBig := adjust.ToBig()
+
+	// Multiply adjustBig * absDelta in rational space.
+	prod := new(big.Rat).Mul(new(big.Rat).SetInt(adjustBig), absDelta)
+	// Round the product to the nearest integer.
+	adjAmount := roundRat(prod)
+
+	// Now, if delta is nonnegative (i.e. x >= c) then we subtract adjAmount,
+	// otherwise (x < c) we add it.
+	newDiff := new(big.Int).Set(parent.Difficulty)
+	if delta.Sign() >= 0 {
+		newDiff.Sub(newDiff, adjAmount)
+	} else {
+		newDiff.Add(newDiff, adjAmount)
+	}
+	// Enforce minimum difficulty.
+	if newDiff.Cmp(big.NewInt(minimumDifficulty)) < 0 {
+		newDiff.SetUint64(minimumDifficulty)
+	}
+	return newDiff
+}
+
+// CalcDifficultyHomesteadU256 now uses fixed‐point division.
 func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
 	pDiff, _ := uint256.FromBig(parent.Difficulty)
 	adjust := pDiff.Clone()
-	adjust.Rsh(adjust, difficultyBoundDivisor) // adjust = parent.difficulty / 2048
+	adjust.Rsh(adjust, difficultyBoundDivisor) // adjust = parent.Difficulty / 2048
 
-	// Compute time adjustment factor.
-	x := (time - parent.Time) / 7
-	neg := true
-	if x == 0 {
-		x = 1
-		neg = false
-	} else if x >= 100 {
-		x = 99
-	} else {
-		x = x - 1
+	// Compute x = (time - parent.Time) / 7 as a rational.
+	diffSec := int64(time - parent.Time)
+	x := new(big.Rat).SetFrac64(diffSec, 7)
+
+	// For Homestead we subtract 1 from x (if possible) and then use that as the adjustment factor.
+	// Let desired adjustment factor be: factor = (x - 1) if x >= 1, else (1 - x).
+	oneRat := new(big.Rat).SetInt64(1)
+	factor := new(big.Rat).Sub(x, oneRat)
+	neg := false
+	if factor.Sign() < 0 {
+		neg = true
+		factor.Abs(factor)
 	}
-	z := new(uint256.Int).SetUint64(x)
-	adjust.Mul(adjust, z) // adjust factor = (parent.difficulty / 2048) * adjustment factor
+	// Cap the factor at 99.
+	ninetyNine := new(big.Rat).SetInt64(99)
+	if factor.Cmp(ninetyNine) > 0 {
+		factor.Set(ninetyNine)
+	}
+	adjustBig := adjust.ToBig()
+	prod := new(big.Rat).Mul(new(big.Rat).SetInt(adjustBig), factor)
+	adjAmount := roundRat(prod)
+	newDiff := new(big.Int).Set(parent.Difficulty)
 	if neg {
-		pDiff.Sub(pDiff, adjust)
+		// If x < 1, then we add.
+		newDiff.Add(newDiff, adjAmount)
 	} else {
-		pDiff.Add(pDiff, adjust)
+		// If x >= 1, then subtract.
+		newDiff.Sub(newDiff, adjAmount)
 	}
-	if pDiff.LtUint64(minimumDifficulty) {
-		pDiff.SetUint64(minimumDifficulty)
+	if newDiff.Cmp(big.NewInt(minimumDifficulty)) < 0 {
+		newDiff.SetUint64(minimumDifficulty)
 	}
-	// Bomb logic removed.
-	return pDiff.ToBig()
+	return newDiff
 }
 
-// the difficulty is calculated with Byzantium rules, which differs from Homestead in
-// how uncles affect the calculation
+// MakeDifficultyCalculatorU256 returns a function that computes the Byzantium difficulty.
+// It uses fixed-point arithmetic for the adjustment factor.
 func MakeDifficultyCalculatorU256() func(time uint64, parent *types.Header) *big.Int {
 	return func(time uint64, parent *types.Header) *big.Int {
-		/*
-			Byzantium adjustment:
-			child_diff = parent_diff + (parent_diff / 2048) * adjustment_factor
-			where adjustment_factor = |( (timestamp - parent_timestamp) / 7 - C)|
-			and C = 1 if no uncles, 2 if uncles exist, capped at 99.
-		*/
-		x := (time - parent.Time) / 7
-		c := uint64(1)
+		// Compute x = (time - parent.Time) / 7 as a rational.
+		diffSec := int64(time - parent.Time)
+		x := new(big.Rat).SetFrac64(diffSec, 7)
+
+		// Determine c: 1 if no uncles, 2 if uncles exist.
+		cVal := int64(1)
 		if parent.UncleHash != types.EmptyUncleHash {
-			c = 2
+			cVal = 2
 		}
-		xNeg := x >= c
-		if xNeg {
-			x = x - c
-		} else {
-			x = c - x
+		cRat := new(big.Rat).SetInt64(cVal)
+
+		// Compute delta = |x - c|
+		delta := new(big.Rat).Sub(x, cRat)
+		delta.Abs(delta)
+		// Cap delta at 99.
+		ninetyNine := new(big.Rat).SetInt64(99)
+		if delta.Cmp(ninetyNine) > 0 {
+			delta.Set(ninetyNine)
 		}
-		if x > 99 {
-			x = 99
-		}
+
+		// Convert parent's difficulty divided by 2048.
 		y := new(uint256.Int)
 		y.SetFromBig(parent.Difficulty)
-		pDiff := y.Clone()
-		z := new(uint256.Int).SetUint64(x)
-		y.Rsh(y, difficultyBoundDivisor) // y becomes parent.difficulty / 2048
-		z.Mul(y, z)
-		if xNeg {
-			y.Sub(pDiff, z)
+		y.Rsh(y, difficultyBoundDivisor) // y = parent.Difficulty / 2048
+
+		// Multiply y by delta.
+		prod := new(big.Rat).Mul(new(big.Rat).SetInt(y.ToBig()), delta)
+		adjAmount := roundRat(prod)
+
+		// Determine sign: if x >= c, then subtract; else add.
+		if x.Cmp(cRat) >= 0 {
+			// Subtract adjustment.
+			newDiff := new(big.Int).Sub(parent.Difficulty, adjAmount)
+			if newDiff.Cmp(big.NewInt(minimumDifficulty)) < 0 {
+				newDiff.SetUint64(minimumDifficulty)
+			}
+			return newDiff
 		} else {
-			y.Add(pDiff, z)
+			newDiff := new(big.Int).Add(parent.Difficulty, adjAmount)
+			return newDiff
 		}
-		if y.LtUint64(minimumDifficulty) {
-			y.SetUint64(minimumDifficulty)
-		}
-		return y.ToBig()
 	}
 }
