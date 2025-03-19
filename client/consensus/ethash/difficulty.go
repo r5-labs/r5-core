@@ -25,7 +25,7 @@ const (
 	// frontierDurationLimit is for Frontier:
 	// The decision boundary on the blocktime duration used to determine
 	// whether difficulty should go up or down.
-	frontierDurationLimit = 7
+//	frontierDurationLimit = 7 ~> not used in the new diff adjustment
 	// minimumDifficulty The minimum that the difficulty may ever be.
 	minimumDifficulty = 131072
 	// difficultyBoundDivisor is the bit shift used for dividing by 2048.
