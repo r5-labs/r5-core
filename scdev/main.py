@@ -37,7 +37,7 @@ Required settings include:
   optimization_runs  (number of runs)
 
 If the global config file does not exist, one is created.
-The version is read from a file named "version" in the root.
+The version is read from a file named "scdev.version" in the root.
 
 Commands:
   cd, ls, mkdir, rm, cp, mv, clear, rpcurl, compile, deploy, readabi, cf, acc, help, exit
@@ -52,6 +52,8 @@ import json
 import time
 import getpass
 import datetime
+import solc
+from vyper import compile_code
 from web3 import Web3
 
 # ---------------------------
@@ -69,7 +71,7 @@ optimization_runs = 200
 
 GLOBAL_CONFIG_FILE = "scdev.ini"
 LOCAL_CONFIG_FILE = "scdev.config"
-VERSION_FILE = "version"
+VERSION_FILE = "scdev.version"
 
 def load_global_config():
     config = configparser.ConfigParser()
@@ -321,25 +323,32 @@ def cmd_acc(args, settings):
 # Compilation Functions
 # ---------------------------
 def compile_solidity(filepath, config):
-    solc = config.get("sol_compiler", "solc")
+    solc_path = config.get("sol_compiler", "solc")
     evm = config.get("evm_version", "berlin")
     optimize = config.get("optimization", "false").lower() == "true"
     runs = config.get("optimization_runs", "200")
-    cmd = [solc]
+    
+    cmd = [solc_path]  # Start with the path to solc
+    
+    # Adding flags
     if optimize:
         cmd.append("--optimize")
-        cmd.extend(["--optimize-runs", runs])
+        cmd.extend(["--optimize-runs", str(runs)])
+    
     cmd.extend(["--bin", "--abi", "--evm-version", evm, filepath])
+    
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
     except subprocess.CalledProcessError as e:
         print("Compilation error:", e.stderr)
         return None, None
-
+    
     output = result.stdout.splitlines()
     bin_code = ""
     abi_json = ""
     mode = None
+    
+    # Parse the output from solc
     for line in output:
         if "Binary:" in line:
             mode = "bin"
@@ -350,23 +359,27 @@ def compile_solidity(filepath, config):
                 bin_code += line.strip()
             elif mode == "abi":
                 abi_json += line.strip()
+    
     return bin_code, abi_json
 
 def compile_vyper(filepath, config):
-    vyper = config.get("vyper_compiler", "vyper")
-    cmd = [vyper, "-f", "bytecode,abi", filepath]
+    # Read Vyper source code from file
+    with open(filepath, 'r') as file:
+        source_code = file.read()
+    
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-    except subprocess.CalledProcessError as e:
-        print("Compilation error:", e.stderr)
+        # Compile the Vyper code using compile_code which directly gives bytecode and ABI
+        compiled = compile_code(source_code, ['bytecode', 'abi'])
+
+        # Extract bytecode and ABI
+        bytecode = compiled['bytecode']
+        abi = compiled['abi']
+        
+        return bytecode, abi
+
+    except Exception as e:
+        print("Compilation error:", str(e))
         return None, None
-    parts = result.stdout.strip().split("\n")
-    if len(parts) < 1:
-        print("Compilation produced no output.")
-        return None, None
-    bytecode = parts[0].strip()
-    abi = parts[1].strip() if len(parts) > 1 else ""
-    return bytecode, abi
 
 def cmd_compile(args, config):
     if len(args) < 1:
@@ -606,13 +619,14 @@ def run_shell(global_settings):
     # Merge with any local overrides.
     local_settings = load_local_config()
     settings = merge_configs(global_settings, local_settings)
+    # current_path = os.getcwd()
     clear_screen()
     # Print title and version.
     print("SCdev – R5 Smart Contract Interface")
     version = load_version()
     print(f"Version: {version}")
     print("")
-    prompt = "SCdev # "
+    prompt = f"#SCdev: "
     print("Type 'help' for available commands.\n")
     while True:
         try:

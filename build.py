@@ -279,6 +279,11 @@ def main():
     src_scdev = os.path.join("scdev", "dist", scdev_bin)
     dest_scdev = os.path.join("build", "bin", scdev_bin)
     move_file(src_scdev, dest_scdev)
+    # Copy the SCdev version file from /scdev/dist to /build/bin/scdev.version.
+    scdev_version = "scdev.info"
+    src_scdev = os.path.join("scdev.info", "dist", scdev_version)
+    dest_scdev = os.path.join("scdev.info", "bin", scdev_version)
+    move_file(src_scdev, dest_scdev)
 
     print("\nFull build completed successfully. The folder structure is ready for deployment.")
     end = time.time()

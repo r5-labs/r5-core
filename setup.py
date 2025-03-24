@@ -18,8 +18,8 @@ from setuptools import setup, find_packages # type: ignore
 setup(
     name='r5-tools',
     version='1.0.0',
-    description='CLI tools for the R5 Network: Wallet, Relayer, and SSL Proxy',
-    author='Your Name or R5 Core Team',
+    description='SDK tools for the R5 Network',
+    author='R5 Labs',
     author_email='support@r5.network',
     packages=find_packages(),
     install_requires=[
@@ -28,6 +28,8 @@ setup(
         'cryptography',
         'pyinstaller',
         'limits',
+        'solc',
+        'vyper'
     ],
     entry_points={
         'console_scripts': [
