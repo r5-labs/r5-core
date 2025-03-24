@@ -71,7 +71,7 @@ contract R5ZKNet {
 
         // Generate a unique internal address using a hash of the user address and randomness
         bytes32 internalAddress = keccak256(
-            abi.encodePacked(msg.sender, block.timestamp, block.prevrandao)
+            abi.encodePacked(msg.sender, block.timestamp, block.difficulty)
         );
 
         accounts[internalAddress] = InternalAccount({balance: 0, exists: true});
