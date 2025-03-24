@@ -10,7 +10,7 @@ R5 revisits the proof‑of‑work consensus mechanism to create a high‑perform
 
 Please note that these are the **minimum** hardware requirements for running each one of the node types specified. For more information, including **recommended** harware specs, please visit https://docs.r5.network/for-developers/hardware-requirements.
 
-| Description | RPC Nodes      | Archive Nodes  | Full Nodes     | Light Nodes   |
+| Description | RPC Nodes*     | Archive Nodes  | Full Nodes     | Light Nodes   |
 | ----------- | -------------- | -------------- | -------------- | ------------- |
 | CPU Cores   | 12             | 12             | 4              | 2             |
 | RAM         | 32 GB          | 10 GB          | 8 GB           | 2 GB          |
@@ -18,6 +18,7 @@ Please note that these are the **minimum** hardware requirements for running eac
 | Network     | Stable 125MB/s | Stable 125MB/s | Stable 100MB/s | Stable 10MB/s |
 
 *RPC Node storage requirements will vary based on the type of underlying node (Archive or Full).*
+*Minimum requirements for RPC nodes are recommendations for Public RPC server implementations. Private RPC nodes will have the same minimum hardware requirements as regular node implementations, with recommended specs subject to your own usage requirements.*
 
 ### What happens if I bypass the minimum hardware requirements?
 
