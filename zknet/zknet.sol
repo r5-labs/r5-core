@@ -79,13 +79,21 @@ contract R5ZKNet {
     }
 
     // F2: r5_balanceDeposit()
-    //Function to deposit funds from the main network to ZKNet.
-    // Prevents funds from being taken out of the sender's wallet if the internal account
-    // does not exist. Internal accounts are NOT created automatically.
-    function r5_balanceDeposit() external payable whenOnline {
+    // Function to deposit funds from the main network to ZKNet.
+    // The user must send the specified amount in the transaction.
+    function r5_balanceDeposit(uint256 amount) external payable whenOnline {
+        // Ensure the caller has an internal account
         bytes32 internalAddress = walletToInternal[msg.sender];
         require(accounts[internalAddress].exists, "No internal account found");
 
+        // Ensure the amount sent matches the amount specified in the parameter
+        require(
+            msg.value == amount,
+            "Sent value must match the specified amount"
+        );
+        require(amount > 0, "Deposit amount must be greater than zero");
+
+        // Update the internal account balance
         accounts[internalAddress].balance += msg.value;
     }
 
