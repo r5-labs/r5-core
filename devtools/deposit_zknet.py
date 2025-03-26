@@ -27,7 +27,7 @@ if not w3.is_connected():
     sys.exit(1)
 
 # Hardcoded contract address (devnet contract)
-contract_address = "0x1A52C4914F8A0c254C69699631a1C92De4cCf01A"
+contract_address = "0x1595d9f58F8cdC36E10e2711137525212dc680c7"
 
 # Path to the compiled contract ABI
 abi_path = "zknet.json"

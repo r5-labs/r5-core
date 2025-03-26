@@ -1,81 +1,12 @@
 [
 	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "online",
-				"type": "bool"
+				"internalType": "string",
+				"name": "userSalt",
+				"type": "string"
 			}
 		],
-		"name": "NetworkStatusChanged",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "admin_emergencyWithdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bool",
-				"name": "online",
-				"type": "bool"
-			}
-		],
-		"name": "admin_setNetworkStatus",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "networkOnline",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "pauseTimestamp",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "r5_accountCreate",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -99,9 +30,9 @@
 		"name": "r5_accountResolve",
 		"outputs": [
 			{
-				"internalType": "bytes32",
-				"name": "internalAddress",
-				"type": "bytes32"
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -154,9 +85,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "destination",
-				"type": "bytes32"
+				"internalType": "string",
+				"name": "destinationZK",
+				"type": "string"
 			},
 			{
 				"internalType": "uint256",
@@ -167,30 +98,6 @@
 		"name": "r5_balanceTransferInternal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "txnHash",
-				"type": "bytes32"
-			}
-		],
-		"name": "r5_txnHashCheck",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "exists",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	}
 ]
