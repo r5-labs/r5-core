@@ -1,5 +1,6 @@
 # General
 /build/*
+/build_history/*
 /dist/*
 /r5_tools.egg-info/*
 
