@@ -340,81 +340,92 @@ func generateDataset(dest []uint32, epoch uint64, cache []uint32) {
 // hashimoto aggregates data from the full dataset in order to produce our final
 // value for a particular header hash and nonce.
 func hashimoto(hash []byte, nonce uint64, size uint64, lookup func(index uint32) []uint32) ([]byte, []byte) {
-    // -----------------------------------------------------------------------
-    // 1. Standard Hashimoto (inherited from standard Ethash)
-    // -----------------------------------------------------------------------
-    rows := uint32(size / mixBytes)
+	// 1. Standard Hashimoto (inherited from standard Ethash) with extra sequential dependency
+	rows := uint32(size / mixBytes)
 
-    // Combine header+nonce into a 40-byte seed
-    seed := make([]byte, 40)
-    copy(seed, hash)
-    binary.LittleEndian.PutUint64(seed[32:], nonce)
+	// Combine header+nonce into a 40-byte seed
+	seed := make([]byte, 40)
+	copy(seed, hash)
+	binary.LittleEndian.PutUint64(seed[32:], nonce)
 
-    // Keccak-512 of the seed
-    seed = crypto.Keccak512(seed)
-    seedHead := binary.LittleEndian.Uint32(seed)
+	// Keccak-512 of the seed
+	seed = crypto.Keccak512(seed)
+	seedHead := binary.LittleEndian.Uint32(seed)
 
-    // Initialize the mix
-    mix := make([]uint32, mixBytes/4)
-    for i := 0; i < len(mix); i++ {
-        // replicate the 512-bit seed across mix
-        mix[i] = binary.LittleEndian.Uint32(seed[(i%16)*4:])
-    }
+	// Initialize the mix: replicate the 512-bit seed across mix
+	mix := make([]uint32, mixBytes/4)
+	for i := 0; i < len(mix); i++ {
+		mix[i] = binary.LittleEndian.Uint32(seed[(i%16)*4:])
+	}
 
-    // Main loop: combine mix with pseudo-random data from the dataset
-    temp := make([]uint32, len(mix))
-    for i := 0; i < loopAccesses; i++ {
-        parent := fnv(uint32(i)^seedHead, mix[i%len(mix)]) % rows
-        for j := uint32(0); j < mixBytes/hashBytes; j++ {
-            copy(temp[j*hashWords:], lookup(2*parent+j))
-        }
-        fnvHash(mix, temp)
-    }
+	// Main loop: add sequential dependency and a conditional branch to hinder GPU parallelism
+	temp := make([]uint32, len(mix))
+	// Start with a sequential dependency variable initialized from seedHead.
+	seqDep := seedHead
+	for i := 0; i < loopAccesses; i++ {
+		// Update the sequential dependency with a value from mix.
+		seqDep = fnv(seqDep, mix[i%len(mix)])
+		// Use seqDep (instead of seedHead) to calculate parent index.
+		parent := fnv(uint32(i)^seqDep, mix[i%len(mix)]) % rows
 
-    // Compress mix to a 32-byte digest
-    for i := 0; i < len(mix); i += 4 {
-        mix[i/4] = fnv(fnv(fnv(mix[i], mix[i+1]), mix[i+2]), mix[i+3])
-    }
-    mix = mix[:len(mix)/4]
+		for j := uint32(0); j < mixBytes/hashBytes; j++ {
+			copy(temp[j*hashWords:], lookup(2*parent+j))
+		}
+		// Insert a data-dependent branch to force divergence:
+		if (mix[0] & 0x1) == 1 {
+			// Extra mixing on the first element to force serial dependency.
+			mix[0] = fnv(mix[0], temp[0])
+		}
+		fnvHash(mix, temp)
+	}
 
-    digest := make([]byte, 32) // 32 bytes = common.HashLength
-    for i, val := range mix {
-        binary.LittleEndian.PutUint32(digest[i*4:], val)
-    }
+	// Compress mix to a 32-byte digest.
+	for i := 0; i < len(mix); i += 4 {
+		mix[i/4] = fnv(fnv(fnv(mix[i], mix[i+1]), mix[i+2]), mix[i+3])
+	}
+	mix = mix[:len(mix)/4]
 
-    // -----------------------------------------------------------------------
-    // 2. Ethash-R5 extension: four extra mixing rounds
-    //    (Keccak256 ∘ FNV_Mix)^4 applied to the digest
-    // -----------------------------------------------------------------------
-    extraKeccak := makeHasher(sha3.NewLegacyKeccak256())
+	digest := make([]byte, 32)
+	for i, val := range mix {
+		binary.LittleEndian.PutUint32(digest[i*4:], val)
+	}
 
-    for round := 0; round < 4; round++ {
-        // Interpret digest as array of uint32
-        extra := make([]uint32, len(digest)/4)
-        for i := 0; i < len(extra); i++ {
-            extra[i] = binary.LittleEndian.Uint32(digest[i*4:])
-        }
+	// 2. Ethash-R5 extension: four extra mixing rounds with added sequential work
+	//    (Keccak256 ∘ FNV_Mix)^4 applied to the digest
+	extraKeccak := makeHasher(sha3.NewLegacyKeccak256())
+	for round := 0; round < 4; round++ {
+		// Interpret digest as array of uint32
+		extra := make([]uint32, len(digest)/4)
+		for i := 0; i < len(extra); i++ {
+			extra[i] = binary.LittleEndian.Uint32(digest[i*4:])
+		}
 
-        // FNV-mix the array with itself
-        // (you could mix with other data if your design requires)
-        fnvHash(extra, extra)
+		// Add a sequential inner loop to further force serial computation.
+		for k := 0; k < 3; k++ {
+			extra[0] = fnv(extra[0], extra[len(extra)-1])
+		}
 
-        // Convert back to bytes
-        for i, val := range extra {
-            binary.LittleEndian.PutUint32(digest[i*4:], val)
-        }
+		// FNV-mix the array with itself
+		fnvHash(extra, extra)
 
-        // Keccak256 on the result
-        tmp := make([]byte, len(digest))
-        extraKeccak(tmp, digest)
-        copy(digest, tmp)
-    }
+		// Convert back to bytes
+		for i, val := range extra {
+			binary.LittleEndian.PutUint32(digest[i*4:], val)
+		}
 
-    // -----------------------------------------------------------------------
-    // 3. Final hash remains the same: Keccak256(seed || digest)
-    // -----------------------------------------------------------------------
-    finalHash := crypto.Keccak256(append(seed, digest...))
-    return digest, finalHash
+		// Data-dependent branch: if the least significant bit of digest[0] is 0, perform an extra Keccak mix.
+		if (digest[0] & 1) == 0 {
+			tmp := make([]byte, len(digest))
+			extraKeccak(tmp, digest)
+			copy(digest, tmp)
+		}
+	}
+
+	// -----------------------------------------------------------------------
+	// 3. Final hash remains the same: Keccak256(seed || digest)
+	// -----------------------------------------------------------------------
+	finalHash := crypto.Keccak256(append(seed, digest...))
+	return digest, finalHash
 }
 
 // hashimotoLight aggregates data from the full dataset (using only a small
