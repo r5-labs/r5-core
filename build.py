@@ -183,6 +183,18 @@ def move_file(src, dst):
     except Exception as e:
         handle_error(f"Error moving file: {e}")
     print("File moved successfully.")
+    
+def copy_file(src, dst):
+    """
+    Copies a single file from src to dst.
+    """
+    print(f"Copying file from {src} to {dst}...")
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    try:
+        shutil.copy2(src, dst)  # Use shutil.copy2 to preserve metadata
+    except Exception as e:
+        handle_error(f"Error copying file: {e}")
+    print("File copied successfully.")
 
 def copy_folder(src, dst):
     """
@@ -281,9 +293,9 @@ def main():
     move_file(src_scdev, dest_scdev)
     # Copy the SCdev version file from /scdev/dist to /build/bin/scdev.version.
     scdev_version = "scdev.version"
-    src_scdev_version = os.path.join("scdev", "dist", scdev_version)
+    src_scdev_version = os.path.join("scdev", scdev_version)
     dest_scdev_version = os.path.join("build", "bin", scdev_version)
-    move_file(src_scdev_version, dest_scdev_version)
+    copy_file(src_scdev_version, dest_scdev_version)
 
     print("\nFull build completed successfully. The folder structure is ready for deployment.")
     end = time.time()
