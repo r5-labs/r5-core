@@ -18,7 +18,9 @@ import "github.com/r5-labs/r5-core/common"
 // the main network.
 var MainnetBootnodes = []string{
 	// R5 Partner Bootnodes
-	"enode://561982250c1fe77ad1f59d0f8651c931ee12a1494d87b17c54b74685959eeecdbcf48018fa0e5a7e1cbdc75878e417cd98c64269cdf619ee999a33dc726a087a@74.208.172.89:30337",
+	"enode://1982e999c384dd44374d7e9675aee402b907fa13c3eee070348a46d139f4e068755dfba9951c3ba1e2dbde72fecfc87c89aef1fc03cf68ea8d7f11106fdc3ea8@217.160.163.95:30337",
+    "enode://a047e1dbc8df1aa0aee9013766281ec7803af949d06e494a45aacac9532eb4f2d201a33045bec48e6ced7748ec2731376f84b89e764f4740939eea0645666b1c@217.160.226.118:30337",
+    "enode://2c10b1f6cc3b8c3f8bfc8be70d71c5dd4616eacd21f2f765960385d2edd186c81383d0eaf124f2d424ec1c7d2522760a995035ecc7499fdf83c121b9889c8c00@93.93.118.190:30337",
 }
 
 // SepoliaBootnodes are the enode URLs of the P2P bootstrap nodes running on the

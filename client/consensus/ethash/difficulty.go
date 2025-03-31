@@ -21,9 +21,9 @@ import (
 
 const (
 	// Minimum difficulty level
-	minimumDifficulty = 131072
+	minimumDifficulty = 1000000000
 	// More aggressive difficulty adjustment
-	difficultyBoundDivisor = 10
+	difficultyBoundDivisor = 512
 )
 
 func roundRat(r *big.Rat) *big.Int {
@@ -65,6 +65,14 @@ func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
 	if newDiff.Cmp(big.NewInt(minimumDifficulty)) < 0 {
 		newDiff.SetUint64(minimumDifficulty)
 	}
+	if time-parent.Time < 2 {
+		newDiff.Mul(newDiff, big.NewInt(11))
+		newDiff.Div(newDiff, big.NewInt(10))
+	}
+	if parent.Number.Uint64() < 300 {
+		newDiff.Mul(newDiff, big.NewInt(3))
+		newDiff.Div(newDiff, big.NewInt(2))
+	}
 	return newDiff
 }
 
@@ -97,6 +105,14 @@ func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
 	if newDiff.Cmp(big.NewInt(minimumDifficulty)) < 0 {
 		newDiff.SetUint64(minimumDifficulty)
 	}
+	if time-parent.Time < 2 {
+		newDiff.Mul(newDiff, big.NewInt(11))
+		newDiff.Div(newDiff, big.NewInt(10))
+	}
+	if parent.Number.Uint64() < 300 {
+		newDiff.Mul(newDiff, big.NewInt(3))
+		newDiff.Div(newDiff, big.NewInt(2))
+	}	
 	return newDiff
 }
 
