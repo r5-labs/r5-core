@@ -21,7 +21,7 @@ import (
 
 const (
 	// Minimum difficulty level
-	minimumDifficulty = 1000000000
+	minimumDifficulty = 10000000
 	// More aggressive difficulty adjustment
 	difficultyBoundDivisor = 512
 )
