@@ -22,7 +22,8 @@ import (
 const (
 	// Minimum difficulty level
 	minimumDifficulty = 1000000
-	// More aggressive difficulty adjustment
+	// More aggressive difficulty adjustment for blocks before 45,000.
+	// Note: from block 45,000 onward the divisor is set to 11.
 	difficultyBoundDivisor = 512
 )
 
@@ -37,9 +38,20 @@ func roundRat(r *big.Rat) *big.Int {
 }
 
 func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
+	// Enforce the 3-second gap rule starting from block 45,000.
+	if parent.Number.Uint64() >= 45000 && (time - parent.Time) < 3 {
+		panic("block rejected: parent's time gap is less than 3 seconds")
+	}
+
+	// Determine the divisor based on block number.
+	divisor := difficultyBoundDivisor
+	if parent.Number.Uint64() >= 45000 {
+		divisor = 11
+	}
+
 	pDiff, _ := uint256.FromBig(parent.Difficulty)
 	adjust := pDiff.Clone()
-	adjust.Rsh(adjust, difficultyBoundDivisor)
+	adjust.Rsh(adjust, uint(divisor))
 	diffSec := int64(time - parent.Time)
 	x := new(big.Rat).SetFrac64(diffSec, 7)
 
@@ -77,9 +89,20 @@ func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
 }
 
 func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
+	// Enforce the 3-second gap rule starting from block 45,000.
+	if parent.Number.Uint64() >= 45000 && (time - parent.Time) < 3 {
+		panic("block rejected: parent's time gap is less than 3 seconds")
+	}
+
+	// Determine the divisor based on block number.
+	divisor := difficultyBoundDivisor
+	if parent.Number.Uint64() >= 45000 {
+		divisor = 11
+	}
+
 	pDiff, _ := uint256.FromBig(parent.Difficulty)
 	adjust := pDiff.Clone()
-	adjust.Rsh(adjust, difficultyBoundDivisor)
+	adjust.Rsh(adjust, uint(divisor))
 	diffSec := int64(time - parent.Time)
 	x := new(big.Rat).SetFrac64(diffSec, 7)
 
@@ -112,12 +135,23 @@ func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
 	if parent.Number.Uint64() < 300 {
 		newDiff.Mul(newDiff, big.NewInt(3))
 		newDiff.Div(newDiff, big.NewInt(2))
-	}	
+	}
 	return newDiff
 }
 
 func MakeDifficultyCalculatorU256() func(time uint64, parent *types.Header) *big.Int {
 	return func(time uint64, parent *types.Header) *big.Int {
+		// Enforce the 3-second gap rule starting from block 45,000.
+		if parent.Number.Uint64() >= 45000 && (time - parent.Time) < 3 {
+			panic("block rejected: parent's time gap is less than 3 seconds")
+		}
+
+		// Determine the divisor based on block number.
+		divisor := difficultyBoundDivisor
+		if parent.Number.Uint64() >= 45000 {
+			divisor = 11
+		}
+
 		diffSec := int64(time - parent.Time)
 		x := new(big.Rat).SetFrac64(diffSec, 7)
 
@@ -131,7 +165,7 @@ func MakeDifficultyCalculatorU256() func(time uint64, parent *types.Header) *big
 
 		y := new(uint256.Int)
 		y.SetFromBig(parent.Difficulty)
-		y.Rsh(y, difficultyBoundDivisor)
+		y.Rsh(y, uint(divisor))
 
 		prod := new(big.Rat).Mul(new(big.Rat).SetInt(y.ToBig()), delta)
 		adjAmount := roundRat(prod)
