@@ -20,11 +20,17 @@ import (
 )
 
 const (
-	// Minimum difficulty level
-	minimumDifficulty = 1000000
-	// More aggressive difficulty adjustment for blocks before 45,000.
-	// Note: from block 45,000 onward the divisor is set to 11.
-	difficultyBoundDivisor = 512
+	// Custom difficulty parameters (used for blocks before hardfork)
+	minimumDifficulty         = 1000000
+	difficultyBoundDivisor    = 512
+	// R5 difficulty parameters (used for blocks >= hardfork)
+	r5MinimumDifficulty       = 1000000
+	r5DifficultyBoundDivisor  = 11
+	// Hardfork block number
+	hardForkBlock             = 45000
+	// Block time target (in seconds) for both calculations;
+	// note: for R5 (post-hardfork) this replaces original target.
+	targetBlockTime           = 7
 )
 
 func roundRat(r *big.Rat) *big.Int {
@@ -37,23 +43,32 @@ func roundRat(r *big.Rat) *big.Int {
 	return quotient
 }
 
+// CalcDifficultyFrontierU256 calculates the block difficulty using the Frontier rules.
+// For blocks with parent.Number >= hardForkBlock the calculation uses the R5 new formula
 func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
-	// Enforce the 3-second gap rule starting from block 45,000.
-	if parent.Number.Uint64() >= 45000 && (time - parent.Time) < 3 {
-		panic("block rejected: parent's time gap is less than 3 seconds")
+	// If past the hardfork block, use R5 difficulty calculation.
+	if parent.Number.Uint64() >= hardForkBlock {
+		pDiff, _ := uint256.FromBig(parent.Difficulty)
+		adjust := pDiff.Clone()
+		adjust.Rsh(adjust, r5DifficultyBoundDivisor)
+		// With a 7-second target, add difficulty if block time is less than 7 sec.
+		if time-parent.Time < targetBlockTime {
+			pDiff.Add(pDiff, adjust)
+		} else {
+			pDiff.Sub(pDiff, adjust)
+		}
+		if pDiff.LtUint64(r5MinimumDifficulty) {
+			pDiff.SetUint64(r5MinimumDifficulty)
+		}
+		return pDiff.ToBig()
 	}
 
-	// Determine the divisor based on block number.
-	divisor := difficultyBoundDivisor
-	if parent.Number.Uint64() >= 45000 {
-		divisor = 11
-	}
-
+	// Custom (pre-hardfork) calculation.
 	pDiff, _ := uint256.FromBig(parent.Difficulty)
 	adjust := pDiff.Clone()
-	adjust.Rsh(adjust, uint(divisor))
+	adjust.Rsh(adjust, difficultyBoundDivisor)
 	diffSec := int64(time - parent.Time)
-	x := new(big.Rat).SetFrac64(diffSec, 7)
+	x := new(big.Rat).SetFrac64(diffSec, targetBlockTime)
 
 	cVal := int64(1)
 	if parent.UncleHash != types.EmptyUncleHash {
@@ -88,23 +103,44 @@ func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
 	return newDiff
 }
 
+// CalcDifficultyHomesteadU256 calculates the block difficulty using the Homestead rules.
+// For blocks with parent.Number >= hardForkBlock the calculation uses the R5 formula.
 func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
-	// Enforce the 3-second gap rule starting from block 45,000.
-	if parent.Number.Uint64() >= 45000 && (time - parent.Time) < 3 {
-		panic("block rejected: parent's time gap is less than 3 seconds")
+	// R5 calculation for post-hardfork blocks.
+	if parent.Number.Uint64() >= hardForkBlock {
+		pDiff, _ := uint256.FromBig(parent.Difficulty)
+		adjust := pDiff.Clone()
+		adjust.Rsh(adjust, r5DifficultyBoundDivisor)
+		// Replace the original divisor of 10 with our targetBlockTime (7 seconds)
+		x := (time - parent.Time) / targetBlockTime
+		neg := true
+		if x == 0 {
+			x = 1
+			neg = false
+		} else if x >= 100 {
+			x = 99
+		} else {
+			x = x - 1
+		}
+		z := new(uint256.Int).SetUint64(x)
+		adjust.Mul(adjust, z)
+		if neg {
+			pDiff.Sub(pDiff, adjust)
+		} else {
+			pDiff.Add(pDiff, adjust)
+		}
+		if pDiff.LtUint64(r5MinimumDifficulty) {
+			pDiff.SetUint64(r5MinimumDifficulty)
+		}
+		return pDiff.ToBig()
 	}
 
-	// Determine the divisor based on block number.
-	divisor := difficultyBoundDivisor
-	if parent.Number.Uint64() >= 45000 {
-		divisor = 11
-	}
-
+	// Custom (pre-hardfork) calculation.
 	pDiff, _ := uint256.FromBig(parent.Difficulty)
 	adjust := pDiff.Clone()
-	adjust.Rsh(adjust, uint(divisor))
+	adjust.Rsh(adjust, difficultyBoundDivisor)
 	diffSec := int64(time - parent.Time)
-	x := new(big.Rat).SetFrac64(diffSec, 7)
+	x := new(big.Rat).SetFrac64(diffSec, targetBlockTime)
 
 	oneRat := new(big.Rat).SetInt64(1)
 	factor := new(big.Rat).Sub(x, oneRat)
@@ -135,25 +171,50 @@ func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
 	if parent.Number.Uint64() < 300 {
 		newDiff.Mul(newDiff, big.NewInt(3))
 		newDiff.Div(newDiff, big.NewInt(2))
-	}
+	}	
 	return newDiff
 }
 
+// MakeDifficultyCalculatorU256 returns a function to calculate difficulty.
+// For blocks with parent.Number >= hardForkBlock the returned function uses the R5 formula.
 func MakeDifficultyCalculatorU256() func(time uint64, parent *types.Header) *big.Int {
 	return func(time uint64, parent *types.Header) *big.Int {
-		// Enforce the 3-second gap rule starting from block 45,000.
-		if parent.Number.Uint64() >= 45000 && (time - parent.Time) < 3 {
-			panic("block rejected: parent's time gap is less than 3 seconds")
+		// R5 calculation for post-hardfork blocks.
+		if parent.Number.Uint64() >= hardForkBlock {
+			x := (time - parent.Time) / targetBlockTime
+			c := uint64(1)
+			if parent.UncleHash != types.EmptyUncleHash {
+				c = 2
+			}
+			xNeg := x >= c
+			if xNeg {
+				x = x - c
+			} else {
+				x = c - x
+			}
+			if x > 99 {
+				x = 99
+			}
+			y := new(uint256.Int)
+			y.SetFromBig(parent.Difficulty)
+			pDiff := y.Clone()
+			z := new(uint256.Int).SetUint64(x)
+			y.Rsh(y, r5DifficultyBoundDivisor)
+			z.Mul(y, z)
+			if xNeg {
+				y.Sub(pDiff, z)
+			} else {
+				y.Add(pDiff, z)
+			}
+			if y.LtUint64(r5MinimumDifficulty) {
+				y.SetUint64(r5MinimumDifficulty)
+			}
+			return y.ToBig()
 		}
 
-		// Determine the divisor based on block number.
-		divisor := difficultyBoundDivisor
-		if parent.Number.Uint64() >= 45000 {
-			divisor = 11
-		}
-
+		// Custom (pre-hardfork) calculation.
 		diffSec := int64(time - parent.Time)
-		x := new(big.Rat).SetFrac64(diffSec, 7)
+		xRat := new(big.Rat).SetFrac64(diffSec, targetBlockTime)
 
 		cVal := int64(1)
 		if parent.UncleHash != types.EmptyUncleHash {
@@ -161,16 +222,16 @@ func MakeDifficultyCalculatorU256() func(time uint64, parent *types.Header) *big
 		}
 		cRat := new(big.Rat).SetInt64(cVal)
 
-		delta := new(big.Rat).Sub(new(big.Rat).Quo(x, cRat), big.NewRat(1, 1))
+		delta := new(big.Rat).Sub(new(big.Rat).Quo(xRat, cRat), big.NewRat(1, 1))
 
 		y := new(uint256.Int)
 		y.SetFromBig(parent.Difficulty)
-		y.Rsh(y, uint(divisor))
+		y.Rsh(y, difficultyBoundDivisor)
 
 		prod := new(big.Rat).Mul(new(big.Rat).SetInt(y.ToBig()), delta)
 		adjAmount := roundRat(prod)
 
-		if x.Cmp(cRat) >= 0 {
+		if xRat.Cmp(cRat) >= 0 {
 			newDiff := new(big.Int).Sub(parent.Difficulty, adjAmount)
 			if newDiff.Cmp(big.NewInt(minimumDifficulty)) < 0 {
 				newDiff.SetUint64(minimumDifficulty)
