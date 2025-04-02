@@ -23,9 +23,12 @@ import sys
 import time
 import struct
 import configparser
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, freeze_support
 
 import requests
+
+# Define a global logger for use throughout the module.
+logger = logging.getLogger(__name__)
 
 # Import functions and constants from your Ethash-R5 implementation.
 from ethash_r5 import (
@@ -211,4 +214,5 @@ def main():
     listener.stop()
 
 if __name__ == "__main__":
+    freeze_support()  # Needed for Windows when using multiprocessing with PyInstaller
     main()
