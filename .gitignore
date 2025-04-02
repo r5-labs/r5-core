@@ -29,6 +29,12 @@
 /scdev/build/*
 /scdev/dist/*
 
+# Miner
+/r5miner/miner.ini
+/r5miner/build/*
+/r5miner/dist/*
+/r5miner/__pycache__
+
 # Proxy
 /proxy/proxy.ini
 /proxy/proxy.spec
