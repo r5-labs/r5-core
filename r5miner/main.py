@@ -110,7 +110,7 @@ def setup_worker_logger(log_queue):
     root.setLevel(logging.INFO)
 
 # --- Miner Worker Process ---
-def miner_worker(worker_id: int, rpc_url: str, reward_addr: str, worker_name: str, total_workers: int, log_queue):
+def miner_worker(worker_id: int, rpc_url: str, worker_name: str, total_workers: int, log_queue):
     setup_worker_logger(log_queue)
     logger = logging.getLogger(f"Worker-{worker_id}")
     logger.info(f"[Worker {worker_id} - {worker_name}] Starting mining loop.")
@@ -201,7 +201,7 @@ def main():
 
     workers = []
     for i in range(cpu_threads):
-        p = Process(target=miner_worker, args=(i, rpc_url, reward_addr, worker_name, cpu_threads, log_queue))
+        p = Process(target=miner_worker, args=(i, rpc_url, worker_name, cpu_threads, log_queue))
         p.start()
         workers.append(p)
     for p in workers:
