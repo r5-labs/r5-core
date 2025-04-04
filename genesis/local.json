@@ -13,5 +13,6 @@
         "berlinBlock": 0
     },
     "gasLimit": "147000000",
-    "difficulty": "1"
+    "difficulty": "1",
+    "alloc": {}
 }
