@@ -41,15 +41,13 @@ from ethash_r5 import (
 )
 
 # --- Configuration Handling ---
-CONFIG_FILE = "miner.ini"
-default_config = {
-    "pool_url": "http://localhost:8545",
-    "account": "0x000000000000000000000000000000000000dead",
-    "cpu_threads": str(max(1, os.cpu_count() - 1)),
-    "worker_name": "r5miner_worker"
-}
-
 def load_config():
+    CONFIG_FILE = "miner.ini"
+    default_config = {
+        "pool_url": "http://localhost:8545",
+        "cpu_threads": str(max(1, os.cpu_count() - 1)),
+        "worker_name": "r5miner_worker"
+    }
     config = configparser.ConfigParser()
     if not os.path.exists(CONFIG_FILE):
         config["Miner"] = default_config
@@ -90,7 +88,7 @@ def get_block_number(rpc_url: str) -> int:
 def submit_work(rpc_url: str, nonce: int, mix_digest: bytes, pow_hash: str) -> bool:
     nonce_hex = f"0x{nonce:016x}"
     mix_hex = "0x" + mix_digest.hex()
-    params = [nonce_hex, mix_hex, pow_hash]
+    params = [nonce_hex, pow_hash, mix_hex]
     result = json_rpc_request(rpc_url, "eth_submitWork", params)
     return bool(result)
 
@@ -104,7 +102,6 @@ def get_cache(seed: bytes, block_number: int) -> list:
 
 # --- Worker Logging Setup ---
 def setup_worker_logger(log_queue):
-    # Remove any default handlers and add a QueueHandler to send logs to the central queue.
     root = logging.getLogger()
     for handler in root.handlers[:]:
         root.removeHandler(handler)
@@ -113,7 +110,7 @@ def setup_worker_logger(log_queue):
     root.setLevel(logging.INFO)
 
 # --- Miner Worker Process ---
-def miner_worker(worker_id: int, rpc_url: str, reward_addr: str, worker_name: str, log_queue):
+def miner_worker(worker_id: int, rpc_url: str, reward_addr: str, worker_name: str, total_workers: int, log_queue):
     setup_worker_logger(log_queue)
     logger = logging.getLogger(f"Worker-{worker_id}")
     logger.info(f"[Worker {worker_id} - {worker_name}] Starting mining loop.")
@@ -136,7 +133,7 @@ def miner_worker(worker_id: int, rpc_url: str, reward_addr: str, worker_name: st
                 last_epoch = work_epoch
                 logger.info(f"Cache generated for epoch {work_epoch}")
             else:
-                logger.info(f"Reusing cache for epoch {work_epoch}")
+                logger.debug(f"Reusing cache for epoch {work_epoch}")
 
             cache = cached_cache
             ds = dataset_size(current_block)
@@ -171,7 +168,7 @@ def miner_worker(worker_id: int, rpc_url: str, reward_addr: str, worker_name: st
                         logger.error("Failed to submit solution.")
                     solution_found = True
                     break
-                nonce += 1
+                nonce += total_workers
 
             if not solution_found:
                 logger.info("No valid solution found; re-requesting work...")
@@ -182,7 +179,6 @@ def miner_worker(worker_id: int, rpc_url: str, reward_addr: str, worker_name: st
 
 # --- Main Miner Process ---
 def main():
-    # Set up a central logging queue and listener.
     log_queue = Queue()
     handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter("[%(asctime)s] %(name)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
@@ -191,10 +187,9 @@ def main():
     listener.start()
 
     config = load_config()
-    rpc_url = config.get("pool_url", default_config["pool_url"])
-    reward_addr = config.get("account", default_config["account"])
-    cpu_threads = int(config.get("cpu_threads", default_config["cpu_threads"]))
-    worker_name = config.get("worker_name", default_config["worker_name"])
+    rpc_url = config.get("pool_url", "http://localhost:8545")
+    cpu_threads = int(config.get("cpu_threads", str(max(1, os.cpu_count() - 1))))
+    worker_name = config.get("worker_name", "r5miner_worker")
 
     main_logger = logging.getLogger("Main")
     try:
@@ -206,7 +201,7 @@ def main():
 
     workers = []
     for i in range(cpu_threads):
-        p = Process(target=miner_worker, args=(i, rpc_url, reward_addr, worker_name, log_queue))
+        p = Process(target=miner_worker, args=(i, rpc_url, reward_addr, worker_name, cpu_threads, log_queue))
         p.start()
         workers.append(p)
     for p in workers:

@@ -3,6 +3,7 @@ import math
 import struct
 import time
 import threading
+import os
 from functools import partial
 from math import ceil
 from Crypto.Hash import keccak  # Using PyCryptodome's keccak
@@ -956,7 +957,7 @@ def generate_dataset(dest: bytearray, epoch: int, cache: list):
 
     print(f"Generating full dataset for epoch {epoch} with {total_items} items...")
 
-    num_threads = threading.active_count()  # or use os.cpu_count()
+    num_threads = os.cpu_count()
     items_per_thread = ceil(total_items / num_threads)
     threads = []
     lock = threading.Lock()
@@ -969,7 +970,7 @@ def generate_dataset(dest: bytearray, epoch: int, cache: list):
                 b_item = bytearray(item)
                 swap(b_item)
                 item = bytes(b_item)
-            dest[idx*HASH_BYTES:(idx+1)*HASH_BYTES] = item
+            dest[idx * HASH_BYTES:(idx + 1) * HASH_BYTES] = item
             if (idx - start_index) % max(1, total_items // 100) == 0:
                 with lock:
                     print(f"Thread {thread_id}: generated {idx - start_index + 1} / {end_index - start_index} items")
