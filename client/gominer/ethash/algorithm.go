@@ -1,31 +1,468 @@
-#!/usr/bin/env python3
-import math
-import struct
-import time
-import threading
-import os
-from functools import partial
-from math import ceil
-from Crypto.Hash import keccak  # Using PyCryptodome's keccak
+// Copyright 2025 R5
+// This file is part of the R5 Core library.
+//
+// This software is provided "as is", without warranty of any kind,
+// express or implied, including but not limited to the warranties
+// of merchantability, fitness for a particular purpose and
+// noninfringement. In no event shall the authors or copyright
+// holders be liable for any claim, damages, or other liability,
+// whether in an action of contract, tort or otherwise, arising
+// from, out of or in connection with the software or the use or
+// other dealings in the software.
 
-# Constants
-DATASET_INIT_BYTES   = 1 << 30  # 1 GiB at genesis
-DATASET_GROWTH_BYTES = 1 << 23  # 8 MiB growth per epoch
-CACHE_INIT_BYTES     = 1 << 24  # 16 MiB at genesis
-CACHE_GROWTH_BYTES   = 1 << 17  # 128 KiB growth per epoch
-EPOCH_LENGTH         = 30000
-MIX_BYTES            = 128
-HASH_BYTES           = 64
-HASH_WORDS           = 16  # Number of 32-bit ints in a hash
-DATASET_PARENTS      = 256
-CACHE_ROUNDS         = 3
-LOOP_ACCESSES        = 64
-MAX_EPOCH            = 2048
+// ETHASH-R5 Implementation
+// --------------------------------------------------------------
+// Visit https://r5.network for more information
+// Miner software developers should adjust for the 4 extra mixing
+// rounds to generate correct hashes. Regular ETHASH miners won't
+// work with ETHASH-R5 if not adjusted accordingly.
+// --------------------------------------------------------------
 
-# For simplicity, we use empty tables here.
-# In a complete implementation, these should be precalculated.
-dataset_sizes = [
-    1073739904, 1082130304, 1090514816, 1098906752, 1107293056,
+package ethash
+
+import (
+	"encoding/binary"
+	"hash"
+	"math/big"
+	"reflect"
+	"runtime"
+	"sync"
+	"sync/atomic"
+	"time"
+	"unsafe"
+
+	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/common/bitutil"
+	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/log"
+	"golang.org/x/crypto/sha3"
+)
+
+const (
+	datasetInitBytes   = 1 << 30 // Bytes in dataset at genesis
+	datasetGrowthBytes = 1 << 23 // Dataset growth per epoch
+	cacheInitBytes     = 1 << 24 // Bytes in cache at genesis
+	cacheGrowthBytes   = 1 << 17 // Cache growth per epoch
+	EpochLength        = 30000   // Blocks per epoch
+	mixBytes           = 128     // Width of mix
+	hashBytes          = 64      // Hash length in bytes
+	hashWords          = 16      // Number of 32 bit ints in a hash
+	datasetParents     = 256     // Number of parents of each dataset element
+	cacheRounds        = 3       // Number of rounds in cache production
+	loopAccesses       = 64      // Number of accesses in hashimoto loop
+)
+
+// CacheSize returns the size of the ethash verification cache that belongs to a certain
+// block number.
+func CacheSize(block uint64) uint64 {
+	epoch := int(block / EpochLength)
+	if epoch < maxEpoch {
+		return CacheSizes[epoch]
+	}
+	return calcCacheSize(epoch)
+}
+
+// calcCacheSize calculates the cache size for epoch. The cache size grows linearly,
+// however, we always take the highest prime below the linearly growing threshold in order
+// to reduce the risk of accidental regularities leading to cyclic behavior.
+func calcCacheSize(epoch int) uint64 {
+	size := cacheInitBytes + cacheGrowthBytes*uint64(epoch) - hashBytes
+	for !new(big.Int).SetUint64(size / hashBytes).ProbablyPrime(1) { // Always accurate for n < 2^64
+		size -= 2 * hashBytes
+	}
+	return size
+}
+
+// DatasetSize returns the size of the ethash mining dataset that belongs to a certain
+// block number.
+func DatasetSize(block uint64) uint64 {
+	epoch := int(block / EpochLength)
+	if epoch < maxEpoch {
+		return DatasetSizes[epoch]
+	}
+	return calcDatasetSize(epoch)
+}
+
+// calcDatasetSize calculates the dataset size for epoch. The dataset size grows linearly,
+// however, we always take the highest prime below the linearly growing threshold in order
+// to reduce the risk of accidental regularities leading to cyclic behavior.
+func calcDatasetSize(epoch int) uint64 {
+	size := datasetInitBytes + datasetGrowthBytes*uint64(epoch) - mixBytes
+	for !new(big.Int).SetUint64(size / mixBytes).ProbablyPrime(1) { // Always accurate for n < 2^64
+		size -= 2 * mixBytes
+	}
+	return size
+}
+
+// hasher is a repetitive hasher allowing the same hash data structures to be
+// reused between hash runs instead of requiring new ones to be created.
+type hasher func(dest []byte, data []byte)
+
+// makeHasher creates a repetitive hasher, allowing the same hash data structures to
+// be reused between hash runs instead of requiring new ones to be created. The returned
+// function is not thread safe!
+func makeHasher(h hash.Hash) hasher {
+	// sha3.state supports Read to get the sum, use it to avoid the overhead of Sum.
+	// Read alters the state but we reset the hash before every operation.
+	type readerHash interface {
+		hash.Hash
+		Read([]byte) (int, error)
+	}
+	rh, ok := h.(readerHash)
+	if !ok {
+		panic("can't find Read method on hash")
+	}
+	outputLen := rh.Size()
+	return func(dest []byte, data []byte) {
+		rh.Reset()
+		rh.Write(data)
+		rh.Read(dest[:outputLen])
+	}
+}
+
+// seedHash is the seed to use for generating a verification cache and the mining
+// dataset.
+func seedHash(block uint64) []byte {
+	seed := make([]byte, 32)
+	if block < EpochLength {
+		return seed
+	}
+	keccak256 := makeHasher(sha3.NewLegacyKeccak256())
+	for i := 0; i < int(block/EpochLength); i++ {
+		keccak256(seed, seed)
+	}
+	return seed
+}
+
+// GenerateCache creates a verification cache of a given size for an input seed.
+// The cache production process involves first sequentially filling up 32 MB of
+// memory, then performing two passes of Sergio Demian Lerner's RandMemoHash
+// algorithm from Strict Memory Hard Hashing Functions (2014). The output is a
+// set of 524288 64-byte values.
+// This method places the result into dest in machine byte order.
+func GenerateCache(dest []uint32, epoch uint64, seed []byte) {
+	// Print some debug logs to allow analysis on low end devices
+	logger := log.New("epoch", epoch)
+
+	start := time.Now()
+	defer func() {
+		elapsed := time.Since(start)
+
+		logFn := logger.Debug
+		if elapsed > 3*time.Second {
+			logFn = logger.Info
+		}
+		logFn("Generated ethash verification cache", "elapsed", common.PrettyDuration(elapsed))
+	}()
+	// Convert our destination slice to a byte buffer
+	var cache []byte
+	cacheHdr := (*reflect.SliceHeader)(unsafe.Pointer(&cache))
+	dstHdr := (*reflect.SliceHeader)(unsafe.Pointer(&dest))
+	cacheHdr.Data = dstHdr.Data
+	cacheHdr.Len = dstHdr.Len * 4
+	cacheHdr.Cap = dstHdr.Cap * 4
+
+	// Calculate the number of theoretical rows (we'll store in one buffer nonetheless)
+	size := uint64(len(cache))
+	rows := int(size) / hashBytes
+
+	// Start a monitoring goroutine to report progress on low end devices
+	var progress atomic.Uint32
+
+	done := make(chan struct{})
+	defer close(done)
+
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			case <-time.After(3 * time.Second):
+				logger.Info("Generating ethash verification cache", "percentage", progress.Load()*100/uint32(rows)/(cacheRounds+1), "elapsed", common.PrettyDuration(time.Since(start)))
+			}
+		}
+	}()
+	// Create a hasher to reuse between invocations
+	keccak512 := makeHasher(sha3.NewLegacyKeccak512())
+
+	// Sequentially produce the initial dataset
+	keccak512(cache, seed)
+	for offset := uint64(hashBytes); offset < size; offset += hashBytes {
+		keccak512(cache[offset:], cache[offset-hashBytes:offset])
+		progress.Add(1)
+	}
+	// Use a low-round version of randmemohash
+	temp := make([]byte, hashBytes)
+
+	for i := 0; i < cacheRounds; i++ {
+		for j := 0; j < rows; j++ {
+			var (
+				srcOff = ((j - 1 + rows) % rows) * hashBytes
+				dstOff = j * hashBytes
+				xorOff = (binary.LittleEndian.Uint32(cache[dstOff:]) % uint32(rows)) * hashBytes
+			)
+			bitutil.XORBytes(temp, cache[srcOff:srcOff+hashBytes], cache[xorOff:xorOff+hashBytes])
+			keccak512(cache[dstOff:], temp)
+
+			progress.Add(1)
+		}
+	}
+	// Swap the byte order on big endian systems and return
+	if !isLittleEndian() {
+		swap(cache)
+	}
+}
+
+// swap changes the byte order of the buffer assuming a uint32 representation.
+func swap(buffer []byte) {
+	for i := 0; i < len(buffer); i += 4 {
+		binary.BigEndian.PutUint32(buffer[i:], binary.LittleEndian.Uint32(buffer[i:]))
+	}
+}
+
+// fnv is an algorithm inspired by the FNV hash, which in some cases is used as
+// a non-associative substitute for XOR. Note that we multiply the prime with
+// the full 32-bit input, in contrast with the FNV-1 spec which multiplies the
+// prime with one byte (octet) in turn.
+func fnv(a, b uint32) uint32 {
+	return a*0x01000193 ^ b
+}
+
+// fnvHash mixes in data into mix using the ethash fnv method.
+func fnvHash(mix []uint32, data []uint32) {
+	for i := 0; i < len(mix); i++ {
+		mix[i] = mix[i]*0x01000193 ^ data[i]
+	}
+}
+
+// generateDatasetItem combines data from 256 pseudorandomly selected cache nodes,
+// and hashes that to compute a single dataset node.
+func generateDatasetItem(cache []uint32, index uint32, keccak512 hasher) []byte {
+	// Calculate the number of theoretical rows (we use one buffer nonetheless)
+	rows := uint32(len(cache) / hashWords)
+
+	// Initialize the mix
+	mix := make([]byte, hashBytes)
+
+	binary.LittleEndian.PutUint32(mix, cache[(index%rows)*hashWords]^index)
+	for i := 1; i < hashWords; i++ {
+		binary.LittleEndian.PutUint32(mix[i*4:], cache[(index%rows)*hashWords+uint32(i)])
+	}
+	keccak512(mix, mix)
+
+	// Convert the mix to uint32s to avoid constant bit shifting
+	intMix := make([]uint32, hashWords)
+	for i := 0; i < len(intMix); i++ {
+		intMix[i] = binary.LittleEndian.Uint32(mix[i*4:])
+	}
+	// fnv it with a lot of random cache nodes based on index
+	for i := uint32(0); i < datasetParents; i++ {
+		parent := fnv(index^i, intMix[i%16]) % rows
+		fnvHash(intMix, cache[parent*hashWords:])
+	}
+	// Flatten the uint32 mix into a binary one and return
+	for i, val := range intMix {
+		binary.LittleEndian.PutUint32(mix[i*4:], val)
+	}
+	keccak512(mix, mix)
+	return mix
+}
+
+// generateDataset generates the entire ethash dataset for mining.
+// This method places the result into dest in machine byte order.
+func generateDataset(dest []uint32, epoch uint64, cache []uint32) {
+	// Print some debug logs to allow analysis on low end devices
+	logger := log.New("epoch", epoch)
+
+	start := time.Now()
+	defer func() {
+		elapsed := time.Since(start)
+
+		logFn := logger.Debug
+		if elapsed > 3*time.Second {
+			logFn = logger.Info
+		}
+		logFn("Generated ethash verification cache", "elapsed", common.PrettyDuration(elapsed))
+	}()
+
+	// Figure out whether the bytes need to be swapped for the machine
+	swapped := !isLittleEndian()
+
+	// Convert our destination slice to a byte buffer
+	var dataset []byte
+	datasetHdr := (*reflect.SliceHeader)(unsafe.Pointer(&dataset))
+	destHdr := (*reflect.SliceHeader)(unsafe.Pointer(&dest))
+	datasetHdr.Data = destHdr.Data
+	datasetHdr.Len = destHdr.Len * 4
+	datasetHdr.Cap = destHdr.Cap * 4
+
+	// Generate the dataset on many goroutines since it takes a while
+	threads := runtime.NumCPU()
+	size := uint64(len(dataset))
+
+	var pend sync.WaitGroup
+	pend.Add(threads)
+
+	var progress atomic.Uint64
+	for i := 0; i < threads; i++ {
+		go func(id int) {
+			defer pend.Done()
+
+			// Create a hasher to reuse between invocations
+			keccak512 := makeHasher(sha3.NewLegacyKeccak512())
+
+			// Calculate the data segment this thread should generate
+			batch := (size + hashBytes*uint64(threads) - 1) / (hashBytes * uint64(threads))
+			first := uint64(id) * batch
+			limit := first + batch
+			if limit > size/hashBytes {
+				limit = size / hashBytes
+			}
+			// Calculate the dataset segment
+			percent := size / hashBytes / 100
+			for index := first; index < limit; index++ {
+				item := generateDatasetItem(cache, uint32(index), keccak512)
+				if swapped {
+					swap(item)
+				}
+				copy(dataset[index*hashBytes:], item)
+
+				if status := progress.Add(1); status%percent == 0 {
+					logger.Info("Generating DAG in progress", "percentage", (status*100)/(size/hashBytes), "elapsed", common.PrettyDuration(time.Since(start)))
+				}
+			}
+		}(i)
+	}
+	// Wait for all the generators to finish and return
+	pend.Wait()
+}
+
+// hashimoto aggregates data from the full dataset in order to produce our final
+// value for a particular header hash and nonce.
+func hashimoto(hash []byte, nonce uint64, size uint64, lookup func(index uint32) []uint32) ([]byte, []byte) {
+	// 1. Standard Hashimoto (inherited from standard Ethash) with extra sequential dependency
+	rows := uint32(size / mixBytes)
+
+	// Combine header+nonce into a 40-byte seed
+	seed := make([]byte, 40)
+	copy(seed, hash)
+	binary.LittleEndian.PutUint64(seed[32:], nonce)
+
+	// Keccak-512 of the seed
+	seed = crypto.Keccak512(seed)
+	seedHead := binary.LittleEndian.Uint32(seed)
+
+	// Initialize the mix: replicate the 512-bit seed across mix
+	mix := make([]uint32, mixBytes/4)
+	for i := 0; i < len(mix); i++ {
+		mix[i] = binary.LittleEndian.Uint32(seed[(i%16)*4:])
+	}
+
+	// Main loop: add sequential dependency and a conditional branch to hinder GPU parallelism
+	temp := make([]uint32, len(mix))
+	// Start with a sequential dependency variable initialized from seedHead.
+	seqDep := seedHead
+	for i := 0; i < loopAccesses; i++ {
+		// Update the sequential dependency with a value from mix.
+		seqDep = fnv(seqDep, mix[i%len(mix)])
+		// Use seqDep (instead of seedHead) to calculate parent index.
+		parent := fnv(uint32(i)^seqDep, mix[i%len(mix)]) % rows
+
+		for j := uint32(0); j < mixBytes/hashBytes; j++ {
+			copy(temp[j*hashWords:], lookup(2*parent+j))
+		}
+		// Insert a data-dependent branch to force divergence:
+		if (mix[0] & 0x1) == 1 {
+			// Extra mixing on the first element to force serial dependency.
+			mix[0] = fnv(mix[0], temp[0])
+		}
+		fnvHash(mix, temp)
+	}
+
+	// Compress mix to a 32-byte digest.
+	for i := 0; i < len(mix); i += 4 {
+		mix[i/4] = fnv(fnv(fnv(mix[i], mix[i+1]), mix[i+2]), mix[i+3])
+	}
+	mix = mix[:len(mix)/4]
+
+	digest := make([]byte, 32)
+	for i, val := range mix {
+		binary.LittleEndian.PutUint32(digest[i*4:], val)
+	}
+
+	// 2. Ethash-R5 extension: four extra mixing rounds with added sequential work
+	//    (Keccak256 ∘ FNV_Mix)^4 applied to the digest
+	extraKeccak := makeHasher(sha3.NewLegacyKeccak256())
+	for round := 0; round < 4; round++ {
+		// Interpret digest as array of uint32
+		extra := make([]uint32, len(digest)/4)
+		for i := 0; i < len(extra); i++ {
+			extra[i] = binary.LittleEndian.Uint32(digest[i*4:])
+		}
+
+		// Add a sequential inner loop to further force serial computation.
+		for k := 0; k < 3; k++ {
+			extra[0] = fnv(extra[0], extra[len(extra)-1])
+		}
+
+		// FNV-mix the array with itself
+		fnvHash(extra, extra)
+
+		// Convert back to bytes
+		for i, val := range extra {
+			binary.LittleEndian.PutUint32(digest[i*4:], val)
+		}
+
+		// Data-dependent branch: if the least significant bit of digest[0] is 0, perform an extra Keccak mix.
+		if (digest[0] & 1) == 0 {
+			tmp := make([]byte, len(digest))
+			extraKeccak(tmp, digest)
+			copy(digest, tmp)
+		}
+	}
+
+	// -----------------------------------------------------------------------
+	// 3. Final hash remains the same: Keccak256(seed || digest)
+	// -----------------------------------------------------------------------
+	finalHash := crypto.Keccak256(append(seed, digest...))
+	return digest, finalHash
+}
+
+// HashimotoLight aggregates data from the full dataset (using only a small
+// in-memory cache) in order to produce our final value for a particular header
+// hash and nonce.
+func HashimotoLight(size uint64, cache []uint32, hash []byte, nonce uint64) ([]byte, []byte) {
+	keccak512 := makeHasher(sha3.NewLegacyKeccak512())
+
+	lookup := func(index uint32) []uint32 {
+		rawData := generateDatasetItem(cache, index, keccak512)
+
+		data := make([]uint32, len(rawData)/4)
+		for i := 0; i < len(data); i++ {
+			data[i] = binary.LittleEndian.Uint32(rawData[i*4:])
+		}
+		return data
+	}
+	return hashimoto(hash, nonce, size, lookup)
+}
+
+// hashimotoFull aggregates data from the full dataset (using the full in-memory
+// dataset) in order to produce our final value for a particular header hash and
+// nonce.
+func hashimotoFull(dataset []uint32, hash []byte, nonce uint64) ([]byte, []byte) {
+	lookup := func(index uint32) []uint32 {
+		offset := index * hashWords
+		return dataset[offset : offset+hashWords]
+	}
+	return hashimoto(hash, nonce, uint64(len(dataset))*4, lookup)
+}
+
+const maxEpoch = 2048
+
+// DatasetSizes is a lookup table for the ethash dataset size for the first 2048
+// epochs (i.e. 61440000 blocks).
+var DatasetSizes = [maxEpoch]uint64{
+	1073739904, 1082130304, 1090514816, 1098906752, 1107293056,
 	1115684224, 1124070016, 1132461952, 1140849536, 1149232768,
 	1157627776, 1166013824, 1174404736, 1182786944, 1191180416,
 	1199568512, 1207958912, 1216345216, 1224732032, 1233124736,
@@ -434,9 +871,12 @@ dataset_sizes = [
 	18102613376, 18111004544, 18119388544, 18127781248, 18136170368,
 	18144558976, 18152947328, 18161336192, 18169724288, 18178108544,
 	18186498944, 18194886784, 18203275648, 18211666048, 18220048768,
-	18228444544, 18236833408, 18245220736] * MAX_EPOCH
-cache_sizes   = [
-                 16776896, 16907456, 17039296, 17170112, 17301056, 17432512, 17563072,
+	18228444544, 18236833408, 18245220736}
+
+// CacheSizes is a lookup table for the ethash verification cache size for the
+// first 2048 epochs (i.e. 61440000 blocks).
+var CacheSizes = [maxEpoch]uint64{
+	16776896, 16907456, 17039296, 17170112, 17301056, 17432512, 17563072,
 	17693888, 17824192, 17955904, 18087488, 18218176, 18349504, 18481088,
 	18611392, 18742336, 18874304, 19004224, 19135936, 19267264, 19398208,
 	19529408, 19660096, 19791424, 19922752, 20053952, 20184896, 20315968,
@@ -762,297 +1202,5 @@ cache_sizes   = [
 	282590272, 282720832, 282853184, 282983744, 283115072, 283246144,
 	283377344, 283508416, 283639744, 283770304, 283901504, 284032576,
 	284163136, 284294848, 284426176, 284556992, 284687296, 284819264,
-	284950208, 285081536] * MAX_EPOCH
-
-
-# Helper Functions and Hasher
-
-def is_little_endian():
-    return struct.pack("I", 1)[0] == 1
-
-def make_hasher(hash_constructor):
-    """
-    Returns a function that writes the digest of data into dest.
-    """
-    def hasher(dest, data):
-        h = hash_constructor()
-        h.update(data)
-        d = h.digest()
-        dest[:len(d)] = d
-    return hasher
-
-# Create our keccak hash functions using PyCryptodome.
-def keccak256_hash(data: bytes) -> bytes:
-    h = keccak.new(digest_bits=256)
-    h.update(data)
-    return h.digest()
-
-def keccak512_hash(data: bytes) -> bytes:
-    h = keccak.new(digest_bits=512)
-    h.update(data)
-    return h.digest()
-
-# keccak512_func will use the keccak512_hash function wrapped by make_hasher.
-keccak512_func = make_hasher(lambda: keccak.new(digest_bits=512))
-
-
-# Cache and Dataset Size Calculation
-
-def calc_cache_size(epoch: int) -> int:
-    size = CACHE_INIT_BYTES + CACHE_GROWTH_BYTES * epoch - HASH_BYTES
-    # Reduce size until (size/HASH_BYTES) is prime.
-    while not is_probably_prime(size // HASH_BYTES):
-        size -= 2 * HASH_BYTES
-    return size
-
-def calc_dataset_size(epoch: int) -> int:
-    size = DATASET_INIT_BYTES + DATASET_GROWTH_BYTES * epoch - MIX_BYTES
-    while not is_probably_prime(size // MIX_BYTES):
-        size -= 2 * MIX_BYTES
-    return size
-
-def cache_size(block: int) -> int:
-    epoch = block // EPOCH_LENGTH
-    if epoch < MAX_EPOCH and cache_sizes[epoch]:
-        return cache_sizes[epoch]
-    return calc_cache_size(epoch)
-
-def dataset_size(block: int) -> int:
-    epoch = block // EPOCH_LENGTH
-    if epoch < MAX_EPOCH and dataset_sizes[epoch]:
-        return dataset_sizes[epoch]
-    return calc_dataset_size(epoch)
-
-def is_probably_prime(n: int) -> bool:
-    """A simple (deterministic for n < 2^64) prime test."""
-    if n < 2:
-        return False
-    # Check small primes
-    for p in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29):
-        if n % p == 0:
-            return n == p
-    # Use Miller-Rabin with a few bases (deterministic for 64-bit integers)
-    d = n - 1
-    s = 0
-    while d % 2 == 0:
-        s += 1
-        d //= 2
-    for a in (2, 3, 5, 7, 11):
-        if a >= n:
-            continue
-        x = pow(a, d, n)
-        if x == 1 or x == n - 1:
-            continue
-        for _ in range(s - 1):
-            x = (x * x) % n
-            if x == n - 1:
-                break
-        else:
-            return False
-    return True
-
-
-# Seed and Cache Generation
-
-def seed_hash(block: int) -> bytes:
-    seed = bytearray(32)  # initialized to zeros
-    if block < EPOCH_LENGTH:
-        return bytes(seed)
-    for _ in range(block // EPOCH_LENGTH):
-        buf = bytearray(HASH_BYTES)
-        keccak512_func(buf, seed)
-        seed = buf[:32]  # use first 32 bytes as new seed
-    return bytes(seed)
-
-def xor_bytes(a: bytes, b: bytes) -> bytes:
-    return bytes(x ^ y for x, y in zip(a, b))
-
-def swap(buffer: bytearray):
-    """Swap byte order of buffer assumed to be uint32 entries."""
-    for i in range(0, len(buffer), 4):
-        val = struct.unpack_from('<I', buffer, i)[0]
-        struct.pack_into('>I', buffer, i, val)
-
-def generate_cache(dest: bytearray, epoch: int, seed: bytes):
-    """
-    Fills the provided bytearray (dest) with the cache.
-    The length of dest should be cache_size in bytes.
-    """
-    start = time.time()
-    size = len(dest)
-    rows = size // HASH_BYTES
-
-    print(f"Generating cache for epoch {epoch} with {rows} rows...")
-    # Initial cache: sequentially fill with keccak512_func
-    keccak512_func(dest, seed)
-    for offset in range(HASH_BYTES, size, HASH_BYTES):
-        prev = dest[offset - HASH_BYTES: offset]
-        buf = bytearray(HASH_BYTES)
-        keccak512_func(buf, prev)
-        dest[offset:offset+HASH_BYTES] = buf
-
-    temp = bytearray(HASH_BYTES)
-    for r in range(CACHE_ROUNDS):
-        for j in range(rows):
-            src_off = ((j - 1 + rows) % rows) * HASH_BYTES
-            dst_off = j * HASH_BYTES
-            first4 = struct.unpack_from('<I', dest, dst_off)[0]
-            xor_index = (first4 % rows) * HASH_BYTES
-            block1 = dest[src_off:src_off+HASH_BYTES]
-            block2 = dest[xor_index:xor_index+HASH_BYTES]
-            temp = xor_bytes(block1, block2)
-            keccak512_func(dest[dst_off:dst_off+HASH_BYTES], temp)
-    if not is_little_endian():
-        swap(dest)
-    elapsed = time.time() - start
-    print(f"Cache generated in {elapsed:.2f} seconds.")
-
-
-# FNV and Dataset Item Generation
-
-def fnv(a: int, b: int) -> int:
-    # Force result into a 32-bit unsigned integer.
-    return ((a * 0x01000193) ^ b) & 0xffffffff
-
-def fnv_hash(mix: list, data: list):
-    for i in range(len(mix)):
-        mix[i] = fnv(mix[i], data[i])
-
-def generate_dataset_item(cache: list, index: int, keccak512_local) -> bytes:
-    """
-    Generate one dataset item given the cache.
-    Here, cache is a list of uint32 (little-endian words).
-    """
-    rows = len(cache) // HASH_WORDS
-    mix = bytearray(HASH_BYTES)
-    base_index = (index % rows) * HASH_WORDS
-    first_val = cache[base_index] ^ index
-    struct.pack_into('<I', mix, 0, first_val)
-    for i in range(1, HASH_WORDS):
-        struct.pack_into('<I', mix, i * 4, cache[base_index + i])
-    keccak512_local(mix, mix)
-    int_mix = [struct.unpack_from('<I', mix, i * 4)[0] for i in range(HASH_WORDS)]
-    for i in range(DATASET_PARENTS):
-        parent = fnv(index ^ i, int_mix[i % 16]) % rows
-        parent_data = cache[parent * HASH_WORDS: parent * HASH_WORDS + HASH_WORDS]
-        fnv_hash(int_mix, parent_data)
-    for i, val in enumerate(int_mix):
-        struct.pack_into('<I', mix, i * 4, val)
-    keccak512_local(mix, mix)
-    return bytes(mix)
-
-
-# Dataset Generation
-
-def generate_dataset(dest: bytearray, epoch: int, cache: list):
-    """
-    Generates the full dataset.
-    dest: bytearray large enough to hold the dataset (size in bytes)
-    cache: list of uint32 words from the cache.
-    """
-    start = time.time()
-    size = len(dest)
-    total_items = size // HASH_BYTES
-    swapped = not is_little_endian()
-
-    print(f"Generating full dataset for epoch {epoch} with {total_items} items...")
-
-    num_threads = os.cpu_count()
-    items_per_thread = ceil(total_items / num_threads)
-    threads = []
-    lock = threading.Lock()
-
-    def worker(thread_id, start_index, end_index):
-        local_keccak512 = make_hasher(lambda: keccak.new(digest_bits=512))
-        for idx in range(start_index, end_index):
-            item = generate_dataset_item(cache, idx, local_keccak512)
-            if swapped:
-                b_item = bytearray(item)
-                swap(b_item)
-                item = bytes(b_item)
-            dest[idx * HASH_BYTES:(idx + 1) * HASH_BYTES] = item
-            if (idx - start_index) % max(1, total_items // 100) == 0:
-                with lock:
-                    print(f"Thread {thread_id}: generated {idx - start_index + 1} / {end_index - start_index} items")
-    for t in range(num_threads):
-        first = t * items_per_thread
-        last = min((t + 1) * items_per_thread, total_items)
-        th = threading.Thread(target=worker, args=(t, first, last))
-        th.start()
-        threads.append(th)
-    for th in threads:
-        th.join()
-    elapsed = time.time() - start
-    print(f"Dataset generated in {elapsed:.2f} seconds.")
-
-
-# Hashimoto Functions
-
-def hashimoto(header_hash: bytes, nonce: int, size: int, lookup):
-    """
-    Implements the hashimoto algorithm.
-    lookup is a function that returns a list of uint32 given an index.
-    Returns (digest, final_hash) as bytes.
-    """
-    rows = size // MIX_BYTES
-    seed = bytearray(40)
-    seed[:len(header_hash)] = header_hash
-    struct.pack_into('<Q', seed, 32, nonce)
-    # Use keccak512 (legacy) to produce a 64-byte seed.
-    seed = bytearray(keccak512_hash(bytes(seed)))
-    seed_head = struct.unpack_from('<I', seed, 0)[0]
-    mix = []
-    for i in range(MIX_BYTES // 4):
-        mix.append(struct.unpack_from('<I', seed, (i % 16) * 4)[0])
-    seq_dep = seed_head
-    temp = [0] * (MIX_BYTES // 4)
-    for i in range(LOOP_ACCESSES):
-        seq_dep = fnv(seq_dep, mix[i % len(mix)])
-        parent = fnv(i ^ seq_dep, mix[i % len(mix)]) % rows
-        for j in range(MIX_BYTES // HASH_BYTES):
-            data = lookup(2 * parent + j)
-            temp[j*HASH_WORDS:(j+1)*HASH_WORDS] = data
-        if (mix[0] & 0x1) == 1:
-            mix[0] = fnv(mix[0], temp[0])
-        for k in range(len(mix)):
-            mix[k] = fnv(mix[k], temp[k])
-    compressed = []
-    for i in range(0, len(mix), 4):
-        h = fnv(fnv(mix[i], mix[i+1]), fnv(mix[i+2], mix[i+3]))
-        compressed.append(h)
-    digest = bytearray()
-    for val in compressed:
-        digest.extend(struct.pack('<I', val))
-    for _ in range(4):
-        extra = [struct.unpack_from('<I', digest, i*4)[0] for i in range(len(digest)//4)]
-        for _ in range(3):
-            extra[0] = fnv(extra[0], extra[-1])
-        fnv_hash(extra, extra)
-        digest = bytearray()
-        for val in extra:
-            digest.extend(struct.pack('<I', val))
-        if (digest[0] & 1) == 0:
-            digest = bytearray(keccak256_hash(bytes(digest)))
-    final_hash = keccak256_hash(bytes(seed) + bytes(digest))
-    return bytes(digest), final_hash
-
-def hashimoto_light(size: int, cache: list, header_hash: bytes, nonce: int):
-    """
-    Light version: using cache to generate dataset items on the fly.
-    Cache is a list of uint32.
-    """
-    def lookup(index: int) -> list:
-        local_keccak512 = make_hasher(lambda: keccak.new(digest_bits=512))
-        raw = generate_dataset_item(cache, index, local_keccak512)
-        return [struct.unpack_from('<I', raw, i*4)[0] for i in range(len(raw)//4)]
-    return hashimoto(header_hash, nonce, size, lookup)
-
-def hashimoto_full(dataset: list, header_hash: bytes, nonce: int):
-    """
-    Full version: using the full dataset (a list of uint32).
-    """
-    def lookup(index: int) -> list:
-        offset = index * HASH_WORDS
-        return dataset[offset: offset + HASH_WORDS]
-    total_size = len(dataset) * 4  # bytes
-    return hashimoto(header_hash, nonce, total_size, lookup)
+	284950208, 285081536}
+	

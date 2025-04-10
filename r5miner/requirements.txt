@@ -1,9 +1,0 @@
-argparse>=1.2.1
-logging>=0.4.0
-os
-sys
-time
-struct
-multiprocessing
-requests
-PyCryptodome>=3.16.0
