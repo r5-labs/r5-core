@@ -20,12 +20,12 @@ import (
 	"runtime"
 	"runtime/debug"
 
-	"github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/p2p"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/p2p"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 // Client is a wrapper around rpc.Client that implements geth-specific functionality.

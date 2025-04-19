@@ -15,9 +15,9 @@ package vm
 import (
 	"errors"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // memoryGasCost calculates the quadratic gas for memory expansion. It does so

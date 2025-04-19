@@ -5,7 +5,7 @@
 
 package types
 
-import "github.com/r5-labs/r5-core/rlp"
+import "github.com/r5-labs/r5-core/client/rlp"
 import "io"
 
 func (obj *rlpLog) EncodeRLP(_w io.Writer) error {

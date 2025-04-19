@@ -16,7 +16,7 @@ import (
 	"testing"
 
 	"github.com/dop251/goja"
-	"github.com/r5-labs/r5-core/internal/jsre"
+	"github.com/r5-labs/r5-core/client/internal/jsre"
 )
 
 // TestUndefinedAsParam ensures that personal functions can receive

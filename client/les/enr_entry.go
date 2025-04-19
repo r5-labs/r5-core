@@ -13,10 +13,10 @@
 package les
 
 import (
-	"github.com/r5-labs/r5-core/core/forkid"
-	"github.com/r5-labs/r5-core/p2p/dnsdisc"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/core/forkid"
+	"github.com/r5-labs/r5-core/client/p2p/dnsdisc"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 // lesEntry is the "les" ENR entry. This is set for LES servers only.

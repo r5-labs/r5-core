@@ -16,7 +16,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
 )
 
 // Simulation provides a framework for running actions in a simulated network

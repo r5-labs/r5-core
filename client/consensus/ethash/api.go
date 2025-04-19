@@ -15,9 +15,9 @@ package ethash
 import (
 	"errors"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core/types"
 )
 
 var errEthashStopped = errors.New("ethash stopped")

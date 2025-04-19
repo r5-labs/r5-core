@@ -20,11 +20,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/eth/tracers"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/eth/tracers"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 type account struct{}

@@ -15,9 +15,9 @@ package logger
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
 )
 
 // accessList is an accumulator for the set of accounts and storage slots an EVM

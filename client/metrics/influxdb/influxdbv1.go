@@ -5,8 +5,8 @@ import (
 	uurl "net/url"
 	"time"
 
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/metrics"
 	client "github.com/influxdata/influxdb1-client/v2"
 )
 

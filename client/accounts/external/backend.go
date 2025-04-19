@@ -17,15 +17,15 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/event"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/rpc"
-	"github.com/r5-labs/r5-core/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/client"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/event"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/rpc"
+	"github.com/r5-labs/r5-core/client/signer/core/apitypes"
 )
 
 type ExternalBackend struct {

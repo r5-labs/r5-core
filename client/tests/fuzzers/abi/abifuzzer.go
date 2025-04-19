@@ -17,7 +17,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/r5-labs/r5-core/accounts/abi"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
 	fuzz "github.com/google/gofuzz"
 )
 

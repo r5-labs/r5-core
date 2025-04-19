@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/tests"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/tests"
 	"github.com/urfave/cli/v2"
 )
 

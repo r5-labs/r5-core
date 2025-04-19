@@ -20,7 +20,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // precompiledTest defines the input/output pairs for precompiled contract tests.

@@ -15,7 +15,7 @@ package trie
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // MissingNodeError is returned by the trie functions (Get, Update, Delete)

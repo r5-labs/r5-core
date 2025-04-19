@@ -18,10 +18,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/internal/utesting"
-	"github.com/r5-labs/r5-core/p2p/discover/v5wire"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/netutil"
+	"github.com/r5-labs/r5-core/client/internal/utesting"
+	"github.com/r5-labs/r5-core/client/p2p/discover/v5wire"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/netutil"
 )
 
 // Suite is the discv5 test suite.

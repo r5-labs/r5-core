@@ -15,9 +15,9 @@ package main
 import (
 	"os"
 
-	"github.com/r5-labs/r5-core/cmd/devp2p/internal/v4test"
-	"github.com/r5-labs/r5-core/internal/utesting"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/cmd/devp2p/internal/v4test"
+	"github.com/r5-labs/r5-core/client/internal/utesting"
+	"github.com/r5-labs/r5-core/client/log"
 	"github.com/urfave/cli/v2"
 )
 

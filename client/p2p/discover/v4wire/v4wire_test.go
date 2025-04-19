@@ -19,8 +19,8 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 // EIP-8 test vectors.

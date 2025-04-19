@@ -15,7 +15,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 func TestTransaction(t *testing.T) {

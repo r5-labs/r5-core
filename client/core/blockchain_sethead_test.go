@@ -20,12 +20,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // rewindTest is a test case for chain rollback upon user request.

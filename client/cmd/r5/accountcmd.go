@@ -16,11 +16,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/cmd/utils"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/cmd/utils"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/log"
 	"github.com/urfave/cli/v2"
 )
 

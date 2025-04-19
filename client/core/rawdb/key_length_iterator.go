@@ -12,7 +12,7 @@
 
 package rawdb
 
-import "github.com/r5-labs/r5-core/ethdb"
+import "github.com/r5-labs/r5-core/client/ethdb"
 
 // KeyLengthIterator is a wrapper for a database iterator that ensures only key-value pairs
 // with a specific key length will be returned.

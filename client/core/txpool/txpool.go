@@ -22,16 +22,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/prque"
-	"github.com/r5-labs/r5-core/consensus/misc"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/event"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/metrics"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/prque"
+	"github.com/r5-labs/r5-core/client/consensus/misc"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/event"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/metrics"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 const (

@@ -19,8 +19,8 @@ import (
 	"math/big"
 	"reflect"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/crypto"
 )
 
 // MakeTopics converts a filter query argument list into a filter topic set.

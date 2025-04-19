@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // handler handles JSON-RPC messages. There is one handler per connection. Note that

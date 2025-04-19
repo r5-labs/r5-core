@@ -19,9 +19,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/internal/utesting"
-	"github.com/r5-labs/r5-core/p2p/discover/v4wire"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/internal/utesting"
+	"github.com/r5-labs/r5-core/client/p2p/discover/v4wire"
 )
 
 const (

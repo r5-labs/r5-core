@@ -17,8 +17,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 // In this example, our client wishes to track the latest 'block number'

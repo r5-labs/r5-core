@@ -1,4 +1,4 @@
-module github.com/r5-labs/r5-core
+module github.com/r5-labs/r5-core/client
 
 go 1.19
 

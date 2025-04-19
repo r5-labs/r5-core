@@ -15,8 +15,8 @@ package trie
 import (
 	"sync"
 
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"golang.org/x/crypto/sha3"
 )
 

@@ -18,7 +18,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/r5-labs/r5-core/rlp/internal/rlpstruct"
+	"github.com/r5-labs/r5-core/client/rlp/internal/rlpstruct"
 )
 
 // typeinfo is an entry in the type cache.

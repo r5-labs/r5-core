@@ -15,8 +15,8 @@ package txpool
 import (
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/state"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/state"
 )
 
 // noncer is a tiny virtual state database to manage the executable nonces of

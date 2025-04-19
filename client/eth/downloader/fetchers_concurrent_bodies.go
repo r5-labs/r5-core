@@ -15,9 +15,9 @@ package downloader
 import (
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/eth/protocols/eth"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // bodyQueue implements typedQueue and is a type adapter between the generic

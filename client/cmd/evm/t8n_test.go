@@ -21,8 +21,8 @@ import (
 	"testing"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/r5-labs/r5-core/cmd/evm/internal/t8ntool"
-	"github.com/r5-labs/r5-core/internal/cmdtest"
+	"github.com/r5-labs/r5-core/client/cmd/evm/internal/t8ntool"
+	"github.com/r5-labs/r5-core/client/internal/cmdtest"
 )
 
 func TestMain(m *testing.M) {

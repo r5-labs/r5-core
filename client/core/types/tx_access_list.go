@@ -15,7 +15,7 @@ package types
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 //go:generate go run github.com/fjl/gencodec -type AccessTuple -out gen_access_tuple.go

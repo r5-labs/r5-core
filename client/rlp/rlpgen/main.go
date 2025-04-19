@@ -23,7 +23,7 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
-const pathOfPackageRLP = "github.com/r5-labs/r5-core/rlp"
+const pathOfPackageRLP = "github.com/r5-labs/r5-core/client/rlp"
 
 func main() {
 	var (

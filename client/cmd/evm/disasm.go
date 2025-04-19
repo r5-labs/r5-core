@@ -18,7 +18,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/r5-labs/r5-core/core/asm"
+	"github.com/r5-labs/r5-core/client/core/asm"
 	"github.com/urfave/cli/v2"
 )
 

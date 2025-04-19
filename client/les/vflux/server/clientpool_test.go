@@ -18,11 +18,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/mclock"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/enr"
-	"github.com/r5-labs/r5-core/p2p/nodestate"
+	"github.com/r5-labs/r5-core/client/common/mclock"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
+	"github.com/r5-labs/r5-core/client/p2p/nodestate"
 )
 
 const defaultConnectedBias = time.Minute * 3

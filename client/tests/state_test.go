@@ -24,11 +24,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/eth/tracers/logger"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/eth/tracers/logger"
 )
 
 func TestState(t *testing.T) {

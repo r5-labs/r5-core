@@ -172,26 +172,6 @@ def build_scdev():
         handle_error(f"SCdev build failed: {e}")
     print("SCdev build completed successfully.")
     
-def build_miner():
-    print("Building R5 Miner executable...")
-    # Prepare the pyinstaller command.
-    cmd = [
-        sys.executable,
-        '-m',
-        'PyInstaller',
-        '--onefile',
-        '--name', 'r5miner',
-        '--icon', 'icon.ico',
-        'main.py'
-    ]
-    miner_dir = os.path.join(os.getcwd(), "r5miner")
-    print("Executing:", ' '.join(cmd), "in", miner_dir)
-    try:
-        subprocess.check_call(cmd, cwd=miner_dir)
-    except subprocess.CalledProcessError as e:
-        handle_error(f"R5 Miner build failed: {e}")
-    print("R5 Miner build completed successfully.")
-
 def move_file(src, dst):
     """
     Moves a file from src to dst.
@@ -316,9 +296,6 @@ def main():
     src_scdev_version = os.path.join("scdev", scdev_version)
     dest_scdev_version = os.path.join("build", "bin", scdev_version)
     copy_file(src_scdev_version, dest_scdev_version)
-    
-    # 9. Build R5 Miner
-    build_miner()
 
     print("\nFull build completed successfully. The folder structure is ready for deployment.")
     end = time.time()

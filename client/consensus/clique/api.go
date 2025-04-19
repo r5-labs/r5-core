@@ -16,12 +16,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/consensus"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 // API is a user facing RPC API to allow controlling the signer and voting

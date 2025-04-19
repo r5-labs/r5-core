@@ -19,17 +19,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus/clique"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/txpool"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/eth/downloader"
-	"github.com/r5-labs/r5-core/event"
-	"github.com/r5-labs/r5-core/trie"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus/clique"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/txpool"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/eth/downloader"
+	"github.com/r5-labs/r5-core/client/event"
+	"github.com/r5-labs/r5-core/client/trie"
 )
 
 type mockBackend struct {

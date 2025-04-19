@@ -17,8 +17,8 @@ import (
 	"bytes"
 	"encoding/binary"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/metrics"
 )
 
 // The fields below define the low level database schema prefixing.

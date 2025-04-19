@@ -4,7 +4,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 func TestPairingExpected(t *testing.T) {

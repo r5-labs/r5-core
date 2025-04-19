@@ -39,7 +39,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/crypto"
 )
 
 func TestKDF(t *testing.T) {

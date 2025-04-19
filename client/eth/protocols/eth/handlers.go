@@ -16,12 +16,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/trie"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/trie"
 )
 
 // handleGetBlockHeaders66 is the eth/66 version of handleGetBlockHeaders

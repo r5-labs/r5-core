@@ -21,10 +21,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/console/prompt"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/console/prompt"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 type CommandlineUI struct {

@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/les/utils"
+	"github.com/r5-labs/r5-core/client/les/utils"
 )
 
 func TestTransition(t *testing.T) {

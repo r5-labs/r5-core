@@ -13,8 +13,8 @@
 package ethapi
 
 import (
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
 )
 
 // DbGet returns the raw value of a key stored in the database.

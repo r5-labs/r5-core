@@ -18,13 +18,13 @@ import (
 	"sort"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/lru"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/lru"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // Vote represents a single vote that an authorized signer made to modify the

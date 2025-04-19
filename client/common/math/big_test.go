@@ -18,7 +18,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 func TestHexOrDecimal256(t *testing.T) {

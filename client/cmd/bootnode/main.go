@@ -20,13 +20,13 @@ import (
 	"net"
 	"os"
 
-	"github.com/r5-labs/r5-core/cmd/utils"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/p2p/discover"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/nat"
-	"github.com/r5-labs/r5-core/p2p/netutil"
+	"github.com/r5-labs/r5-core/client/cmd/utils"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/p2p/discover"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/nat"
+	"github.com/r5-labs/r5-core/client/p2p/netutil"
 )
 
 func main() {

@@ -18,16 +18,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/les/fetcher"
-	"github.com/r5-labs/r5-core/light"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/les/fetcher"
+	"github.com/r5-labs/r5-core/client/light"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
 )
 
 const (

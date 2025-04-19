@@ -13,10 +13,10 @@
 package eth
 
 import (
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/forkid"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/forkid"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 // enrEntry is the ENR entry which advertises `eth` protocol on the discovery.

@@ -17,12 +17,12 @@ import (
 	"errors"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/les/downloader"
-	"github.com/r5-labs/r5-core/light"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/les/downloader"
+	"github.com/r5-labs/r5-core/client/light"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 var errInvalidCheckpoint = errors.New("invalid advertised checkpoint")

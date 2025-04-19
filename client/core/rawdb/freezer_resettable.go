@@ -17,7 +17,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/client/ethdb"
 )
 
 const tmpSuffix = ".tmp"

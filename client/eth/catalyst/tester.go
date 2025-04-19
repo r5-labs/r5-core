@@ -16,11 +16,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/eth"
-	"github.com/r5-labs/r5-core/eth/downloader"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/node"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/eth"
+	"github.com/r5-labs/r5-core/client/eth/downloader"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/node"
 )
 
 // FullSyncTester is an auxiliary service that allows Geth to perform full sync

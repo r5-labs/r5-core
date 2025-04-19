@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-labs/r5-core/common/fdlimit"
-	"github.com/r5-labs/r5-core/internal/flags"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common/fdlimit"
+	"github.com/r5-labs/r5-core/client/internal/flags"
+	"github.com/r5-labs/r5-core/client/log"
 	"github.com/urfave/cli/v2"
 )
 

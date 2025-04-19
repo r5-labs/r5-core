@@ -22,10 +22,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/p2p"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/p2p"
+	"github.com/r5-labs/r5-core/client/rpc"
 
 	"github.com/stretchr/testify/assert"
 )

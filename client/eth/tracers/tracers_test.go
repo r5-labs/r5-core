@@ -16,15 +16,15 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/eth/tracers/logger"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/tests"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/eth/tracers/logger"
+	"github.com/r5-labs/r5-core/client/params"
+	"github.com/r5-labs/r5-core/client/tests"
 )
 
 func BenchmarkTransactionTrace(b *testing.B) {

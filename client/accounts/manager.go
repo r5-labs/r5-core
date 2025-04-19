@@ -17,8 +17,8 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/event"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/event"
 )
 
 // managerSubBufferSize determines how many incoming wallet events

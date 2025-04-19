@@ -15,8 +15,8 @@ package memorydb
 import (
 	"testing"
 
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/ethdb/dbtest"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/ethdb/dbtest"
 )
 
 func TestMemoryDB(t *testing.T) {

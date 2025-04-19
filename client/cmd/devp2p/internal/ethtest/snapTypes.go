@@ -12,7 +12,7 @@
 
 package ethtest
 
-import "github.com/r5-labs/r5-core/eth/protocols/snap"
+import "github.com/r5-labs/r5-core/client/eth/protocols/snap"
 
 // GetAccountRange represents an account range query.
 type GetAccountRange snap.GetAccountRangePacket

@@ -15,7 +15,7 @@ package types
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // LegacyTx is the transaction data of regular Ethereum transactions.

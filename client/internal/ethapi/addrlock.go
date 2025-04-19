@@ -15,7 +15,7 @@ package ethapi
 import (
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 type AddrLocker struct {

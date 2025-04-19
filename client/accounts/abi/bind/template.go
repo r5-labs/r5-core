@@ -12,7 +12,7 @@
 
 package bind
 
-import "github.com/r5-labs/r5-core/accounts/abi"
+import "github.com/r5-labs/r5-core/client/accounts/abi"
 
 // tmplData is the data structure required to fill the binding template.
 type tmplData struct {
@@ -87,12 +87,12 @@ import (
 	"strings"
 	"errors"
 
-	ethereum "github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/accounts/abi"
-	"github.com/r5-labs/r5-core/accounts/abi/bind"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/event"
+	ethereum "github.com/r5-labs/r5-core/client"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
+	"github.com/r5-labs/r5-core/client/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/event"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

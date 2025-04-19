@@ -27,11 +27,11 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/bitutil"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/bitutil"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/rpc"
 	"golang.org/x/crypto/sha3"
 )
 

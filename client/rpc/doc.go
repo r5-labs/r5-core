@@ -94,7 +94,7 @@ Subscriptions are deleted when the user sends an unsubscribe request or when the
 connection which was used to create the subscription is closed. This can be initiated by
 the client and server. The server will close the connection for any write error.
 
-For more information about subscriptions, see https://github.com/r5-labs/r5-core/wiki/RPC-PUB-SUB.
+For more information about subscriptions, see https://github.com/r5-labs/r5-core/client/wiki/RPC-PUB-SUB.
 
 # Reverse Calls
 

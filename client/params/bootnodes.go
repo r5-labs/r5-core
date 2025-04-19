@@ -12,7 +12,7 @@
 
 package params
 
-import "github.com/r5-labs/r5-core/common"
+import "github.com/r5-labs/r5-core/client/common"
 
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main network.

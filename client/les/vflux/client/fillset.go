@@ -15,8 +15,8 @@ package client
 import (
 	"sync"
 
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/nodestate"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/nodestate"
 )
 
 // FillSet tries to read nodes from an input iterator and add them to a node set by

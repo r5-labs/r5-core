@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/client/p2p"
 )
 
 var (

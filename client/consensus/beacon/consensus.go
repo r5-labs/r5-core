@@ -17,14 +17,14 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/consensus/misc"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/rpc"
-	"github.com/r5-labs/r5-core/trie"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus"
+	"github.com/r5-labs/r5-core/client/consensus/misc"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/params"
+	"github.com/r5-labs/r5-core/client/rpc"
+	"github.com/r5-labs/r5-core/client/trie"
 )
 
 // Proof-of-stake protocol constants.

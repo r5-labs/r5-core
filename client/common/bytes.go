@@ -17,7 +17,7 @@ import (
 	"encoding/hex"
 	"errors"
 
-	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
 )
 
 // FromHex returns the bytes represented by the hexadecimal string s.

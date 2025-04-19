@@ -15,8 +15,8 @@ package eth
 import (
 	"time"
 
-	"github.com/r5-labs/r5-core/common/bitutil"
-	"github.com/r5-labs/r5-core/core/rawdb"
+	"github.com/r5-labs/r5-core/client/common/bitutil"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
 )
 
 const (

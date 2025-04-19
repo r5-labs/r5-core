@@ -13,7 +13,7 @@
 // Package bind generates Ethereum contract Go bindings.
 //
 // Detailed usage document and tutorial available on the go-ethereum Wiki page:
-// https://github.com/r5-labs/r5-core/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts
+// https://github.com/r5-labs/r5-core/client/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts
 package bind
 
 import (
@@ -25,8 +25,8 @@ import (
 	"text/template"
 	"unicode"
 
-	"github.com/r5-labs/r5-core/accounts/abi"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // Lang is a target programming language selector to generate bindings for.

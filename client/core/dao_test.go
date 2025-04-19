@@ -16,10 +16,10 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // Tests that DAO-fork enabled clients can properly filter out fork-commencing

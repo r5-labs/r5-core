@@ -18,7 +18,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // TestExport does a basic test of "geth export", exporting the test-genesis.

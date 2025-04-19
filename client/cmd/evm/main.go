@@ -18,8 +18,8 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/r5-labs/r5-core/cmd/evm/internal/t8ntool"
-	"github.com/r5-labs/r5-core/internal/flags"
+	"github.com/r5-labs/r5-core/client/cmd/evm/internal/t8ntool"
+	"github.com/r5-labs/r5-core/client/internal/flags"
 	"github.com/urfave/cli/v2"
 )
 

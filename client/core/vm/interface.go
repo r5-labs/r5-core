@@ -15,9 +15,9 @@ package vm
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // StateDB is an EVM database for full state querying.

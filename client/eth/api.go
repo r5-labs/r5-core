@@ -24,17 +24,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/rpc"
-	"github.com/r5-labs/r5-core/trie"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/rpc"
+	"github.com/r5-labs/r5-core/client/trie"
 )
 
 // EthereumAPI provides an API to access Ethereum full node-related information.

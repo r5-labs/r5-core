@@ -17,7 +17,7 @@ package p2p
 import (
 	"net"
 
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/metrics"
 )
 
 const (

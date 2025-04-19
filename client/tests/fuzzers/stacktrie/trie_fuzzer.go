@@ -21,11 +21,11 @@ import (
 	"io"
 	"sort"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/trie"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/trie"
 	"golang.org/x/crypto/sha3"
 )
 

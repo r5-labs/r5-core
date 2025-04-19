@@ -19,7 +19,7 @@ import (
 	"go/types"
 	"sort"
 
-	"github.com/r5-labs/r5-core/rlp/internal/rlpstruct"
+	"github.com/r5-labs/r5-core/client/rlp/internal/rlpstruct"
 )
 
 // buildContext keeps the data needed for make*Op.

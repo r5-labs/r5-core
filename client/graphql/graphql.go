@@ -22,17 +22,17 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/consensus/misc"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/eth/filters"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/consensus/misc"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/eth/filters"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 var (

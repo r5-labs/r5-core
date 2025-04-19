@@ -21,8 +21,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/crypto"
 )
 
 func tmpKeyStoreIface(t *testing.T, encrypted bool) (dir string, ks keyStore) {

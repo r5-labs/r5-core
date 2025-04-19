@@ -19,9 +19,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/event"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/event"
+	"github.com/r5-labs/r5-core/client/log"
 	"github.com/karalabe/usb"
 )
 

@@ -15,8 +15,8 @@ package downloader
 import (
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // syncState starts downloading state with the given root hash.

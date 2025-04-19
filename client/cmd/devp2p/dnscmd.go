@@ -20,11 +20,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/console/prompt"
-	"github.com/r5-labs/r5-core/p2p/dnsdisc"
-	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/console/prompt"
+	"github.com/r5-labs/r5-core/client/p2p/dnsdisc"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
 	"github.com/urfave/cli/v2"
 )
 

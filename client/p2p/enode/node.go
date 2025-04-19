@@ -22,8 +22,8 @@ import (
 	"net"
 	"strings"
 
-	"github.com/r5-labs/r5-core/p2p/enr"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 var errMissingPrefix = errors.New("missing 'enr:' prefix for base64-encoded record")

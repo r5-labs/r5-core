@@ -15,7 +15,7 @@ package vm
 import (
 	"errors"
 
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // LookupInstructionSet returns the instructionset for the fork configured by

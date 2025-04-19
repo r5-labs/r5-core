@@ -15,7 +15,7 @@ package server
 import (
 	"reflect"
 
-	"github.com/r5-labs/r5-core/p2p/nodestate"
+	"github.com/r5-labs/r5-core/client/p2p/nodestate"
 )
 
 type peerWrapper struct{ clientPeer } // the NodeStateMachine type system needs this wrapper

@@ -18,7 +18,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/metrics"
 )
 
 var (

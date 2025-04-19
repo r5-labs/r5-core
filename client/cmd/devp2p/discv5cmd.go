@@ -16,10 +16,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/r5-labs/r5-core/cmd/devp2p/internal/v5test"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/internal/flags"
-	"github.com/r5-labs/r5-core/p2p/discover"
+	"github.com/r5-labs/r5-core/client/cmd/devp2p/internal/v5test"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/internal/flags"
+	"github.com/r5-labs/r5-core/client/p2p/discover"
 	"github.com/urfave/cli/v2"
 )
 

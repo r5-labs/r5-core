@@ -19,17 +19,17 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/beacon/engine"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/eth"
-	"github.com/r5-labs/r5-core/eth/downloader"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/miner"
-	"github.com/r5-labs/r5-core/node"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/beacon/engine"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/eth"
+	"github.com/r5-labs/r5-core/client/eth/downloader"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/miner"
+	"github.com/r5-labs/r5-core/client/node"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 // Register adds the engine API to the full node.

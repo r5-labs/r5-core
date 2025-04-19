@@ -19,21 +19,21 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-labs/r5-core/accounts/abi"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/asm"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/eth/tracers"
-	"github.com/r5-labs/r5-core/eth/tracers/logger"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/asm"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/eth/tracers"
+	"github.com/r5-labs/r5-core/client/eth/tracers/logger"
+	"github.com/r5-labs/r5-core/client/params"
 
 	// force-load js tracers to trigger registration
-	_ "github.com/r5-labs/r5-core/eth/tracers/js"
+	_ "github.com/r5-labs/r5-core/client/eth/tracers/js"
 )
 
 func TestDefaults(t *testing.T) {
@@ -595,7 +595,7 @@ func TestEip2929Cases(t *testing.T) {
 
 // TestColdAccountAccessCost test that the cold account access cost is reported
 // correctly
-// see: https://github.com/r5-labs/r5-core/issues/22649
+// see: https://github.com/r5-labs/r5-core/client/issues/22649
 func TestColdAccountAccessCost(t *testing.T) {
 	for i, tc := range []struct {
 		code []byte

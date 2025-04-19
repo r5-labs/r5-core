@@ -13,7 +13,7 @@
 package state
 
 import (
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 type accessList struct {

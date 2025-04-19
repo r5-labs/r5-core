@@ -17,7 +17,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/client/ethdb"
 )
 
 func TestResetFreezer(t *testing.T) {

@@ -22,26 +22,26 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/accounts/abi"
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/accounts/scwallet"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/consensus/misc"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/eth/tracers/logger"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/p2p"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/accounts/scwallet"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/consensus/misc"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/eth/tracers/logger"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/p2p"
+	"github.com/r5-labs/r5-core/client/params"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/rpc"
 	"github.com/tyler-smith/go-bip39"
 )
 
@@ -509,7 +509,7 @@ func (s *PersonalAccountAPI) SignTransaction(ctx context.Context, args Transacti
 //
 // The key used to calculate the signature is decrypted with the given password.
 //
-// https://github.com/r5-labs/r5-core/wiki/Management-APIs#personal_sign
+// https://github.com/r5-labs/r5-core/client/wiki/Management-APIs#personal_sign
 func (s *PersonalAccountAPI) Sign(ctx context.Context, data hexutil.Bytes, addr common.Address, passwd string) (hexutil.Bytes, error) {
 	// Look up the wallet containing the requested signer
 	account := accounts.Account{Address: addr}
@@ -537,7 +537,7 @@ func (s *PersonalAccountAPI) Sign(ctx context.Context, data hexutil.Bytes, addr 
 // Note, the signature must conform to the secp256k1 curve R, S and V values, where
 // the V value must be 27 or 28 for legacy reasons.
 //
-// https://github.com/r5-labs/r5-core/wiki/Management-APIs#personal_ecRecover
+// https://github.com/r5-labs/r5-core/client/wiki/Management-APIs#personal_ecRecover
 func (s *PersonalAccountAPI) EcRecover(ctx context.Context, data, sig hexutil.Bytes) (common.Address, error) {
 	if len(sig) != crypto.SignatureLength {
 		return common.Address{}, fmt.Errorf("signature must be %d bytes long", crypto.SignatureLength)

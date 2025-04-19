@@ -18,8 +18,8 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
 )
 
 // NotFound is returned by API methods if the requested item does not exist.

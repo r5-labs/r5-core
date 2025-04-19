@@ -16,7 +16,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/r5-labs/r5-core/les/utils"
+	"github.com/r5-labs/r5-core/client/les/utils"
 )
 
 func checkU64(t *testing.T, name string, value, exp uint64) {

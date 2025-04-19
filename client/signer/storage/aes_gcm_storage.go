@@ -20,7 +20,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 type storedCredential struct {

@@ -18,7 +18,7 @@ package keystore
 import (
 	"time"
 
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/log"
 	"github.com/fsnotify/fsnotify"
 )
 

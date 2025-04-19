@@ -16,10 +16,10 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 // NodeSet stores a set of trie nodes. It implements trie.Database and can also

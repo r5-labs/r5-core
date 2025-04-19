@@ -17,8 +17,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"github.com/holiman/uint256"
 )
 

@@ -16,8 +16,8 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
 )
 
 // senderFromServer is a types.Signer that remembers the sender address returned by the RPC

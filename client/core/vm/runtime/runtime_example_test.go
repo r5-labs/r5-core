@@ -15,8 +15,8 @@ package runtime_test
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/vm/runtime"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/vm/runtime"
 )
 
 func ExampleExecute() {

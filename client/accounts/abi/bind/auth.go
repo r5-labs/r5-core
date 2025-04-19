@@ -19,13 +19,13 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/accounts/external"
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/accounts/external"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // ErrNoChainID is returned whenever the user failed to specify a chain id.

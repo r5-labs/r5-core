@@ -15,7 +15,7 @@ package trie
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // Reader wraps the Node and NodeBlob method of a backing trie store.

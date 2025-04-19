@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/crypto"
 )
 
 type Error struct {

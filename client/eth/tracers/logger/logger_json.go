@@ -17,9 +17,9 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/core/vm"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/core/vm"
 )
 
 type JSONLogger struct {

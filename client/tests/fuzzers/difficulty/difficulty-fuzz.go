@@ -19,8 +19,8 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/core/types"
 )
 
 type fuzzer struct {

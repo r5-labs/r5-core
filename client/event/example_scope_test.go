@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/r5-labs/r5-core/event"
+	"github.com/r5-labs/r5-core/client/event"
 )
 
 // This example demonstrates how SubscriptionScope can be used to control the lifetime of

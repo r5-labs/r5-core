@@ -19,9 +19,9 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/p2p/enr"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

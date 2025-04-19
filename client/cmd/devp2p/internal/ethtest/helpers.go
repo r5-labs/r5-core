@@ -20,13 +20,13 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/eth/protocols/eth"
-	"github.com/r5-labs/r5-core/internal/utesting"
-	"github.com/r5-labs/r5-core/p2p"
-	"github.com/r5-labs/r5-core/p2p/rlpx"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/client/internal/utesting"
+	"github.com/r5-labs/r5-core/client/p2p"
+	"github.com/r5-labs/r5-core/client/p2p/rlpx"
 )
 
 var (

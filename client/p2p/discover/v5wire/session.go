@@ -18,10 +18,10 @@ import (
 	"encoding/binary"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/lru"
-	"github.com/r5-labs/r5-core/common/mclock"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/p2p/enode"
+	"github.com/r5-labs/r5-core/client/common/lru"
+	"github.com/r5-labs/r5-core/client/common/mclock"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
 )
 
 const handshakeTimeout = time.Second

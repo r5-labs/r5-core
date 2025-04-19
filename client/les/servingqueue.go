@@ -17,8 +17,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/r5-labs/r5-core/common/mclock"
-	"github.com/r5-labs/r5-core/common/prque"
+	"github.com/r5-labs/r5-core/client/common/mclock"
+	"github.com/r5-labs/r5-core/client/common/prque"
 )
 
 // servingQueue allows running tasks in a limited number of threads and puts the

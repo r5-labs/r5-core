@@ -18,9 +18,9 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/r5-labs/r5-core/p2p"
-	"github.com/r5-labs/r5-core/p2p/nat"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/p2p"
+	"github.com/r5-labs/r5-core/client/p2p/nat"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 const (

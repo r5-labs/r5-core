@@ -16,8 +16,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/tests/fuzzers/vflux"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/tests/fuzzers/vflux"
 )
 
 func main() {

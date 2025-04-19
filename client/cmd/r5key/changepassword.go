@@ -17,8 +17,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/cmd/utils"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/cmd/utils"
 	"github.com/urfave/cli/v2"
 )
 

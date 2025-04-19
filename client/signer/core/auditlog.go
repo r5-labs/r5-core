@@ -16,11 +16,11 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/signer/core/apitypes"
 )
 
 type AuditLogger struct {

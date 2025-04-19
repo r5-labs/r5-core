@@ -15,10 +15,10 @@ package rawdb
 import (
 	"bytes"
 
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 // ReadSkeletonSyncStatus retrieves the serialized sync status saved at shutdown.

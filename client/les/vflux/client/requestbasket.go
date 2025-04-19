@@ -15,8 +15,8 @@ package client
 import (
 	"io"
 
-	"github.com/r5-labs/r5-core/les/utils"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/les/utils"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 const basketFactor = 1000000 // reference basket amount and value scale factor

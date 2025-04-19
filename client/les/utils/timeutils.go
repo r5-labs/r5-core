@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/client/common/mclock"
 )
 
 type UpdateTimer struct {

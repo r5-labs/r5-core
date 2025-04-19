@@ -36,24 +36,24 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/cmd/utils"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/eth/downloader"
-	"github.com/r5-labs/r5-core/eth/ethconfig"
-	"github.com/r5-labs/r5-core/ethclient"
-	"github.com/r5-labs/r5-core/ethstats"
-	"github.com/r5-labs/r5-core/internal/version"
-	"github.com/r5-labs/r5-core/les"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/node"
-	"github.com/r5-labs/r5-core/p2p"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/nat"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/cmd/utils"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/eth/downloader"
+	"github.com/r5-labs/r5-core/client/eth/ethconfig"
+	"github.com/r5-labs/r5-core/client/ethclient"
+	"github.com/r5-labs/r5-core/client/ethstats"
+	"github.com/r5-labs/r5-core/client/internal/version"
+	"github.com/r5-labs/r5-core/client/les"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/node"
+	"github.com/r5-labs/r5-core/client/p2p"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/nat"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 var (
@@ -459,7 +459,7 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 			id = username
 		default:
 			//lint:ignore ST1005 This error is to be displayed in the browser
-			err = errors.New("Something funky happened, please open an issue at https://github.com/r5-labs/r5-core/issues")
+			err = errors.New("Something funky happened, please open an issue at https://github.com/r5-labs/r5-core/client/issues")
 		}
 		if err != nil {
 			if err = sendError(wsconn, err); err != nil {

@@ -16,9 +16,9 @@ import (
 	"container/ring"
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // chainRetriever is used by the unconfirmed block set to verify whether a previously

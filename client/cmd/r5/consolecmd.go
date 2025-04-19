@@ -16,9 +16,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/r5-labs/r5-core/cmd/utils"
-	"github.com/r5-labs/r5-core/console"
-	"github.com/r5-labs/r5-core/internal/flags"
+	"github.com/r5-labs/r5-core/client/cmd/utils"
+	"github.com/r5-labs/r5-core/client/console"
+	"github.com/r5-labs/r5-core/client/internal/flags"
 	"github.com/urfave/cli/v2"
 )
 

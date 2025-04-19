@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/light"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/light"
 )
 
 func TestLightPruner(t *testing.T) {

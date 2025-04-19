@@ -20,15 +20,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/mclock"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/les/utils"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/metrics"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/enr"
-	"github.com/r5-labs/r5-core/p2p/nodestate"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/common/mclock"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/les/utils"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/metrics"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
+	"github.com/r5-labs/r5-core/client/p2p/nodestate"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 const (

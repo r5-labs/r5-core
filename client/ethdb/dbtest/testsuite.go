@@ -19,7 +19,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/client/ethdb"
 )
 
 // TestDatabaseSuite runs a suite of tests against a KeyValueStore database

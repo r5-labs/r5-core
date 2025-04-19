@@ -21,12 +21,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/r5-labs/r5-core/accounts/abi/bind"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/contracts/checkpointoracle"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/contracts/checkpointoracle"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // CheckpointOracle is responsible for offering the latest stable checkpoint

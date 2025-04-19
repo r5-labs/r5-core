@@ -19,7 +19,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/r5-labs/r5-core/p2p/simulations/pipes"
+	"github.com/r5-labs/r5-core/client/p2p/simulations/pipes"
 )
 
 func TestTCPPipe(t *testing.T) {

@@ -20,9 +20,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/params"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"github.com/kylelemons/godebug/diff"
 )
 

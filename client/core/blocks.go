@@ -12,7 +12,7 @@
 
 package core
 
-import "github.com/r5-labs/r5-core/common"
+import "github.com/r5-labs/r5-core/client/common"
 
 // BadHashes represent a set of manually tracked bad hashes (usually hard forks)
 var BadHashes = map[common.Hash]bool{

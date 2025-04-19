@@ -13,7 +13,7 @@
 package runtime
 
 import (
-	"github.com/r5-labs/r5-core/core/vm/runtime"
+	"github.com/r5-labs/r5-core/client/core/vm/runtime"
 )
 
 // Fuzz is the basic entry point for the go-fuzz tool

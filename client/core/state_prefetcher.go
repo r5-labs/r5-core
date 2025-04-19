@@ -15,11 +15,11 @@ package core
 import (
 	"sync/atomic"
 
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/consensus"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // statePrefetcher is a basic Prefetcher, which blindly executes a block on top

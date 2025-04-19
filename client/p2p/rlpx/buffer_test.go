@@ -16,7 +16,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common/hexutil"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
 	"github.com/stretchr/testify/assert"
 )
 

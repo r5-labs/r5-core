@@ -20,13 +20,13 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/trie"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/params"
+	"github.com/r5-labs/r5-core/client/trie"
 )
 
 func TestNodeIterator(t *testing.T) {

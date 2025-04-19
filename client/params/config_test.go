@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/math"
+	"github.com/r5-labs/r5-core/client/common/math"
 )
 
 func TestCheckCompatible(t *testing.T) {

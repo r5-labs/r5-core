@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/errors"
 	"github.com/syndtr/goleveldb/leveldb/iterator"

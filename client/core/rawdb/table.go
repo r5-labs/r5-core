@@ -13,7 +13,7 @@
 package rawdb
 
 import (
-	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/client/ethdb"
 )
 
 // table is a wrapper around a database that prefixes each key access with a pre-

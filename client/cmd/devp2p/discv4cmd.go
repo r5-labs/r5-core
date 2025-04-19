@@ -19,13 +19,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-labs/r5-core/cmd/devp2p/internal/v4test"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/internal/flags"
-	"github.com/r5-labs/r5-core/p2p/discover"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/cmd/devp2p/internal/v4test"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/internal/flags"
+	"github.com/r5-labs/r5-core/client/p2p/discover"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/params"
 	"github.com/urfave/cli/v2"
 )
 

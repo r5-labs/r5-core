@@ -5,14 +5,14 @@ package ethconfig
 import (
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/txpool"
-	"github.com/r5-labs/r5-core/eth/downloader"
-	"github.com/r5-labs/r5-core/eth/gasprice"
-	"github.com/r5-labs/r5-core/miner"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/txpool"
+	"github.com/r5-labs/r5-core/client/eth/downloader"
+	"github.com/r5-labs/r5-core/client/eth/gasprice"
+	"github.com/r5-labs/r5-core/client/miner"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // MarshalTOML marshals as TOML.

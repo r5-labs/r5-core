@@ -18,13 +18,13 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/crypto/blake2b"
-	"github.com/r5-labs/r5-core/crypto/bls12381"
-	"github.com/r5-labs/r5-core/crypto/bn256"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/crypto/blake2b"
+	"github.com/r5-labs/r5-core/client/crypto/bls12381"
+	"github.com/r5-labs/r5-core/client/crypto/bn256"
+	"github.com/r5-labs/r5-core/client/params"
 	"golang.org/x/crypto/ripemd160"
 )
 

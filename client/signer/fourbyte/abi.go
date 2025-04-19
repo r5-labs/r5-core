@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/r5-labs/r5-core/accounts/abi"
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // decodedCallData is an internal type to represent a method call parsed according

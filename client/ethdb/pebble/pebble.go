@@ -25,10 +25,10 @@ import (
 
 	"github.com/cockroachdb/pebble"
 	"github.com/cockroachdb/pebble/bloom"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/metrics"
 )
 
 const (
@@ -182,7 +182,7 @@ func New(file string, cache int, handles int, namespace string, readonly bool) (
 			WriteStallEnd:   db.onWriteStallEnd,
 		},
 	}
-	// Disable seek compaction explicitly. Check https://github.com/r5-labs/r5-core/pull/20130
+	// Disable seek compaction explicitly. Check https://github.com/r5-labs/r5-core/client/pull/20130
 	// for more details.
 	opt.Experimental.ReadSamplingMultiplier = -1
 

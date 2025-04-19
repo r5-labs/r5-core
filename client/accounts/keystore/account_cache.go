@@ -24,9 +24,9 @@ import (
 	"time"
 
 	mapset "github.com/deckarep/golang-set/v2"
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // Minimum amount of time between cache reloads. This limit applies if the platform does

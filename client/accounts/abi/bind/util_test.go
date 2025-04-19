@@ -19,12 +19,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/accounts/abi/bind"
-	"github.com/r5-labs/r5-core/accounts/abi/bind/backends"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/accounts/abi/bind"
+	"github.com/r5-labs/r5-core/client/accounts/abi/bind/backends"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/crypto"
 )
 
 var testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")

@@ -18,14 +18,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/signer/core"
-	"github.com/r5-labs/r5-core/signer/core/apitypes"
-	"github.com/r5-labs/r5-core/signer/storage"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/signer/core"
+	"github.com/r5-labs/r5-core/client/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/client/signer/storage"
 )
 
 const JS = `

@@ -20,8 +20,8 @@ import (
 	"testing"
 	"testing/quick"
 
-	"github.com/r5-labs/r5-core/p2p/enr"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"github.com/stretchr/testify/assert"
 )
 

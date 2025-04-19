@@ -15,8 +15,8 @@ package rawdb
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/rlp"
 	"github.com/golang/snappy"
 )
 

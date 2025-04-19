@@ -20,7 +20,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // measurementImpact is the impact a single measurement has on a peer's final

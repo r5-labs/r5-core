@@ -16,10 +16,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/core"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/core"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // pruner is responsible for pruning historical light chain data.

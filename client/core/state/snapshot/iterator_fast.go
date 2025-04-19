@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 // weightedIterator is a iterator with an assigned weight. It is used to prioritise

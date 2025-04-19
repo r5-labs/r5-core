@@ -18,9 +18,9 @@
 package remotedb
 
 import (
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 // Database is a key-value lookup for a remote database via debug_dbGet.

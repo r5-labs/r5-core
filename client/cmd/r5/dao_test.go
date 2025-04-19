@@ -18,9 +18,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // Genesis block for nodes which don't care about the DAO fork (i.e. not configured)

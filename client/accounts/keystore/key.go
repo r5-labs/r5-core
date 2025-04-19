@@ -24,9 +24,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/crypto"
 	"github.com/google/uuid"
 )
 

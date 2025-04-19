@@ -15,7 +15,7 @@ package snap
 import (
 	"time"
 
-	"github.com/r5-labs/r5-core/p2p/tracker"
+	"github.com/r5-labs/r5-core/client/p2p/tracker"
 )
 
 // requestTracker is a singleton tracker for request times.

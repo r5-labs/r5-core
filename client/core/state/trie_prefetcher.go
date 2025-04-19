@@ -15,9 +15,9 @@ package state
 import (
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/metrics"
 )
 
 var (

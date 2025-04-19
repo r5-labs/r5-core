@@ -30,25 +30,25 @@ import (
 	"strings"
 	"time"
 
-	"github.com/r5-labs/r5-core/accounts"
-	"github.com/r5-labs/r5-core/accounts/keystore"
-	"github.com/r5-labs/r5-core/cmd/utils"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/hexutil"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/internal/flags"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/node"
-	"github.com/r5-labs/r5-core/params"
-	"github.com/r5-labs/r5-core/rlp"
-	"github.com/r5-labs/r5-core/rpc"
-	"github.com/r5-labs/r5-core/signer/core"
-	"github.com/r5-labs/r5-core/signer/core/apitypes"
-	"github.com/r5-labs/r5-core/signer/fourbyte"
-	"github.com/r5-labs/r5-core/signer/rules"
-	"github.com/r5-labs/r5-core/signer/storage"
+	"github.com/r5-labs/r5-core/client/accounts"
+	"github.com/r5-labs/r5-core/client/accounts/keystore"
+	"github.com/r5-labs/r5-core/client/cmd/utils"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/hexutil"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/internal/flags"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/node"
+	"github.com/r5-labs/r5-core/client/params"
+	"github.com/r5-labs/r5-core/client/rlp"
+	"github.com/r5-labs/r5-core/client/rpc"
+	"github.com/r5-labs/r5-core/client/signer/core"
+	"github.com/r5-labs/r5-core/client/signer/core/apitypes"
+	"github.com/r5-labs/r5-core/client/signer/fourbyte"
+	"github.com/r5-labs/r5-core/client/signer/rules"
+	"github.com/r5-labs/r5-core/client/signer/storage"
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-isatty"
 	"github.com/urfave/cli/v2"
@@ -864,7 +864,7 @@ func checkFile(filename string) error {
 	}
 	// Check the unix permission bits
 	// However, on windows, we cannot use the unix perm-bits, see
-	// https://github.com/r5-labs/r5-core/issues/20123
+	// https://github.com/r5-labs/r5-core/client/issues/20123
 	if runtime.GOOS != "windows" && info.Mode().Perm()&0377 != 0 {
 		return fmt.Errorf("file (%v) has insecure file permissions (%v)", filename, info.Mode().String())
 	}

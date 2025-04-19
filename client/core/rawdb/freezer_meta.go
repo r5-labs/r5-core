@@ -16,8 +16,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 const freezerVersion = 1 // The initial version tag of freezer table metadata

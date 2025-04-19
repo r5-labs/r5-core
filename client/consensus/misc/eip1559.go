@@ -16,10 +16,10 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/common/math"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/common/math"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // VerifyEip1559Header verifies some header attributes which were changed in EIP-1559,

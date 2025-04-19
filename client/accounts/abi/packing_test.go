@@ -15,7 +15,7 @@ package abi
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/common"
+	"github.com/r5-labs/r5-core/client/common"
 )
 
 type packUnpackTest struct {

@@ -16,7 +16,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // VerifyGaslimit verifies the header gas limit according increase/decrease

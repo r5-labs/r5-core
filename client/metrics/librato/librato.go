@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/r5-labs/r5-core/metrics"
+	"github.com/r5-labs/r5-core/client/metrics"
 )
 
 // a regexp for extracting the unit from time.Duration.String

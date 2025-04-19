@@ -15,7 +15,7 @@ package event_test
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/event"
+	"github.com/r5-labs/r5-core/client/event"
 )
 
 func ExampleFeed_acknowledgedEvents() {

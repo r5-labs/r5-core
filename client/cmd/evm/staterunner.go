@@ -18,12 +18,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/state"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/eth/tracers/logger"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/tests"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/state"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/eth/tracers/logger"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/tests"
 	"github.com/urfave/cli/v2"
 )
 

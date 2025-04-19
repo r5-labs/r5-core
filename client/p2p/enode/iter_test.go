@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/p2p/enr"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
 )
 
 func TestReadNodes(t *testing.T) {

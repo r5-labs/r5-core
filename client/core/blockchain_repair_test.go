@@ -21,12 +21,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/consensus/ethash"
-	"github.com/r5-labs/r5-core/core/rawdb"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/core/vm"
-	"github.com/r5-labs/r5-core/params"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/consensus/ethash"
+	"github.com/r5-labs/r5-core/client/core/rawdb"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/core/vm"
+	"github.com/r5-labs/r5-core/client/params"
 )
 
 // Tests a recovery for a short canonical chain where a recent block was already
@@ -1866,7 +1866,7 @@ func testRepair(t *testing.T, tt *rewindTest, snapshots bool) {
 	}
 }
 
-// TestIssue23496 tests scenario described in https://github.com/r5-labs/r5-core/pull/23496#issuecomment-926393893
+// TestIssue23496 tests scenario described in https://github.com/r5-labs/r5-core/client/pull/23496#issuecomment-926393893
 // Credits to @zzyalbert for finding the issue.
 //
 // Local chain owns these blocks:

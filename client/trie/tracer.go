@@ -12,7 +12,7 @@
 
 package trie
 
-import "github.com/r5-labs/r5-core/common"
+import "github.com/r5-labs/r5-core/client/common"
 
 // tracer tracks the changes of trie nodes. During the trie operations,
 // some nodes can be deleted from the trie, while these deleted nodes

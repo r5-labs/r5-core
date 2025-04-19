@@ -15,8 +15,8 @@ package beacon
 import (
 	"math/big"
 
-	"github.com/r5-labs/r5-core/consensus"
-	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/client/consensus"
+	"github.com/r5-labs/r5-core/client/core/types"
 )
 
 // NewFaker creates a fake consensus engine for testing.

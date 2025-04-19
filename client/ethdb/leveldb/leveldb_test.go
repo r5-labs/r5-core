@@ -15,8 +15,8 @@ package leveldb
 import (
 	"testing"
 
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/ethdb/dbtest"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/ethdb/dbtest"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/storage"
 )

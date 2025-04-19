@@ -26,7 +26,7 @@ const (
 
 // locationTrims are trimmed for display to avoid unwieldy log lines.
 var locationTrims = []string{
-	"github.com/r5-labs/r5-core/",
+	"github.com/r5-labs/r5-core/client/",
 }
 
 // PrintOrigins sets or unsets log location (file:line) printing for terminal

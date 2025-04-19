@@ -16,7 +16,7 @@ import (
 	"math/big"
 
 	"github.com/holiman/uint256"
-	"github.com/r5-labs/r5-core/core/types"
+	"github.com/r5-labs/r5-core/client/core/types"
 )
 
 const (

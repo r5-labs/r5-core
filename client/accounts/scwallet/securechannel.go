@@ -22,7 +22,7 @@ import (
 	"crypto/sha512"
 	"fmt"
 
-	"github.com/r5-labs/r5-core/crypto"
+	"github.com/r5-labs/r5-core/client/crypto"
 	pcsc "github.com/gballet/go-libpcsclite"
 	"golang.org/x/crypto/pbkdf2"
 	"golang.org/x/text/unicode/norm"

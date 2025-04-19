@@ -5,8 +5,8 @@ import (
 	"unicode"
 
 	// Force-load native and js packages, to trigger registration
-	_ "github.com/r5-labs/r5-core/eth/tracers/js"
-	_ "github.com/r5-labs/r5-core/eth/tracers/native"
+	_ "github.com/r5-labs/r5-core/client/eth/tracers/js"
+	_ "github.com/r5-labs/r5-core/client/eth/tracers/native"
 )
 
 // To generate a new callTracer test, copy paste the makeTest method below into

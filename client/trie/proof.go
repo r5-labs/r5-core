@@ -17,9 +17,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/ethdb"
-	"github.com/r5-labs/r5-core/log"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/ethdb"
+	"github.com/r5-labs/r5-core/client/log"
 )
 
 // Prove constructs a merkle proof for key. The result contains all encoded nodes

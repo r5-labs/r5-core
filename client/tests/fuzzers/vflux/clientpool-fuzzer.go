@@ -20,14 +20,14 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/mclock"
-	"github.com/r5-labs/r5-core/ethdb/memorydb"
-	"github.com/r5-labs/r5-core/les/vflux"
-	vfs "github.com/r5-labs/r5-core/les/vflux/server"
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/p2p/enode"
-	"github.com/r5-labs/r5-core/p2p/enr"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/common/mclock"
+	"github.com/r5-labs/r5-core/client/ethdb/memorydb"
+	"github.com/r5-labs/r5-core/client/les/vflux"
+	vfs "github.com/r5-labs/r5-core/client/les/vflux/server"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/p2p/enode"
+	"github.com/r5-labs/r5-core/client/p2p/enr"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 var (

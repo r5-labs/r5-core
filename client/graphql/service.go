@@ -20,10 +20,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/eth/filters"
-	"github.com/r5-labs/r5-core/internal/ethapi"
-	"github.com/r5-labs/r5-core/node"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/eth/filters"
+	"github.com/r5-labs/r5-core/client/internal/ethapi"
+	"github.com/r5-labs/r5-core/client/node"
+	"github.com/r5-labs/r5-core/client/rpc"
 	"github.com/graph-gophers/graphql-go"
 	gqlErrors "github.com/graph-gophers/graphql-go/errors"
 )

@@ -15,8 +15,8 @@ package rawdb
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/ethdb"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/ethdb"
 )
 
 type tableSize struct {

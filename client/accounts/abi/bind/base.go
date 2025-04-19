@@ -20,12 +20,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/accounts/abi"
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/core/types"
-	"github.com/r5-labs/r5-core/crypto"
-	"github.com/r5-labs/r5-core/event"
+	"github.com/r5-labs/r5-core/client"
+	"github.com/r5-labs/r5-core/client/accounts/abi"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/core/types"
+	"github.com/r5-labs/r5-core/client/crypto"
+	"github.com/r5-labs/r5-core/client/event"
 )
 
 const basefeeWiggleMultiplier = 2

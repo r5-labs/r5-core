@@ -16,7 +16,7 @@ import (
 	"container/heap"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/client/common/mclock"
 	"golang.org/x/exp/constraints"
 )
 

@@ -17,10 +17,10 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/eth/protocols/eth"
-	"github.com/r5-labs/r5-core/eth/protocols/snap"
-	"github.com/r5-labs/r5-core/p2p"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/eth/protocols/eth"
+	"github.com/r5-labs/r5-core/client/eth/protocols/snap"
+	"github.com/r5-labs/r5-core/client/p2p"
 )
 
 var (

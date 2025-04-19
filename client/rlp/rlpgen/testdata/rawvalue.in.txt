@@ -2,7 +2,7 @@
 
 package test
 
-import "github.com/r5-labs/r5-core/rlp"
+import "github.com/r5-labs/r5-core/client/rlp"
 
 type Test struct {
 	RawValue          rlp.RawValue

@@ -16,9 +16,9 @@ import (
 	"context"
 	"sync"
 
-	"github.com/r5-labs/r5-core"
-	"github.com/r5-labs/r5-core/event"
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client"
+	"github.com/r5-labs/r5-core/client/event"
+	"github.com/r5-labs/r5-core/client/rpc"
 )
 
 // DownloaderAPI provides an API which gives information about the current synchronisation status.

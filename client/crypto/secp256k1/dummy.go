@@ -15,7 +15,7 @@
 package secp256k1
 
 import (
-	_ "github.com/r5-labs/r5-core/crypto/secp256k1/libsecp256k1/include"
-	_ "github.com/r5-labs/r5-core/crypto/secp256k1/libsecp256k1/src"
-	_ "github.com/r5-labs/r5-core/crypto/secp256k1/libsecp256k1/src/modules/recovery"
+	_ "github.com/r5-labs/r5-core/client/crypto/secp256k1/libsecp256k1/include"
+	_ "github.com/r5-labs/r5-core/client/crypto/secp256k1/libsecp256k1/src"
+	_ "github.com/r5-labs/r5-core/client/crypto/secp256k1/libsecp256k1/src/modules/recovery"
 )

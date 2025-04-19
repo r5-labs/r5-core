@@ -18,7 +18,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/light"
+	"github.com/r5-labs/r5-core/client/light"
 )
 
 var (

@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/r5-labs/r5-core/common/mclock"
+	"github.com/r5-labs/r5-core/client/common/mclock"
 )
 
 // Subscription represents a stream of events. The carrier of the events is typically a

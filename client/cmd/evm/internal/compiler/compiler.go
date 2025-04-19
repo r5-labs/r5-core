@@ -16,7 +16,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/r5-labs/r5-core/core/asm"
+	"github.com/r5-labs/r5-core/client/core/asm"
 )
 
 func Compile(fn string, src []byte, debug bool) (string, error) {

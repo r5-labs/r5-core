@@ -16,7 +16,7 @@
 
 package trie
 
-import "github.com/r5-labs/r5-core/common"
+import "github.com/r5-labs/r5-core/client/common"
 
 // ID is the identifier for uniquely identifying a trie.
 type ID struct {

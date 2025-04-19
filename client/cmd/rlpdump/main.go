@@ -24,8 +24,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/r5-labs/r5-core/common"
-	"github.com/r5-labs/r5-core/rlp"
+	"github.com/r5-labs/r5-core/client/common"
+	"github.com/r5-labs/r5-core/client/rlp"
 )
 
 var (

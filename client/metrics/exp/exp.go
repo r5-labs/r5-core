@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/r5-labs/r5-core/log"
-	"github.com/r5-labs/r5-core/metrics"
-	"github.com/r5-labs/r5-core/metrics/prometheus"
+	"github.com/r5-labs/r5-core/client/log"
+	"github.com/r5-labs/r5-core/client/metrics"
+	"github.com/r5-labs/r5-core/client/metrics/prometheus"
 )
 
 type exp struct {

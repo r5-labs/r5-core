@@ -16,7 +16,7 @@ package utils
 import (
 	"fmt"
 
-	"github.com/r5-labs/r5-core/console/prompt"
+	"github.com/r5-labs/r5-core/client/console/prompt"
 )
 
 // GetPassPhrase displays the given text(prompt) to the user and requests some textual

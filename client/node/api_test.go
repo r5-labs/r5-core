@@ -21,7 +21,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/r5-labs/r5-core/rpc"
+	"github.com/r5-labs/r5-core/client/rpc"
 	"github.com/stretchr/testify/assert"
 )
 
