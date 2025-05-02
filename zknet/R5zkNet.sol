@@ -14,7 +14,7 @@
 
 pragma solidity ^0.8.19;
 
-contract R5ZKNet {
+contract R5zkNet {
     struct InternalAccount {
         uint256 balance; // Stores the balance of the internal account
         bool exists; // Flag to check if an internal account exists
